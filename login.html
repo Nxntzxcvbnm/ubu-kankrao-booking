@@ -129,17 +129,6 @@
             }
         }
 
-        .logo {
-            width: 90px;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.12));
-            transition: transform .3s;
-        }
-
-        .logo:hover {
-            transform: scale(1.05) rotate(-2deg);
-        }
-
         .login-header h1 {
             margin: 0 0 6px;
             font-size: 26px;
@@ -153,27 +142,6 @@
             font-size: 14px;
             margin-bottom: 30px;
             font-weight: 300;
-        }
-
-        .step-indicator {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            margin-bottom: 24px;
-            font-size: 12px;
-            color: #6B7280;
-        }
-
-        .step-dot {
-            width: 28px;
-            height: 4px;
-            border-radius: 2px;
-            background: #E5E7EB;
-        }
-
-        .step-dot.active {
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
         }
 
         .notice-box {
@@ -343,16 +311,12 @@
     <a href="public_page.html" class="back-link" id="backToHome">← กลับหน้าแรก</a>
     <div class="container">
         <div class="login-header">
-            <h1>เข้าสู่ระบบ</h1>
+            <h1>ยินดีต้อนรับ</h1>
             <p>UBU Club Booking · ระบบจองห้องชมรมและกิจกรรม</p>
         </div>
-        <div class="step-indicator">
-            <div class="step-dot"></div>
-            <div class="step-dot active"></div>
-            <div class="step-dot"></div><span>เข้าสู่ระบบ</span>
-        </div>
-        <div class="notice-box"><span class="notice-icon">🔑</span>
-            <div>ใช้บัญชีที่ได้รับจาก<strong>สำนักคอมพิวเตอร์ฯ</strong><br><strong>(@ubu.ac.th)</strong> เท่านั้น</div>
+        <div style="height: 10px;"></div>
+        <div class="notice-box"><span class="notice-icon">🎓</span>
+            <div>เฉพาะนักศึกษาและบุคลากรที่มีบัญชี <strong>@ubu.ac.th</strong> เท่านั้น</div>
         </div>
         <button id="btnGoogleLogin" class="btn-google-login"><img
                 src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg"
@@ -390,7 +354,7 @@
             try {
                 // 🔐 บังคับให้เบราว์เซอร์จำสถานะการล็อกอิน (แก้ปัญหา State หาย)
                 await setPersistence(auth, browserSessionPersistence);
-                
+
                 const result = await signInWithPopup(auth, googleProvider);
                 const user = result.user;
                 if (!user.email || !user.email.endsWith('@ubu.ac.th')) {
@@ -405,11 +369,11 @@
                 setTimeout(() => redirectAfterLogin(user), 600);
             } catch (err) {
                 console.error("Auth Error:", err);
-                const msgs = { 
-                    'auth/popup-closed-by-user': '⚠️ หน้าต่างถูกปิดก่อนล็อกอิน', 
-                    'auth/popup-blocked': '⚠️ Popup ถูกบล็อก (กรุณาอนุญาต)', 
+                const msgs = {
+                    'auth/popup-closed-by-user': '⚠️ หน้าต่างถูกปิดก่อนล็อกอิน',
+                    'auth/popup-blocked': '⚠️ Popup ถูกบล็อก (กรุณาอนุญาต)',
                     'auth/unauthorized-domain': '❌ โดเมนยังไม่ได้รับอนุญาต (Firebase Authorized Domain)',
-                    'auth/network-request-failed': '❌ ไม่มีอินเทอร์เน็ต' 
+                    'auth/network-request-failed': '❌ ไม่มีอินเทอร์เน็ต'
                 };
                 if (err.code !== 'auth/cancelled-popup-request') {
                     showMsg(msgs[err.code] || '🔒 เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง', "error");

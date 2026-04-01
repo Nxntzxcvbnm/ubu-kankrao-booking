@@ -1002,7 +1002,7 @@
         <div class="section-block">
             <div class="sec-label">จองห้อง</div>
             <div class="sec-title">📝 ลงชื่อจองใช้งานห้อง</div>
-            <div class="sec-sub">เลือกวันที่ เวลา และกรอกชื่อเล่น — จากนั้นกดยืนยัน</div>
+            <div class="sec-sub">เลือกวันที่และเวลาจอง — ระบบจะดึงชื่อจริงจากบัญชี Google อัตโนมัติ</div>
 
             <div class="card">
                 <div class="input-group">
@@ -1017,8 +1017,6 @@
 
                     <label for="userNickname">ชื่อวง / กลุ่ม <span
                             style="font-size:12px;color:#94A3B8;font-weight:400;">(ถ้ามี)</span>
-                        <span id="nicknameSavedBadge" class="nickname-saved-badge" style="display:none;">✅
-                            โหลดจากโปรไฟล์</span>
                     </label>
                     <input type="text" id="userNickname" placeholder="ระบุชื่อวงหรือชื่อกลุ่มของคุณ (ไม่จำเป็น)..."
                         style="font-weight:500;" maxlength="40" autocomplete="off">
@@ -1631,10 +1629,8 @@
             const n = await getUserBandName(uid);
             cachedBandName = n; // cache it
             const el = document.getElementById('userNickname');
-            const b = document.getElementById('nicknameSavedBadge');
             if (n) {
                 el.value = n;
-                b.style.display = 'inline-flex';
                 validateAll();
             }
         }
