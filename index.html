@@ -185,6 +185,19 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
+        .nav-mobile-title {
+            display: none;
+            font-weight: 700;
+            font-size: 15px;
+            color: #fff;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            pointer-events: none;
+        }
+
         .auth-left {
             display: flex;
             align-items: center;
@@ -748,9 +761,17 @@
             transition: .25s ease-in-out;
         }
 
-        .nav-toggle span:nth-child(1) { top: 9px; }
-        .nav-toggle span:nth-child(2) { top: 15px; }
-        .nav-toggle span:nth-child(3) { top: 21px; }
+        .nav-toggle span:nth-child(1) {
+            top: 9px;
+        }
+
+        .nav-toggle span:nth-child(2) {
+            top: 15px;
+        }
+
+        .nav-toggle span:nth-child(3) {
+            top: 21px;
+        }
 
         .nav-toggle.open span:nth-child(1) {
             top: 15px;
@@ -937,7 +958,8 @@
             }
 
             .auth-right {
-                display: none; /* Hide standard pill on mobile to use within menu */
+                display: none;
+                /* Hide standard pill on mobile to use within menu */
             }
 
             .spa-tabs {
@@ -953,7 +975,8 @@
                 gap: 8px;
                 box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
                 border-top: 1px solid rgba(255, 255, 255, 0.1);
-                display: none !important; /* Managed by .open class */
+                display: none !important;
+                /* Managed by .open class */
                 z-index: 100;
             }
 
@@ -963,8 +986,15 @@
             }
 
             @keyframes slideDownNav {
-                from { opacity: 0; transform: translateY(-10px); }
-                to { opacity: 1; transform: translateY(0); }
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
             }
 
             .spa-tab {
@@ -982,7 +1012,11 @@
             }
 
             .hero-banner {
-                padding: 40px 16px 36px;
+                display: none;
+            }
+
+            .nav-mobile-title {
+                display: block;
             }
 
             .hero-stats {
@@ -1076,17 +1110,22 @@
             <span style="display:none;" class="mobile-hide">UBU Club Booking</span>
         </div>
 
-        <div class="spa-tabs" id="mainSpaTabs" style="display:none;">
+        <div class="nav-mobile-title">ชมรมกันเกราบันเทิงศิลป์</div>
+
+        <div class="spa-tabs" id="mainSpaTabs">
             <button class="spa-tab active" onclick="switchView('homeView')">หน้าหลัก</button>
             <button class="spa-tab" onclick="switchView('mapView')">แผนที่</button>
             <button class="spa-tab" onclick="switchView('dashboardView')">การจองของฉัน</button>
             <button class="spa-tab" onclick="switchView('featuresView')">คุณสมบัติ</button>
             <button class="spa-tab" onclick="switchView('toolsView')">วิธีการจอง</button>
-            <button class="spa-tab mobile-only" onclick="window.location.href='profile.html'">👤 บัญชีส่วนตัว (โปรไฟล์)</button>
-            <button class="spa-tab mobile-only" onclick="window.handleLogout()" style="color:#fca5a5; background:rgba(239,68,68,0.1); margin-top:4px; border-top:1px solid rgba(255,255,255,0.05);">🚪 ออกจากระบบ</button>
+            <button class="spa-tab mobile-only" id="mobileProfileBtn" onclick="window.location.href='profile.html'">👤
+                บัญชีส่วนตัว (โปรไฟล์)</button>
+            <button class="spa-tab mobile-only" onclick="window.handleLogout()"
+                style="color:#fca5a5; background:rgba(239,68,68,0.1); margin-top:4px; border-top:1px solid rgba(255,255,255,0.05);">🚪
+                ออกจากระบบ</button>
         </div>
 
-        <div class="nav-toggle" id="navToggle" style="display:none;">
+        <div class="nav-toggle" id="navToggle">
             <span></span>
             <span></span>
             <span></span>
@@ -1691,8 +1730,6 @@
                 currentUser = user;
                 sessionStorage.setItem('ubu_authed', 'true');
                 spaTabs.style.display = 'flex'; // Show tabs
-                const toggle = document.getElementById('navToggle');
-                if (toggle) toggle.style.display = 'block';
 
                 // Listen to User Profile changes for Demerits logic
                 if (unsubscribeUserProfile) unsubscribeUserProfile();
@@ -1747,6 +1784,8 @@
                     const todayNow = new Date(dNow.getTime() - off).toISOString().split('T')[0];
                     fetchBookedSlots(todayNow);
                 }
+                const mobileProfileBtn = document.getElementById('mobileProfileBtn');
+                if (mobileProfileBtn) mobileProfileBtn.innerHTML = `👤 โปรไฟล์ (${esc(user.displayName || user.email.split('@')[0])})`;
                 validateAll();
 
             } else {
@@ -1754,8 +1793,6 @@
                 if (unsubscribeUserProfile) { unsubscribeUserProfile(); unsubscribeUserProfile = null; }
                 globalUserProfile = null;
                 spaTabs.style.display = 'none'; // Hide tabs
-                const toggle = document.getElementById('navToggle');
-                if (toggle) toggle.style.display = 'none';
                 authRight.innerHTML = `<button class="btn-auth btn-login-nav" onclick="openLoginModal()">🔑 เข้าสู่ระบบ</button>`;
                 document.getElementById('userName').value = '';
                 document.getElementById('userName').placeholder = 'กรุณาเข้าสู่ระบบก่อน...';
