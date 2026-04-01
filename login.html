@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>UBU Club Booking - เข้าสู่ระบบ</title>
+    <meta name="description" content="เข้าสู่ระบบจองห้องชมรม มหาวิทยาลัยอุบลราชธานี">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #3730A3;
+            --secondary: #8B5CF6;
+            --accent: #06B6D4;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Kanit', sans-serif;
+            background: linear-gradient(135deg, #1E1B4B 0%, #3730A3 40%, #4F46E5 70%, #6366F1 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100dvh;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 50%;
+            height: 50%;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, transparent 70%);
+            z-index: 0;
+            animation: orb1 8s ease-in-out infinite alternate;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            bottom: -10%;
+            right: -10%;
+            width: 50%;
+            height: 50%;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.2) 0%, transparent 70%);
+            z-index: 0;
+            animation: orb2 10s ease-in-out infinite alternate;
+        }
+
+        @keyframes orb1 {
+            0% {
+                transform: translate(0, 0)
+            }
+
+            100% {
+                transform: translate(30px, 20px)
+            }
+        }
+
+        @keyframes orb2 {
+            0% {
+                transform: translate(0, 0)
+            }
+
+            100% {
+                transform: translate(-25px, -15px)
+            }
+        }
+
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: rgba(255, 255, 255, 0.75);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all .2s;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 8px 16px;
+            border-radius: 50px;
+        }
+
+        .back-link:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.14);
+            transform: translateX(-2px);
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.97);
+            padding: 44px 36px;
+            border-radius: 28px;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            z-index: 1;
+            position: relative;
+            animation: floatUp .6s cubic-bezier(.16, 1, .3, 1) forwards;
+        }
+
+        @keyframes floatUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .logo {
+            width: 90px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.12));
+            transition: transform .3s;
+        }
+
+        .logo:hover {
+            transform: scale(1.05) rotate(-2deg);
+        }
+
+        .login-header h1 {
+            margin: 0 0 6px;
+            font-size: 26px;
+            color: var(--primary-dark);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .login-header p {
+            color: #6B7280;
+            font-size: 14px;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 24px;
+            font-size: 12px;
+            color: #6B7280;
+        }
+
+        .step-dot {
+            width: 28px;
+            height: 4px;
+            border-radius: 2px;
+            background: #E5E7EB;
+        }
+
+        .step-dot.active {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .notice-box {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.06), rgba(139, 92, 246, 0.06));
+            border: 1px solid rgba(79, 70, 229, 0.15);
+            color: #4338CA;
+            padding: 14px 18px;
+            border-radius: 14px;
+            font-size: 13px;
+            margin-bottom: 24px;
+            line-height: 1.6;
+            text-align: left;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .notice-box .notice-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .notice-box strong {
+            color: #3730A3;
+            font-weight: 600;
+        }
+
+        .btn-google-login {
+            width: 100%;
+            padding: 15px 20px;
+            background: white;
+            border: 2px solid #E5E7EB;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            font-family: 'Kanit', sans-serif;
+            color: #1E1B4B;
+            transition: all .3s cubic-bezier(.4, 0, .2, 1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            touch-action: manipulation;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-google-login:hover {
+            border-color: var(--primary);
+            background: #F5F3FF;
+            box-shadow: 0 8px 24px rgba(79, 70, 229, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .btn-google-login:active {
+            transform: translateY(0);
+        }
+
+        .btn-google-login:disabled {
+            opacity: .65;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-google-login img {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+        }
+
+        #msg {
+            margin-top: 16px;
+            font-size: 14px;
+            border-radius: 10px;
+            padding: 0;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height .3s, padding .3s;
+            font-weight: 500;
+        }
+
+        #msg.show {
+            padding: 12px 16px;
+            max-height: 100px;
+        }
+
+        #msg.error {
+            color: #DC2626;
+            background: #FEF2F2;
+            border: 1px solid #FECACA;
+        }
+
+        #msg.success {
+            color: #059669;
+            background: #ECFDF5;
+            border: 1px solid #A7F3D0;
+        }
+
+        .login-footer {
+            margin-top: 28px;
+            font-size: 12px;
+            color: #9CA3AF;
+            text-align: center;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        .login-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .loader {
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid #E5E7EB;
+            border-bottom-color: var(--primary);
+            border-radius: 50%;
+            display: inline-block;
+            animation: spin .8s linear infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #9CA3AF;
+            margin-top: 16px;
+        }
+
+        @media(max-width:480px) {
+            body {
+                padding: 60px 16px 20px;
+            }
+
+            .container {
+                padding: 32px 22px;
+                border-radius: 22px;
+            }
+
+            .login-header h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="public_page.html" class="back-link" id="backToHome">← กลับหน้าแรก</a>
+    <div class="container">
+        <div class="login-header">
+            <h1>เข้าสู่ระบบ</h1>
+            <p>UBU Club Booking · ระบบจองห้องชมรมและกิจกรรม</p>
+        </div>
+        <div class="step-indicator">
+            <div class="step-dot"></div>
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div><span>เข้าสู่ระบบ</span>
+        </div>
+        <div class="notice-box"><span class="notice-icon">🔑</span>
+            <div>ใช้บัญชีที่ได้รับจาก<strong>สำนักคอมพิวเตอร์ฯ</strong><br><strong>(@ubu.ac.th)</strong> เท่านั้น</div>
+        </div>
+        <button id="btnGoogleLogin" class="btn-google-login"><img
+                src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg"
+                alt="Google"><span>เข้าสู่ระบบด้วยบัญชี UBU</span></button>
+        <div id="msg" role="alert"></div>
+        <div class="security-badge"><span>🔒</span><span>ปลอดภัยด้วย Google OAuth 2.0 + Firebase Auth</span></div>
+        <div class="login-footer">© 2026 Ubon Ratchathani University<br><a href="public_page.html">ดูวิธีการใช้งาน</a> ·
+            ต้องการความช่วยเหลือ? ติดต่อผู้ดูแลระบบ</div>
+    </div>
+    <script type="module">
+        // Replace current history entry so pressing Back goes to public_page, not index
+        history.replaceState(null, '', 'login.html');
+        window.addEventListener('popstate', () => { window.location.replace('public_page.html'); });
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = { apiKey: "AIzaSyCQWDZabKe7vG6Z8rT-g2gb0799cSbyGiw", authDomain: "booking-kankrao.firebaseapp.com", projectId: "booking-kankrao", storageBucket: "booking-kankrao.firebasestorage.app", messagingSenderId: "985093751532", appId: "1:985093751532:web:e1f4710941e593e902dbc9", measurementId: "G-X418WYDZ8H" };
+        const app = initializeApp(firebaseConfig), auth = getAuth(app), db = getFirestore(app);
+        const googleProvider = new GoogleAuthProvider();
+        googleProvider.setCustomParameters({ prompt: 'select_account', hd: 'ubu.ac.th' });
+        const ADMIN_EMAILS = Object.freeze(["wissanupong.bu.67@ubu.ac.th"]);
+        const msgBox = document.getElementById('msg'), btnGoogle = document.getElementById('btnGoogleLogin');
+        function showMsg(t, type) { msgBox.textContent = t; msgBox.className = type + ' show'; }
+        function hideMsg() { msgBox.className = ''; msgBox.textContent = ''; }
+        function redirectAfterLogin(user) { sessionStorage.setItem('ubu_authed', 'true'); if (ADMIN_EMAILS.includes(user.email)) { window.location.replace("admin.html"); } else { window.location.replace("index.html"); } }
+        onAuthStateChanged(auth, (user) => { if (user && user.email && user.email.endsWith('@ubu.ac.th')) { showMsg("✅ พบเซสชั่นที่ใช้งานอยู่...", "success"); setTimeout(() => redirectAfterLogin(user), 800); } });
+        async function upsertUserProfile(user) { const ref = doc(db, "users", user.uid); const snap = await getDoc(ref); if (!snap.exists()) { await setDoc(ref, { uid: user.uid, email: user.email, displayName: user.displayName || '', photoURL: user.photoURL || '', nickname: '', studentId: '', faculty: '', phone: '', role: 'student', createdAt: serverTimestamp(), lastLoginAt: serverTimestamp() }); } else { await setDoc(ref, { lastLoginAt: serverTimestamp(), displayName: user.displayName || snap.data().displayName || '', photoURL: user.photoURL || snap.data().photoURL || '' }, { merge: true }); } }
+        btnGoogle.addEventListener('click', async () => { btnGoogle.disabled = true; btnGoogle.innerHTML = `<span class="loader"></span><span>กำลังนำไปยัง Google...</span>`; hideMsg(); try { const result = await signInWithPopup(auth, googleProvider); const user = result.user; if (!user.email || !user.email.endsWith('@ubu.ac.th')) { await signOut(auth); showMsg("❌ ต้องใช้บัญชี @ubu.ac.th เท่านั้น", "error"); resetBtn(); return; } showMsg("✅ ยินดีต้อนรับ " + (user.displayName || user.email.split('@')[0]), "success"); btnGoogle.innerHTML = `<span>กำลังโหลดข้อมูล...</span>`; await upsertUserProfile(user); setTimeout(() => redirectAfterLogin(user), 600); } catch (err) { const msgs = { 'auth/popup-closed-by-user': '⚠️ หน้าต่างถูกปิดก่อนล็อกอิน', 'auth/popup-blocked': '⚠️ Popup ถูกบล็อก', 'auth/network-request-failed': '❌ ไม่มีอินเทอร์เน็ต' }; if (err.code !== 'auth/cancelled-popup-request') showMsg(msgs[err.code] || '🔒 เกิดข้อผิดพลาด กรุณาลองใหม่', "error"); resetBtn(); } });
+        function resetBtn() { btnGoogle.disabled = false; btnGoogle.innerHTML = `<img src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg" alt="Google"><span>เข้าสู่ระบบด้วยบัญชี UBU</span>`; }
+    </script>
+</body>
+
+</html>

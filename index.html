@@ -1,0 +1,2253 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>UBU Club Booking - ระบบจองห้องชมรม มอ.อุบล</title>
+    <meta name="description" content="ระบบจองห้องชมรมและกิจกรรม มหาวิทยาลัยอุบลราชธานี">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        /* ─── Hero compact ─── */
+        .hero-banner {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1E1B4B 0%, #3730A3 40%, #4F46E5 70%, #6366F1 100%);
+            padding: 60px 24px 48px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            right: -20%;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.25)0%, transparent 70%);
+            pointer-events: none;
+            animation: orb-hero 10s ease-in-out infinite alternate;
+        }
+
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -15%;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.15)0%, transparent 70%);
+            pointer-events: none;
+            animation: orb-hero 12s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes orb-hero {
+            0% {
+                transform: translate(0, 0)
+            }
+
+            100% {
+                transform: translate(30px, 20px)
+            }
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.9);
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            backdrop-filter: blur(8px);
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #22D3EE;
+            animation: blink 1.5s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .2
+            }
+        }
+
+        .hero-banner h1 {
+            font-size: clamp(26px, 6vw, 48px);
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -1px;
+            margin-bottom: 12px;
+        }
+
+        .hero-banner h1 .hl {
+            background: linear-gradient(135deg, #22D3EE, #A78BFA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-desc {
+            font-size: clamp(14px, 2vw, 16px);
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 500px;
+            margin: 0 auto 24px;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 36px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+
+        .hero-stat {
+            text-align: center
+        }
+
+        .hero-stat-num {
+            font-size: 28px;
+            font-weight: 700;
+            color: #22D3EE;
+        }
+
+        .hero-stat-lbl {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 2px;
+        }
+
+        /* ─── Section titles ─── */
+        .sec-label {
+            text-align: center;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .sec-title {
+            text-align: center;
+            font-size: clamp(20px, 4vw, 30px);
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--primary-dark);
+        }
+
+        .sec-sub {
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-muted);
+            max-width: 480px;
+            margin: 0 auto 32px;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        /* ─── Auth bar inside page ─── */
+        .auth-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: linear-gradient(135deg, #1E1B4B, #4F46E5, #8B5CF6);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.3);
+            gap: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .auth-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 0;
+        }
+
+        .auth-left img {
+            height: 28px;
+            border-radius: 4px;
+            background: #fff;
+            padding: 2px;
+        }
+
+        .auth-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .auth-user-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 13px;
+            color: #fff;
+            text-decoration: none;
+            transition: all .2s;
+            cursor: pointer;
+        }
+
+        .auth-user-pill:hover {
+            background: rgba(255, 255, 255, 0.22);
+        }
+
+        .btn-auth {
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: none;
+            font-family: 'Kanit', sans-serif;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all .3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-login-nav {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(4px);
+        }
+
+        .btn-login-nav:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .btn-logout-nav {
+            background: rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-logout-nav:hover {
+            background: var(--error);
+            color: #fff;
+        }
+
+        /* ─── Login Modal ─── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(30, 27, 75, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-box {
+            background: #fff;
+            border-radius: 28px;
+            padding: 44px 36px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.3);
+            animation: modalIn .4s cubic-bezier(.16, 1, .3, 1);
+            position: relative;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(.95)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1)
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: #94a3b8;
+            transition: color .2s;
+            padding: 4px 8px;
+        }
+
+        .modal-close:hover {
+            color: #1E1B4B;
+        }
+
+        .modal-logo {
+            width: 80px;
+            margin-bottom: 16px;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+        }
+
+        .modal-box h2 {
+            font-size: 24px;
+            color: #1E1B4B;
+            margin-bottom: 6px;
+        }
+
+        .modal-box .modal-sub {
+            color: #6B7280;
+            font-size: 14px;
+            margin-bottom: 24px;
+            font-weight: 300;
+        }
+
+        .modal-notice {
+            background: rgba(79, 70, 229, 0.06);
+            border: 1px solid rgba(79, 70, 229, 0.15);
+            color: #4338CA;
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            text-align: left;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            line-height: 1.5;
+        }
+
+        .btn-google {
+            width: 100%;
+            padding: 15px 20px;
+            background: #fff;
+            border: 2px solid #E5E7EB;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            font-family: 'Kanit', sans-serif;
+            color: #1E1B4B;
+            transition: all .3s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .btn-google:hover {
+            border-color: var(--primary);
+            background: #F5F3FF;
+            box-shadow: 0 8px 24px rgba(79, 70, 229, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .btn-google:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-google img {
+            width: 22px;
+            height: 22px;
+        }
+
+        #modalMsg {
+            margin-top: 14px;
+            font-size: 14px;
+            border-radius: 10px;
+            padding: 0;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height .3s, padding .3s;
+            font-weight: 500;
+        }
+
+        #modalMsg.show {
+            padding: 12px 16px;
+            max-height: 100px;
+        }
+
+        #modalMsg.error {
+            color: #DC2626;
+            background: #FEF2F2;
+            border: 1px solid #FECACA;
+        }
+
+        #modalMsg.success {
+            color: #059669;
+            background: #ECFDF5;
+            border: 1px solid #A7F3D0;
+        }
+
+        .modal-footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #9CA3AF;
+        }
+
+        /* ─── Booking checklist ─── */
+        .booking-checklist {
+            background: rgba(79, 70, 229, 0.04);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin: 16px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+            transition: all .2s;
+        }
+
+        .check-item.done {
+            color: #059669;
+        }
+
+        .check-item.done .check-icon {
+            color: #10B981;
+        }
+
+        .check-item .check-icon {
+            font-size: 15px;
+            color: #D1D5DB;
+        }
+
+        /* ─── Field hints ─── */
+        .field-hint {
+            font-size: 12px;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            min-height: 18px;
+            transition: all .2s;
+        }
+
+        .field-hint.valid {
+            color: #059669
+        }
+
+        .field-hint.invalid {
+            color: #DC2626
+        }
+
+        .field-hint.neutral {
+            color: #9CA3AF;
+        }
+
+        /* ─── Section spacing ─── */
+        .section-block {
+            padding: 48px 16px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+            margin: 0;
+        }
+
+        /* ─── Nickname badge ─── */
+        .nickname-saved-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(16, 185, 129, 0.08);
+            color: #059669;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            margin-left: 8px;
+            font-weight: 500;
+        }
+
+        /* ─── Profile nav ─── */
+        .btn-profile-nav {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 7px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: 'Kanit', sans-serif;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all .2s;
+            white-space: nowrap;
+        }
+
+        .btn-profile-nav:hover {
+            background: rgba(255, 255, 255, 0.22);
+        }
+
+        @media(max-width:640px) {
+            .hero-banner {
+                padding: 40px 16px 36px;
+            }
+
+            .hero-stats {
+                gap: 20px;
+            }
+
+            .hero-stat-num {
+                font-size: 22px;
+            }
+
+            .auth-left span {
+                display: none;
+            }
+
+            .modal-box {
+                padding: 32px 22px;
+                border-radius: 22px;
+            }
+
+            .section-block {
+                padding: 32px 12px;
+            }
+        }
+
+        /* ─── Booking Summary Card ─── */
+        .booking-summary {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.04), rgba(139, 92, 246, 0.06));
+            border: 1.5px solid rgba(79, 70, 229, 0.15);
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin: 16px 0;
+            animation: summaryIn .3s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        @keyframes summaryIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .summary-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(79, 70, 229, 0.1);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .summary-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            border: 1px solid rgba(139, 92, 246, 0.08);
+        }
+
+        .summary-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .summary-value {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* ─── Toast Notification ─── */
+        .toast-container {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+            width: max-content;
+            max-width: 90vw;
+        }
+
+        .toast-msg {
+            background: rgba(30, 27, 75, 0.95);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: toastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards, toastOut 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards 2.7s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes toastOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+        }
+
+        /* ─── SPA Tabs & Views ─── */
+        .spa-tabs {
+            display: none;
+            /* hidden when logged out */
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 4px;
+            border-radius: 50px;
+        }
+
+        .spa-tab {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Kanit', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .spa-tab:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .spa-tab.active {
+            color: #fff;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.05));
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .spa-view {
+            display: none;
+        }
+
+        .spa-view.active {
+            display: block;
+            animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ─── Profile Dropdown ─── */
+        .profile-dd-wrapper {
+            position: relative;
+        }
+
+        .btn-profile-dropdown {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            padding: 4px 14px 4px 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-family: 'Kanit', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-profile-dropdown:hover,
+        .profile-dd-wrapper.open .btn-profile-dropdown {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .dd-avatar {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--primary);
+            overflow: hidden;
+        }
+
+        .dd-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-dd-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            min-width: 220px;
+            visibility: hidden;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            color: #333;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .profile-dd-wrapper.open .profile-dd-menu {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dd-header {
+            padding: 16px;
+            border-bottom: 1px solid #eee;
+            background: rgba(79, 70, 229, 0.03);
+            text-align: left;
+        }
+
+        .dd-name {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--primary-dark);
+            margin-bottom: 2px;
+        }
+
+        .dd-email {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .dd-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+            background: transparent;
+            text-align: left;
+            font-family: 'Kanit', sans-serif;
+        }
+
+        .dd-item:hover {
+            background: #f8fafc;
+            color: var(--primary);
+            padding-left: 20px;
+        }
+
+        .dd-item.dangerous {
+            color: #EF4444;
+            border-top: 1px solid #eee;
+        }
+
+        .dd-item.dangerous:hover {
+            background: #FEF2F2;
+        }
+
+        /* ─── Map Modal Styles ─── */
+        .map-wrapper {
+            width: 100%;
+            height: 400px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 16px;
+            background: #eee;
+        }
+
+        .map-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Responsive Navbar */
+        @media (max-width: 640px) {
+            .auth-bar {
+                flex-wrap: wrap;
+            }
+
+            .spa-tabs {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                margin-top: 8px;
+            }
+        }
+
+        /* ─── Auth Skeleton Loader ─── */
+        .auth-skeleton {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .auth-skeleton-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            animation: skeletonPulse 1.4s ease-in-out infinite;
+        }
+
+        .auth-skeleton-text {
+            width: 80px;
+            height: 14px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            animation: skeletonPulse 1.4s ease-in-out 0.2s infinite;
+        }
+
+        @keyframes skeletonPulse {
+
+            0%,
+            100% {
+                opacity: 0.4;
+            }
+
+            50% {
+                opacity: 0.9;
+            }
+        }
+    </style>
+</head>
+
+<body style="padding-bottom:40px;">
+
+    <!-- ========== LOGIN MODAL ========== -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeLoginModal()" aria-label="ปิด">✕</button>
+            <img src="logo.png" alt="Club Logo" class="modal-logo"
+                style="height:80px; width:auto; margin-bottom:15px; border-radius:8px;">
+            <h2>เข้าสู่ระบบ</h2>
+            <p class="modal-sub">UBU Club Booking · ระบบจองห้องชมรม</p>
+            <div class="modal-notice">
+                <span style="font-size:16px;flex-shrink:0;">🔑</span>
+                <div>ใช้บัญชี <strong>@ubu.ac.th</strong> จากสำนักคอมพิวเตอร์ฯ เท่านั้น</div>
+            </div>
+            <button id="btnGoogleLogin" class="btn-google" aria-label="เข้าสู่ระบบด้วย Google">
+                <img src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg" alt="Google">
+                <span>เข้าสู่ระบบด้วยบัญชี UBU</span>
+            </button>
+            <div id="modalMsg" role="alert"></div>
+            <div class="modal-footer">🔒 ปลอดภัยด้วย Google OAuth 2.0 + Firebase</div>
+        </div>
+    </div>
+
+    <!-- Old Map Modal removed - moved to map view -->
+
+    <!-- ========== MAIN NAVBAR ========== -->
+    <nav class="auth-bar" id="authBar">
+        <div class="auth-left">
+            <img src="logo.png" alt="Club Logo" style="height:48px; width:auto; border-radius:4px;">
+            <span style="display:none;" class="mobile-hide">UBU Club Booking</span>
+        </div>
+
+        <div class="spa-tabs" id="mainSpaTabs" style="display:none;">
+            <button class="spa-tab active" onclick="switchView('homeView')">หน้าหลัก</button>
+            <button class="spa-tab" onclick="switchView('mapView')">แผนที่</button>
+            <button class="spa-tab" onclick="switchView('dashboardView')">การจองของฉัน</button>
+            <button class="spa-tab" onclick="switchView('toolsView')">วิธีการใช้งาน</button>
+        </div>
+
+        <div class="auth-right" id="authRight">
+            <!-- Skeleton while Firebase Auth initializes -->
+            <div class="auth-skeleton" id="authSkeleton">
+                <div class="auth-skeleton-avatar"></div>
+                <div class="auth-skeleton-text"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- !!! SPA WRAPPER !!! -->
+    <div id="homeView" class="spa-view active">
+        <!-- ========== HERO BANNER ========== -->
+        <section class="hero-banner">
+            <div class="hero-badge">🏛️ มหาวิทยาลัยอุบลราชธานี — ระบบจองอย่างเป็นทางการ</div>
+            <h1>จองห้องชมรม<br><span class="hl">ง่าย เร็ว โปร่งใส</span></h1>
+            <p class="hero-desc">ระบบจัดการพื้นที่ชมรมสำหรับนักศึกษา UBU<br>เชื่อมต่อ Google Account
+                ของมหาวิทยาลัยโดยตรง
+            </p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-num">24/7</div>
+                    <div class="hero-stat-lbl">พร้อมใช้งาน</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-num">7 วัน</div>
+                    <div class="hero-stat-lbl">จองล่วงหน้า</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-num">3 ชม.</div>
+                    <div class="hero-stat-lbl">ต่อครั้งสูงสุด</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- ========== BOOKING SECTION ========== -->
+        <div class="section-block">
+            <div class="sec-label">จองห้อง</div>
+            <div class="sec-title">📝 ลงชื่อจองใช้งานห้อง</div>
+            <div class="sec-sub">เลือกวันที่ เวลา และกรอกชื่อเล่น — จากนั้นกดยืนยัน</div>
+
+            <div class="card">
+                <div class="input-group">
+                    <label>ชื่อ-นามสกุลผู้จอง <small style="color:#9CA3AF;">(ดึงจากบัญชีมหาวิทยาลัย)</small></label>
+                    <input type="text" id="userName" placeholder="กรุณาเข้าสู่ระบบก่อน..." readonly
+                        style="background:rgba(79,70,229,0.03);color:#6B7280;cursor:not-allowed;font-weight:500;">
+
+                    <label for="bookDate">วันที่ต้องการใช้ห้อง <span style="color:#EF4444;">*</span></label>
+                    <input type="text" id="bookDate" aria-required="true" placeholder="วว/ดด/ปปปป"
+                        style="background-color: #fff; cursor: pointer;">
+                    <div class="field-hint neutral" id="hintDate">📅 เลือกวันที่ต้องการจอง</div>
+
+                    <label for="userNickname">ชื่อเล่น <span style="color:#EF4444;">*</span>
+                        <span id="nicknameSavedBadge" class="nickname-saved-badge" style="display:none;">✅
+                            โหลดจากโปรไฟล์</span>
+                    </label>
+                    <input type="text" id="userNickname" placeholder="ระบุชื่อเล่นของคุณ..." style="font-weight:500;"
+                        maxlength="20" autocomplete="off">
+                    <div class="field-hint neutral" id="hintNickname">💡 ชื่อเล่นที่แสดงในตารางการจอง</div>
+                </div>
+
+                <p class="hour-notice">📌 คลิกเลือกช่วงเวลาทีละช่อง (1 ชม./ช่อง) สูงสุด 3 ช่อง —
+                    ต้องเป็นเวลาต่อเนื่องกัน
+                </p>
+                <div class="timetable-grid" id="timetableGrid"></div>
+                <div class="timetable-legend">
+                    <span class="legend-item"><span class="legend-dot ld-available"></span> ว่าง</span>
+                    <span class="legend-item"><span class="legend-dot ld-booked"></span> จองแล้ว</span>
+                    <span class="legend-item"><span class="legend-dot ld-selected"></span> เลือก</span>
+                </div>
+
+                <!-- Booking Summary Card -->
+                <div id="bookingSummary" class="booking-summary" style="display:none;">
+                    <div class="summary-title">📋 สรุปการจอง</div>
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <div class="summary-label">📅 วันที่</div>
+                            <div class="summary-value" id="sumDate">—</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">🕐 เวลา</div>
+                            <div class="summary-value" id="sumTime">—</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">⏱️ จำนวนเวลาจอง</div>
+                            <div class="summary-value" id="sumDuration">—</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="selectedTimeShow" class="time-display-box">คลิกที่ตารางเพื่อเลือกเวลา</div>
+
+                <div class="booking-checklist" id="bookingChecklist">
+                    <div class="check-item" id="checkDate"><span class="check-icon">⬜</span><span>เลือกวันที่แล้ว</span>
+                    </div>
+                    <div class="check-item" id="checkTime"><span
+                            class="check-icon">⬜</span><span>เลือกช่วงเวลาแล้ว</span>
+                    </div>
+                    <div class="check-item" id="checkNickname"><span
+                            class="check-icon">⬜</span><span>กรอกชื่อเล่นแล้ว</span></div>
+                </div>
+
+                <button id="btnSave" class="btn-submit" disabled style="opacity:0.5;cursor:not-allowed;">✅
+                    ยืนยันการจอง</button>
+                <p id="btnSaveHint" style="text-align:center;font-size:12px;color:#9CA3AF;margin-top:8px;">
+                    กรุณากรอกข้อมูลให้ครบก่อนกดยืนยัน</p>
+            </div>
+        </div>
+
+    </div> <!-- End homeView -->
+
+    <div id="mapView" class="spa-view">
+        <!-- ========== MAP SECTION ========== -->
+        <div class="section-block" style="max-width: 800px; margin: 40px auto; padding: 24px;">
+            <div style="text-align: center; margin-bottom: 24px;">
+                <h1
+                    style="color: var(--primary-dark); margin-bottom: 8px; font-size: clamp(20px, 5vw, 24px); font-weight: 600;">
+                    📍 พิกัดจุดเช็คอิน</h1>
+                <p style="color: var(--text-muted); font-size: 15px;">อาคารกิจกรรมนักศึกษา
+                    มหาวิทยาลัยอุบลราชธานี<br />(กรุณาอยู่ในรัศมี 200 เมตร เพื่อเช็คอินผ่านระบบจอง)</p>
+            </div>
+
+            <div
+                style="background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.4); border-radius: var(--radius-lg); padding: 10px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); height: 60vh; min-height: 400px;">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1933.3421544321706!2d104.905052!3d15.1237685!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311685c37c211c87%3A0x8828f5f2fa28f31!2z4Lit4Liy4LiE4Liy4Lij4LiB4Li04LiI4LiB4Lij4Lij4Lih4LiZ4Lix4LiB4Lio4Li24LiB4Lip4LiyIOC4hS7guK3guLjguJrguKU!5e0!3m2!1sth!2sth!4v1711718000000!5m2!1sth!2sth"
+                    style="width: 100%; height: 100%; border-radius: var(--radius-md); border: none; background: #f0f0f0;"
+                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div id="dashboardView" class="spa-view">
+        <!-- ========== DASHBOARD SECTION ========== -->
+        <div class="section-block">
+            <div class="sec-label">My Bookings</div>
+            <div class="sec-title">📅 การจองของฉัน</div>
+            <div class="sec-sub">รายการจองของคุณ และตารางคิวห้องชมรมทั้งหมด</div>
+
+
+
+            <!-- Global Timeline Info -->
+            <div class="global-timeline-box" style="margin-bottom: 24px; text-align: left;">
+                <h4 style="font-size: 15px; color: var(--primary-dark); margin-bottom: 12px; font-weight: 600;">⏱️
+                    สถานะการจองห้องวันนี้</h4>
+                <div class="timetable-grid" id="globalTimetableGrid"></div>
+            </div>
+
+            <h4
+                style="font-size: 15px; color: var(--primary-dark); margin-bottom: 12px; margin-top:20px; font-weight: 600; text-align: left;">
+                📋 รายการของฉัน</h4>
+            <div id="bookingList" class="booking-dashboard"></div>
+        </div>
+    </div> <!-- End dashboardView -->
+
+    <div id="toolsView" class="spa-view">
+        <!-- ========== TOOLS / GUIDE SECTION ========== -->
+        <div
+            style="background: linear-gradient(135deg, #1E1B4B 0%, #3730A3 40%, #4F46E5 80%); padding: 52px 24px 40px; text-align: center; color: #fff; position:relative; overflow:hidden;">
+            <div
+                style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 0%, rgba(139,92,246,0.3),transparent);pointer-events:none;">
+            </div>
+            <div style="position:relative;">
+                <div
+                    style="display:inline-block;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);padding:6px 18px;border-radius:50px;font-size:13px;margin-bottom:20px;">
+                    ✨ ระบบจองห้องชมรม UBU</div>
+                <h1 style="font-size:clamp(22px,5vw,36px);font-weight:700;margin-bottom:12px;">วิธีใช้งานและคุณสมบัติ
+                </h1>
+                <p style="color:rgba(255,255,255,0.75);font-size:15px;font-weight:300;max-width:500px;margin:0 auto;">
+                    ทำความเข้าใจระบบจองห้องชมรม UBU อย่างครบถ้วน เพื่อใช้งานได้อย่างถูกต้องและมีประสิทธิภาพ</p>
+            </div>
+        </div>
+
+        <div style="max-width:1000px;margin:0 auto;padding:40px 20px 16px;">
+            <!-- Features grid -->
+            <div style="text-align:center;margin-bottom:36px;">
+                <div
+                    style="display:inline-block;background:rgba(79,70,229,0.08);border:1px solid rgba(99,102,241,0.2);color:#4F46E5;padding:5px 16px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;">
+                    Feature Highlights</div>
+                <h2 style="font-size:clamp(20px,4vw,28px);font-weight:700;color:#1E293B;margin-bottom:8px;">
+                    ทุกสิ่งที่ต้องการในที่เดียว</h2>
+                <p style="color:#64748B;font-size:14px;max-width:460px;margin:0 auto;">
+                    ระบบออกแบบมาเพื่อให้การจองห้องชมรมเป็นเรื่องง่าย โปร่งใส และยุติธรรม</p>
+            </div>
+
+            <div
+                style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-bottom:56px;">
+                <div style="background:#fff;border:1px solid #E2E8F0;border-radius:18px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,0.04);transition:all .3s;"
+                    onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(79,70,229,0.12)'"
+                    onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(0,0,0,0.04)'">
+                    <div
+                        style="width:52px;height:52px;background:rgba(79,70,229,0.1);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:16px;">
+                        📅</div>
+                    <div style="font-size:16px;font-weight:600;color:#1E293B;margin-bottom:8px;">จองเวลาออนไลน์</div>
+                    <div style="font-size:13px;color:#64748B;line-height:1.8;">
+                        เลือกวันที่และช่วงเวลาที่ต้องการใช้งานได้ทันที ระบบตรวจสอบการซ้อนทับโดยอัตโนมัติ พร้อมปฏิทินแบบ
+                        Interactive</div>
+                </div>
+                <div style="background:#fff;border:1px solid #E2E8F0;border-radius:18px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,0.04);transition:all .3s;"
+                    onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(6,182,212,0.12)'"
+                    onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(0,0,0,0.04)'">
+                    <div
+                        style="width:52px;height:52px;background:rgba(6,182,212,0.1);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:16px;">
+                        📍</div>
+                    <div style="font-size:16px;font-weight:600;color:#1E293B;margin-bottom:8px;">เช็คอินด้วย GPS</div>
+                    <div style="font-size:13px;color:#64748B;line-height:1.8;">ยืนยันการมาถึงด้วยพิกัดสถานที่จริง
+                        ระบบตรวจสอบระยะ 200 เมตรจากอาคารกิจกรรมนักศึกษา มอ.อุบล</div>
+                </div>
+                <div style="background:#fff;border:1px solid #E2E8F0;border-radius:18px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,0.04);transition:all .3s;"
+                    onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(16,185,129,0.12)'"
+                    onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(0,0,0,0.04)'">
+                    <div
+                        style="width:52px;height:52px;background:rgba(16,185,129,0.1);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:16px;">
+                        ⏱️</div>
+                    <div style="font-size:16px;font-weight:600;color:#1E293B;margin-bottom:8px;">นับถอยหลัง Real-time
+                    </div>
+                    <div style="font-size:13px;color:#64748B;line-height:1.8;">ติดตามเวลาที่เหลือก่อนเปิดให้เช็คอิน
+                        และรู้ว่าหมดเวลาเมื่อไรด้วยตัวนับ วินาทีต่อวินาที ไม่ต้อง Refresh</div>
+                </div>
+                <div style="background:#fff;border:1px solid #E2E8F0;border-radius:18px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,0.04);transition:all .3s;"
+                    onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(124,58,237,0.12)'"
+                    onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(0,0,0,0.04)'">
+                    <div
+                        style="width:52px;height:52px;background:rgba(124,58,237,0.1);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:16px;">
+                        ⚠️</div>
+                    <div style="font-size:16px;font-weight:600;color:#1E293B;margin-bottom:8px;">ระบบความรับผิดชอบ</div>
+                    <div style="font-size:13px;color:#64748B;line-height:1.8;">ถ้าจองแล้วไม่มาเช็คอินภายใน 15 นาที
+                        ระบบจะล็อคสิทธิ์ชั่วคราวเป็น 5 นาที คูณด้วยจำนวนแต้มผิด</div>
+                </div>
+                <div style="background:#fff;border:1px solid #E2E8F0;border-radius:18px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,0.04);transition:all .3s;"
+                    onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(245,158,11,0.12)'"
+                    onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(0,0,0,0.04)'">
+                    <div
+                        style="width:52px;height:52px;background:rgba(245,158,11,0.1);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:16px;">
+                        🏅</div>
+                    <div style="font-size:16px;font-weight:600;color:#1E293B;margin-bottom:8px;">ระบบแต้มพฤติกรรม</div>
+                    <div style="font-size:13px;color:#64748B;line-height:1.8;">เช็คอินตรงเวลา 3 ครั้งติดต่อกัน
+                        ระบบจะลบแต้มผิดให้ 1 แต้ม ส่งเสริมความรับผิดชอบอย่างยุติธรรม</div>
+                </div>
+                <div style="background:#fff;border:1px solid #E2E8F0;border-radius:18px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,0.04);transition:all .3s;"
+                    onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(239,68,68,0.12)'"
+                    onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(0,0,0,0.04)'">
+                    <div
+                        style="width:52px;height:52px;background:rgba(239,68,68,0.1);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:16px;">
+                        🗺️</div>
+                    <div style="font-size:16px;font-weight:600;color:#1E293B;margin-bottom:8px;">แผนที่ตำแหน่งอาคาร
+                    </div>
+                    <div style="font-size:13px;color:#64748B;line-height:1.8;">ดูตำแหน่งอาคารกิจกรรมนักศึกษา UBU ผ่าน
+                        Google Maps แบบ Interactive ฝังตัวอยู่บนแอปโดยตรง</div>
+                </div>
+            </div>
+
+            <!-- Penalty Table -->
+            <div
+                style="background:linear-gradient(135deg,rgba(239,68,68,0.04),rgba(124,58,237,0.04));border:1.5px solid rgba(239,68,68,0.15);border-radius:18px;padding:28px;margin-bottom:48px;">
+                <h3 style="font-size:18px;font-weight:700;color:#1E293B;margin-bottom:4px;">⚠️ ตารางโทษแต้มผิด</h3>
+                <p style="color:#64748B;font-size:13px;margin-bottom:20px;">หากไม่มาเช็คอิน
+                    ระบบจะบันทึกแต้มผิดและล็อคสิทธิ์ชั่วคราวดังนี้</p>
+                <div style="overflow-x:auto;">
+                    <table style="width:100%;border-collapse:collapse;font-size:14px;">
+                        <thead>
+                            <tr style="background:rgba(79,70,229,0.06);">
+                                <th
+                                    style="padding:12px 16px;text-align:left;font-weight:600;color:#4F46E5;border-bottom:2px solid rgba(79,70,229,0.15);">
+                                    แต้มผิดสะสม</th>
+                                <th
+                                    style="padding:12px 16px;text-align:left;font-weight:600;color:#4F46E5;border-bottom:2px solid rgba(79,70,229,0.15);">
+                                    เวลาที่ถูกล็อค</th>
+                                <th
+                                    style="padding:12px 16px;text-align:left;font-weight:600;color:#4F46E5;border-bottom:2px solid rgba(79,70,229,0.15);">
+                                    วิธีลดแต้มผิด</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom:1px solid #F1F5F9;">
+                                <td style="padding:12px 16px;"><span
+                                        style="background:#FEF3C7;color:#D97706;padding:3px 10px;border-radius:20px;font-weight:600;">-1
+                                        แต้ม</span></td>
+                                <td style="padding:12px 16px;color:#374151;">5 นาที</td>
+                                <td style="padding:12px 16px;color:#64748B;font-size:13px;" rowspan="5">เช็คอินตรงเวลา
+                                    <b>3 ครั้งติดต่อกัน</b><br>ระบบจะลบแต้มผิดให้ 1 แต้ม<br><small
+                                        style="color:#94A3B8;">หรือแอดมินจัดการให้ได้</small>
+                                </td>
+                            </tr>
+                            <tr style="border-bottom:1px solid #F1F5F9;">
+                                <td style="padding:12px 16px;"><span
+                                        style="background:#FEE2E2;color:#EF4444;padding:3px 10px;border-radius:20px;font-weight:600;">-2
+                                        แต้ม</span></td>
+                                <td style="padding:12px 16px;color:#374151;">10 นาที</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid #F1F5F9;">
+                                <td style="padding:12px 16px;"><span
+                                        style="background:#FEE2E2;color:#DC2626;padding:3px 10px;border-radius:20px;font-weight:600;">-3
+                                        แต้ม</span></td>
+                                <td style="padding:12px 16px;color:#374151;">15 นาที</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid #F1F5F9;">
+                                <td style="padding:12px 16px;"><span
+                                        style="background:#FFE4E6;color:#BE123C;padding:3px 10px;border-radius:20px;font-weight:600;">-4
+                                        แต้ม</span></td>
+                                <td style="padding:12px 16px;color:#374151;">20 นาที</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:12px 16px;"><span
+                                        style="background:#F3E8FF;color:#7C3AED;padding:3px 10px;border-radius:20px;font-weight:600;">-N
+                                        แต้ม</span></td>
+                                <td style="padding:12px 16px;color:#374151;">N × 5 นาที</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- How-to Steps -->
+            <div style="text-align:center;margin-bottom:36px;">
+                <div
+                    style="display:inline-block;background:rgba(79,70,229,0.08);border:1px solid rgba(99,102,241,0.2);color:#4F46E5;padding:5px 16px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;">
+                    วิธีใช้งาน</div>
+                <h2 style="font-size:clamp(20px,4vw,28px);font-weight:700;color:#1E293B;margin-bottom:8px;">
+                    เริ่มต้นได้ใน 4 ขั้นตอน</h2>
+                <p style="color:#64748B;font-size:14px;max-width:420px;margin:0 auto;">ไม่ต้องติดตั้งแอป
+                    ใช้ได้ทันทีผ่านบัญชีมหาวิทยาลัย</p>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:0;max-width:700px;margin:0 auto 56px;">
+                <div style="display:flex;gap:24px;align-items:flex-start;padding:28px 0;position:relative;">
+                    <div
+                        style="position:absolute;left:22px;top:76px;bottom:0;width:2px;background:linear-gradient(to bottom,rgba(79,70,229,0.3),transparent);">
+                    </div>
+                    <div
+                        style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0;box-shadow:0 0 0 6px rgba(79,70,229,0.1);">
+                        1</div>
+                    <div>
+                        <div style="font-size:17px;font-weight:600;color:#1E293B;margin-bottom:6px;">
+                            เข้าสู่ระบบด้วยบัญชี UBU</div>
+                        <div style="font-size:14px;color:#64748B;line-height:1.7;">ใช้อีเมล <strong
+                                style="color:#4F46E5;">@ubu.ac.th</strong> ผ่าน Google Sign-in ได้เลยทันที
+                            ไม่ต้องสมัครใหม่ หรือจดจำรหัสผ่านแยกต่างหาก</div>
+                    </div>
+                </div>
+                <div style="display:flex;gap:24px;align-items:flex-start;padding:28px 0;position:relative;">
+                    <div
+                        style="position:absolute;left:22px;top:76px;bottom:0;width:2px;background:linear-gradient(to bottom,rgba(79,70,229,0.3),transparent);">
+                    </div>
+                    <div
+                        style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0;box-shadow:0 0 0 6px rgba(79,70,229,0.1);">
+                        2</div>
+                    <div>
+                        <div style="font-size:17px;font-weight:600;color:#1E293B;margin-bottom:6px;">
+                            เลือกวันที่ต้องการใช้ห้อง</div>
+                        <div style="font-size:14px;color:#64748B;line-height:1.7;">เปิดปฏิทินในแท็บ <b>หน้าหลัก</b>
+                            แตะวันที่ต้องการ ระบบจะแสดงตารางเวลาที่ว่าง/ถูกจองแล้วทันที</div>
+                    </div>
+                </div>
+                <div style="display:flex;gap:24px;align-items:flex-start;padding:28px 0;position:relative;">
+                    <div
+                        style="position:absolute;left:22px;top:76px;bottom:0;width:2px;background:linear-gradient(to bottom,rgba(79,70,229,0.3),transparent);">
+                    </div>
+                    <div
+                        style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0;box-shadow:0 0 0 6px rgba(79,70,229,0.1);">
+                        3</div>
+                    <div>
+                        <div style="font-size:17px;font-weight:600;color:#1E293B;margin-bottom:6px;">ยืนยันการจอง</div>
+                        <div style="font-size:14px;color:#64748B;line-height:1.7;">กรอกชื่อเล่น เลือกช่วงเวลา แล้วกด
+                            <b>✅ ยืนยันการจอง</b> รายการจะปรากฏใน <b>การจองของฉัน</b> พร้อมนับถอยหลัง
+                        </div>
+                    </div>
+                </div>
+                <div style="display:flex;gap:24px;align-items:flex-start;padding:28px 0;">
+                    <div
+                        style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0;box-shadow:0 0 0 6px rgba(79,70,229,0.1);">
+                        4</div>
+                    <div>
+                        <div style="font-size:17px;font-weight:600;color:#1E293B;margin-bottom:6px;">เช็คอินเมื่อมาถึง
+                        </div>
+                        <div style="font-size:14px;color:#64748B;line-height:1.7;">ไปที่แท็บ <b>การจองของฉัน</b>
+                            แล้วกดปุ่ม <strong style="color:#10B981;">📍 กดเช็คอิน</strong> บนมือถือ ระบบตรวจ GPS
+                            อัตโนมัติ ต้องอยู่ในระยะ 200 เมตรจากอาคาร</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ -->
+            <div style="margin-bottom:56px;">
+                <div style="text-align:center;margin-bottom:28px;">
+                    <div
+                        style="display:inline-block;background:rgba(79,70,229,0.08);border:1px solid rgba(99,102,241,0.2);color:#4F46E5;padding:5px 16px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;">
+                        FAQ</div>
+                    <h2 style="font-size:clamp(20px,4vw,26px);font-weight:700;color:#1E293B;">คำถามที่พบบ่อย</h2>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:12px;">
+                    <details
+                        style="background:#fff;border:1px solid #E2E8F0;border-radius:14px;padding:18px 20px;cursor:pointer;">
+                        <summary
+                            style="font-size:15px;font-weight:600;color:#1E293B;list-style:none;display:flex;justify-content:space-between;align-items:center;">
+                            จองได้ล่วงหน้ากี่วัน? <span style="font-size:18px;color:#4F46E5;">+</span></summary>
+                        <p style="margin-top:12px;font-size:14px;color:#64748B;line-height:1.7;">จองได้ล่วงหน้าสูงสุด
+                            <strong>7 วัน</strong> ระบบจะไม่แสดงวันที่เกิน 7 วันนับจากวันนี้
+                        </p>
+                    </details>
+                    <details
+                        style="background:#fff;border:1px solid #E2E8F0;border-radius:14px;padding:18px 20px;cursor:pointer;">
+                        <summary
+                            style="font-size:15px;font-weight:600;color:#1E293B;list-style:none;display:flex;justify-content:space-between;align-items:center;">
+                            จองได้ครั้งละกี่ชั่วโมง? <span style="font-size:18px;color:#4F46E5;">+</span></summary>
+                        <p style="margin-top:12px;font-size:14px;color:#64748B;line-height:1.7;">จองได้ครั้งละสูงสุด
+                            <strong>3 ชั่วโมง</strong> และจองได้คิวเดียวในช่วงเวลาเดียวกัน
+                        </p>
+                    </details>
+                    <details
+                        style="background:#fff;border:1px solid #E2E8F0;border-radius:14px;padding:18px 20px;cursor:pointer;">
+                        <summary
+                            style="font-size:15px;font-weight:600;color:#1E293B;list-style:none;display:flex;justify-content:space-between;align-items:center;">
+                            GPS ไม่ทำงานต้องทำอย่างไร? <span style="font-size:18px;color:#4F46E5;">+</span></summary>
+                        <p style="margin-top:12px;font-size:14px;color:#64748B;line-height:1.7;">กด <strong>อนุญาต
+                                (Allow)</strong> ให้เบราว์เซอร์เข้าถึง Location เมื่อมีการถาม หากยังไม่ได้ผล
+                            ให้ตรวจสอบการตั้งค่า GPS บนอุปกรณ์ หรือแจ้งแอดมินเพื่อ Force Check-in ให้</p>
+                    </details>
+                    <details
+                        style="background:#fff;border:1px solid #E2E8F0;border-radius:14px;padding:18px 20px;cursor:pointer;">
+                        <summary
+                            style="font-size:15px;font-weight:600;color:#1E293B;list-style:none;display:flex;justify-content:space-between;align-items:center;">
+                            ใครสามารถใช้งานได้บ้าง? <span style="font-size:18px;color:#4F46E5;">+</span></summary>
+                        <p style="margin-top:12px;font-size:14px;color:#64748B;line-height:1.7;">รองรับเฉพาะบัญชีอีเมล
+                            <strong>@ubu.ac.th</strong> ที่ได้รับจากสำนักคอมพิวเตอร์ฯ มหาวิทยาลัยอุบลราชธานีเท่านั้น
+                        </p>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </div> <!-- End toolsView -->
+
+    <!-- ========== FOOTER ========== -->
+    <footer style="text-align:center;padding:30px 24px;font-size:13px;color:#9CA3AF;">
+        <p>© 2026 มหาวิทยาลัยอุบลราชธานี · สร้างเพื่อนักศึกษา UBU</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/th.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, where, getDocs, updateDoc, serverTimestamp, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCQWDZabKe7vG6Z8rT-g2gb0799cSbyGiw",
+            authDomain: "booking-kankrao.firebaseapp.com",
+            projectId: "booking-kankrao",
+            storageBucket: "booking-kankrao.firebasestorage.app",
+            messagingSenderId: "985093751532",
+            appId: "1:985093751532:web:e1f4710941e593e902dbc9",
+            measurementId: "G-X418WYDZ8H"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const ADMIN_EMAILS = Object.freeze(["wissanupong.bu.67@ubu.ac.th"]);
+        const googleProvider = new GoogleAuthProvider();
+        googleProvider.setCustomParameters({ prompt: 'select_account', hd: 'ubu.ac.th' });
+
+        // ========== AUTH GUARD ==========
+        // Fast redirect: if no session flag, go to login immediately
+        if (!sessionStorage.getItem('ubu_authed')) {
+            window.location.replace('login.html');
+        }
+
+        let currentUser = null;
+        let unsubscribeUserProfile = null;
+        let globalUserProfile = null;
+
+        // ========== SPA NAVIGATION ==========
+        window.switchView = (viewId) => {
+            document.querySelectorAll('.spa-view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.spa-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+
+            // Activate the corresponding tab
+            if (viewId === 'homeView') {
+                document.querySelector('.spa-tab:nth-child(1)').classList.add('active');
+            } else if (viewId === 'dashboardView') {
+                document.querySelector('.spa-tab:nth-child(3)').classList.add('active');
+                if (currentUser) loadBookings(); // Refresh bookings on open
+            }
+        };
+
+        window.openMapModal = () => document.getElementById('mapModal').classList.add('open');
+        window.closeMapModal = () => document.getElementById('mapModal').classList.remove('open');
+
+        window.toggleProfileMenu = (e) => {
+            e.stopPropagation();
+            const wrap = document.getElementById('profileDropdownWrap');
+            if (wrap) wrap.classList.toggle('open');
+        };
+
+        window.addEventListener('click', (e) => {
+            const wrap = document.getElementById('profileDropdownWrap');
+            if (wrap && wrap.classList.contains('open') && !wrap.contains(e.target)) {
+                wrap.classList.remove('open');
+            }
+        });
+
+        // ========== LOGIN MODAL ==========
+        window.openLoginModal = () => document.getElementById('loginModal').classList.add('open');
+        window.closeLoginModal = () => { document.getElementById('loginModal').classList.remove('open'); hideMsg(); resetGoogleBtn(); };
+
+        const msgBox = document.getElementById('modalMsg');
+        const btnGoogle = document.getElementById('btnGoogleLogin');
+        function showMsg(t, type) { msgBox.textContent = t; msgBox.className = type + ' show'; }
+        function hideMsg() { msgBox.className = ''; msgBox.textContent = ''; }
+        function resetGoogleBtn() { btnGoogle.disabled = false; btnGoogle.innerHTML = `<img src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg" alt="Google"><span>เข้าสู่ระบบด้วยบัญชี UBU</span>`; }
+
+        btnGoogle.addEventListener('click', async () => {
+            btnGoogle.disabled = true;
+            btnGoogle.innerHTML = `<span class="loader" style="border-color:#e2e8f0;border-bottom-color:var(--primary);"></span><span>กำลังเชื่อมต่อ...</span>`;
+            hideMsg();
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                const user = result.user;
+                if (!user.email || !user.email.endsWith('@ubu.ac.th')) {
+                    await signOut(auth); showMsg("❌ ต้องใช้บัญชี @ubu.ac.th เท่านั้น", "error"); resetGoogleBtn(); return;
+                }
+                showMsg("✅ ยินดีต้อนรับ " + (user.displayName || user.email.split('@')[0]), "success");
+                await upsertUserProfile(user);
+                sessionStorage.setItem('ubu_authed', 'true');
+                setTimeout(() => { closeLoginModal(); }, 800);
+            } catch (err) {
+                const msgs = { 'auth/popup-closed-by-user': '⚠️ ปิดหน้าต่างก่อนล็อกอินเสร็จ', 'auth/popup-blocked': '⚠️ Popup ถูกบล็อก', 'auth/network-request-failed': '❌ ไม่มีอินเทอร์เน็ต' };
+                if (err.code !== 'auth/cancelled-popup-request') showMsg(msgs[err.code] || '🔒 เกิดข้อผิดพลาด กรุณาลองใหม่', "error");
+                resetGoogleBtn();
+            }
+        });
+
+        async function upsertUserProfile(user) {
+            const ref = doc(db, "users", user.uid);
+            const snap = await getDoc(ref);
+            if (!snap.exists()) {
+                await setDoc(ref, { uid: user.uid, email: user.email, displayName: user.displayName || '', photoURL: user.photoURL || '', nickname: '', studentId: '', faculty: '', phone: '', role: 'student', createdAt: serverTimestamp(), lastLoginAt: serverTimestamp() });
+            } else {
+                await setDoc(ref, { lastLoginAt: serverTimestamp(), displayName: user.displayName || snap.data().displayName || '', photoURL: user.photoURL || snap.data().photoURL || '' }, { merge: true });
+            }
+        }
+
+        // ========== AUTH STATE ==========
+        onAuthStateChanged(auth, async (user) => {
+            const authRight = document.getElementById('authRight');
+            const spaTabs = document.getElementById('mainSpaTabs');
+
+            if (user && user.email && user.email.endsWith('@ubu.ac.th')) {
+                currentUser = user;
+                sessionStorage.setItem('ubu_authed', 'true');
+                spaTabs.style.display = 'flex'; // Show tabs
+
+                // Listen to User Profile changes for Demerits logic
+                if (unsubscribeUserProfile) unsubscribeUserProfile();
+                unsubscribeUserProfile = onSnapshot(doc(db, "users", user.uid), (snap) => {
+                    if (snap.exists()) {
+                        globalUserProfile = snap.data();
+                        validateAll(); // Revalidate UI based on new demerits
+                    }
+                });
+
+                const nickname = await getUserNickname(user.uid);
+                const rawDisplayName = nickname || user.displayName || user.email.split('@')[0];
+                // 🔒 Escape HTML to prevent XSS from displayName/photoURL
+                const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+                const displayName = esc(rawDisplayName);
+                const safeEmail = esc(user.email);
+                const safePhoto = user.photoURL ? esc(user.photoURL) : '';
+                const avatarContent = safePhoto
+                    ? `<img src="${safePhoto}" alt="avatar" referrerpolicy="no-referrer">`
+                    : rawDisplayName.charAt(0).toUpperCase();
+
+                authRight.innerHTML = `
+                <div class="profile-dd-wrapper" id="profileDropdownWrap">
+                    <button class="btn-profile-dropdown" onclick="toggleProfileMenu(event)">
+                        <div class="dd-avatar">${avatarContent}</div>
+                        <span>${displayName}</span>
+                        <span style="font-size:10px; opacity:0.7;">▼</span>
+                    </button>
+                    <div class="profile-dd-menu">
+                        <div class="dd-header">
+                            <div class="dd-name">${displayName}</div>
+                            <div class="dd-email">${safeEmail}</div>
+                        </div>
+                        <button class="dd-item" onclick="switchView('dashboardView')">📅 การจองของฉัน</button>
+                        <a href="profile.html" class="dd-item">👤 โปรไฟล์และการตั้งค่า</a>
+                        ${ADMIN_EMAILS.includes(user.email) ? '<a href="admin.html" class="dd-item" style="color:#8B5CF6;">⚙️ จัดการระบบ (Admin)</a>' : ''}
+                        <button class="dd-item dangerous" onclick="window.handleLogout()">🚪 ออกจากระบบ</button>
+                    </div>
+                </div>`;
+
+                document.getElementById('userName').value = user.displayName || user.email.split('@')[0];
+                await autoFillNickname(user.uid);
+
+                // ✅ Re-init timetable after auth confirmed (fixes blank slots on login)
+                const dateEl = document.getElementById('bookDate');
+                const selectedDate = dateEl ? dateEl.value : null;
+                if (selectedDate) {
+                    fetchBookedSlots(selectedDate);
+                } else {
+                    const dNow = new Date(), off = dNow.getTimezoneOffset() * 60000;
+                    const todayNow = new Date(dNow.getTime() - off).toISOString().split('T')[0];
+                    fetchBookedSlots(todayNow);
+                }
+                validateAll();
+
+            } else {
+                currentUser = null;
+                if (unsubscribeUserProfile) { unsubscribeUserProfile(); unsubscribeUserProfile = null; }
+                globalUserProfile = null;
+                spaTabs.style.display = 'none'; // Hide tabs
+                authRight.innerHTML = `<button class="btn-auth btn-login-nav" onclick="openLoginModal()">🔑 เข้าสู่ระบบ</button>`;
+                document.getElementById('userName').value = '';
+                document.getElementById('userName').placeholder = 'กรุณาเข้าสู่ระบบก่อน...';
+
+                // Not authenticated — redirect to login
+                sessionStorage.removeItem('ubu_authed');
+                window.location.replace('login.html');
+            }
+        });
+
+        // Cached nickname to avoid repeated Firestore reads
+        let cachedNickname = '';
+
+        async function getUserNickname(uid) {
+            try {
+                const s = await getDoc(doc(db, "users", uid));
+                return s.exists() ? (s.data().nickname || '') : '';
+            } catch { return ''; }
+        }
+
+        async function autoFillNickname(uid) {
+            const n = await getUserNickname(uid);
+            cachedNickname = n; // cache it
+            const el = document.getElementById('userNickname');
+            const b = document.getElementById('nicknameSavedBadge');
+            if (n) {
+                el.value = n;
+                b.style.display = 'inline-flex';
+                validateAll();
+            }
+        }
+
+        window.handleLogout = async () => {
+            const res = await Swal.fire({ title: 'ออกจากระบบ?', text: 'คุณต้องการออกจากระบบใช่หรือไม่?', icon: 'question', showCancelButton: true, confirmButtonColor: '#EF4444', cancelButtonColor: '#9CA3AF', confirmButtonText: 'ออกจากระบบ', cancelButtonText: 'ยกเลิก' });
+            if (res.isConfirmed) { sessionStorage.removeItem('ubu_authed'); await signOut(auth); window.location.replace('login.html'); }
+        };
+
+        // ========== TIMETABLE ==========
+        const hours = []; for (let i = 0; i < 24; i++) hours.push(String(i).padStart(2, '0') + ':00'); hours.push('24:00');
+        let selectedSlots = [], bookedSlots = [], unsubscribeSlots = null;
+        // Derived start/end from selectedSlots
+        function getStartTime() { if (selectedSlots.length === 0) return null; const sorted = [...selectedSlots].sort(); return sorted[0]; }
+        function getEndTime() { if (selectedSlots.length === 0) return null; const sorted = [...selectedSlots].sort(); const lastSlot = sorted[sorted.length - 1]; const lastIdx = hours.indexOf(lastSlot); return lastIdx < 23 ? hours[lastIdx + 1] : '00:00'; }
+
+        function fetchBookedSlots(selectedDate) {
+            if (unsubscribeSlots) unsubscribeSlots();
+            const q = query(collection(db, "bookings"), where("date", "==", selectedDate));
+            unsubscribeSlots = onSnapshot(q, (snapshot) => {
+                bookedSlots = [];
+                const dObj = new Date(), offset = dObj.getTimezoneOffset() * 60000;
+                const todayStr = new Date(dObj.getTime() - offset).toISOString().split('T')[0];
+                const nowMins = dObj.getHours() * 60 + dObj.getMinutes();
+                snapshot.forEach(d => {
+                    const data = d.data();
+                    // Skip cancelled / auto-cancelled — free up those slots
+                    if (data.status === 'cancelled' || data.status === 'auto_cancelled') return;
+                    if (data.status === 'pending' || !data.status) {
+                        if (selectedDate === todayStr) {
+                            const [sH] = data.start.split(':').map(Number);
+                            const startMins = sH * 60;
+                            let createdMins = startMins;
+                            if (data.timestamp && data.timestamp.toDate) {
+                                const tD = data.timestamp.toDate();
+                                createdMins = tD.getHours() * 60 + tD.getMinutes();
+                            } else if (!data.timestamp) {
+                                createdMins = nowMins;
+                            }
+                            // Expire if more than 15 mins past start/created
+                            if (nowMins > Math.max(startMins + 15, createdMins + 15)) return;
+                        }
+                        else if (selectedDate < todayStr) return;
+                    }
+                    const sIdx = hours.indexOf(data.start); if (sIdx === -1) return;
+                    let eIdx = (data.end === '00:00' && sIdx > 0) ? 24 : hours.indexOf(data.end); if (eIdx === -1) eIdx = 24;
+                    for (let i = sIdx; i < eIdx && i < 24; i++) bookedSlots.push(hours[i]);
+                });
+                renderTimetable();
+            });
+        }
+
+        function renderTimetable() {
+            const grid = document.getElementById('timetableGrid'); grid.innerHTML = '';
+            const globalGrid = document.getElementById('globalTimetableGrid'); if (globalGrid) globalGrid.innerHTML = '';
+
+            const currentHour = new Date().getHours(), selectedDate = document.getElementById('bookDate').value;
+            const dObjR = new Date(), today = new Date(dObjR.getTime() - dObjR.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+
+            for (let idx = 0; idx < 24; idx++) {
+                const time = hours[idx];
+                const endTime = hours[idx + 1];
+                const hNum = parseInt(time);
+
+                // Hide past slots (User requested to remove the previous hour display)
+                const isPast = selectedDate === today && hNum < currentHour;
+                if (isPast) continue;
+
+                const isBooked = bookedSlots.includes(time);
+
+                // --- Booking Grid ---
+                const isSelected = selectedSlots.includes(time);
+                const canSelect = !isPast && !isBooked && !isSelected && selectedSlots.length < 3 && wouldBeConsecutive(time);
+
+                let cls = 'time-cell ';
+                if (isPast) cls += 'tc-past '; // Optional: add a past style if you have one, or just treat as booked
+                if (isSelected) cls += 'tc-selected';
+                else if (isBooked || isPast) cls += 'tc-booked'; // Mark as unavailable
+                else if (canSelect && selectedSlots.length > 0) cls += 'tc-hint';
+                else cls += 'tc-available';
+
+                const cell = document.createElement('div');
+                cell.className = cls;
+                cell.textContent = time;
+
+                if (!isBooked && !isPast) {
+                    cell.addEventListener('click', () => handleCellClick(time));
+                }
+                grid.appendChild(cell);
+
+                // --- Global Grid ---
+                if (globalGrid) {
+                    let gCls = 'time-cell ' + (isBooked || isPast ? 'tc-booked' : 'tc-available');
+                    const gCell = document.createElement('div');
+                    gCell.className = gCls;
+                    gCell.textContent = time;
+                    globalGrid.appendChild(gCell);
+                }
+            }
+            updateDisplay(); validateAll();
+        }
+
+        function wouldBeConsecutive(time) {
+            if (selectedSlots.length === 0) return true;
+            const sorted = [...selectedSlots].map(t => hours.indexOf(t)).sort((a, b) => a - b);
+            const tIdx = hours.indexOf(time);
+            // Check if adding this slot keeps everything consecutive
+            const all = [...sorted, tIdx].sort((a, b) => a - b);
+            for (let i = 1; i < all.length; i++) { if (all[i] - all[i - 1] !== 1) return false; }
+            // Also check no booked slot in between
+            for (let i = all[0]; i <= all[all.length - 1]; i++) { if (bookedSlots.includes(hours[i])) return false; }
+            return true;
+        }
+
+        function showToast(message, icon = '⚠️') {
+            let container = document.getElementById('toastContainer');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toastContainer';
+                container.className = 'toast-container';
+                document.body.appendChild(container);
+            }
+            const toast = document.createElement('div');
+            toast.className = 'toast-msg';
+            toast.innerHTML = `<span style="font-size:16px;">${icon}</span> <span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                if (toast.parentNode) toast.parentNode.removeChild(toast);
+            }, 3000);
+        }
+
+        function handleCellClick(time) {
+            if (!currentUser) { openLoginModal(); return; }
+            if (bookedSlots.includes(time)) return;
+            const idx = selectedSlots.indexOf(time);
+            if (idx > -1) {
+                // Try to deselect
+                const temp = [...selectedSlots];
+                temp.splice(idx, 1);
+                let ok = true;
+                if (temp.length > 1) {
+                    const sorted = temp.map(t => hours.indexOf(t)).sort((a, b) => a - b);
+                    for (let i = 1; i < sorted.length; i++) {
+                        if (sorted[i] - sorted[i - 1] !== 1) { ok = false; break; }
+                    }
+                }
+                if (!ok) {
+                    showToast("กรุณายกเลิกจากช่วงเวลาที่ริมสุดก่อนนะครับ", "💡");
+                    return;
+                }
+                selectedSlots = temp;
+            } else {
+                if (selectedSlots.length >= 3) {
+                    showToast("เลือกเวลาเกินกำหนด (สูงสุด 3 ชั่วโมง/ครั้ง)", "⏳");
+                    return;
+                }
+                if (selectedSlots.length > 0 && !wouldBeConsecutive(time)) {
+                    showToast("กรุณาเลือกช่วงเวลาที่ต่อเนื่องติดกัน", "🚫");
+                    return;
+                }
+                selectedSlots.push(time);
+            }
+            selectedSlots.sort((a, b) => hours.indexOf(a) - hours.indexOf(b));
+            renderTimetable();
+        }
+
+        function updateDisplay() {
+            const display = document.getElementById('selectedTimeShow');
+            const summary = document.getElementById('bookingSummary');
+            if (selectedSlots.length === 0) {
+                display.textContent = 'คลิกที่ตารางเพื่อเลือกเวลา';
+                display.style.display = 'block';
+                summary.style.display = 'none';
+                return;
+            }
+            display.style.display = 'none';
+            summary.style.display = 'block';
+            const startT = getStartTime(), endT = getEndTime();
+            const endLabel = endT === '00:00' ? '00:00 (วันถัดไป)' : endT;
+            const dateVal = document.getElementById('bookDate').value;
+            // Thai date with day name
+            const dayNames = ['วันอาทิตย์', 'วันจันทร์', 'วันอังคาร', 'วันพุธ', 'วันพฤหัสบดี', 'วันศุกร์', 'วันเสาร์'];
+            const monthNames = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+            if (dateVal) {
+                const [y, m, d] = dateVal.split('-').map(Number);
+                const dateObj = new Date(y, m - 1, d);
+                document.getElementById('sumDate').textContent = `${dayNames[dateObj.getDay()]}ที่ ${d} ${monthNames[m - 1]} ${y + 543}`;
+            }
+            document.getElementById('sumTime').textContent = `${startT} - ${endLabel}`;
+            document.getElementById('sumDuration').textContent = `${selectedSlots.length} ชั่วโมง`;
+        }
+
+        // ========== VALIDATION ==========
+        function validateAll() {
+            const date = document.getElementById('bookDate').value, nickname = document.getElementById('userNickname').value.trim();
+            const hasDate = !!date, hasTime = selectedSlots.length > 0, hasNickname = nickname.length >= 1;
+            updateCheckItem('checkDate', hasDate, 'เลือกวันที่แล้ว'); updateCheckItem('checkTime', hasTime, 'เลือกช่วงเวลาแล้ว'); updateCheckItem('checkNickname', hasNickname, 'กรอกชื่อเล่นแล้ว');
+            const hintDate = document.getElementById('hintDate'); hintDate.className = 'field-hint ' + (hasDate ? 'valid' : 'neutral'); hintDate.textContent = hasDate ? '✅ เลือกวันที่แล้ว' : '📅 เลือกวันที่ต้องการจอง';
+            const hintNick = document.getElementById('hintNickname'); hintNick.className = 'field-hint ' + (hasNickname ? 'valid' : 'invalid'); hintNick.textContent = hasNickname ? '✅ ชื่อเล่นพร้อมแล้ว' : '⚠️ กรุณากรอกชื่อเล่น';
+            const btnSave = document.getElementById('btnSave'), btnHint = document.getElementById('btnSaveHint');
+
+            // Timeout Check
+            let isBanned = false;
+            let banTimeRemaining = 0;
+            if (globalUserProfile && (globalUserProfile.demerits || 0) > 0) {
+                const limitMinutes = globalUserProfile.demerits * 5;
+                if (globalUserProfile.last_offense_time) {
+                    const offenseTime = globalUserProfile.last_offense_time.toDate();
+                    const diffMins = (new Date() - offenseTime) / 60000;
+                    if (diffMins < limitMinutes) {
+                        isBanned = true;
+                        banTimeRemaining = Math.ceil(limitMinutes - diffMins);
+                    }
+                }
+            }
+
+            const allValid = hasDate && hasTime && hasNickname && !!currentUser && !isBanned;
+            btnSave.disabled = !allValid; btnSave.style.opacity = allValid ? '1' : '0.5'; btnSave.style.cursor = allValid ? 'pointer' : 'not-allowed';
+
+            if (isBanned) {
+                btnHint.textContent = `🚫 ระงับการจองชั่วคราว (${globalUserProfile.demerits} แต้มผิด) รออีก ${banTimeRemaining} นาที`;
+                btnHint.style.display = 'block';
+                btnHint.style.color = '#EF4444';
+            }
+            else if (!currentUser) { btnHint.textContent = '🔑 กรุณาเข้าสู่ระบบก่อนจอง'; btnHint.style.display = 'block'; }
+            else if (!allValid) { const m = []; if (!hasDate) m.push('วันที่'); if (!hasTime) m.push('ช่วงเวลา'); if (!hasNickname) m.push('ชื่อเล่น'); btnHint.textContent = '⚠️ ยังขาด: ' + m.join(', '); btnHint.style.display = 'block'; btnHint.style.color = '#9CA3AF'; }
+            else { btnHint.style.display = 'none'; }
+        }
+        function updateCheckItem(id, done, text) { const el = document.getElementById(id); el.className = 'check-item' + (done ? ' done' : ''); el.innerHTML = `<span class="check-icon">${done ? '✅' : '⬜'}</span><span>${text}</span>`; }
+        document.getElementById('bookDate').addEventListener('change', validateAll);
+        document.getElementById('userNickname').addEventListener('input', validateAll);
+
+        // ========== INIT ==========
+        window.addEventListener('load', () => {
+            const dateEl = document.getElementById('bookDate');
+            const today = new Date(), offset = today.getTimezoneOffset() * 60000;
+            const todayLocal = new Date(today.getTime() - offset), todayStr = todayLocal.toISOString().split('T')[0];
+            const maxDate = new Date(todayLocal); maxDate.setDate(maxDate.getDate() + 6);
+
+            // Initialize Flatpickr for Day/Month/Year format
+            flatpickr(dateEl, {
+                locale: "th",
+                dateFormat: "Y-m-d", // Value sent to the database
+                altInput: true,
+                altFormat: "d/m/Y", // Value seen by the user (Day/Month/Year)
+                minDate: todayStr,
+                maxDate: maxDate,
+                defaultDate: todayStr,
+                disableMobile: true, // Force the custom UI on mobile so format remains DD/MM/YYYY
+                allowInput: false, // Explicitly prevent typing
+                onOpen: function (selectedDates, dateStr, instance) {
+                    // Prevent mobile cursor and keyboard from showing up
+                    if (instance.altInput) {
+                        instance.altInput.blur();
+                    }
+                },
+                onChange: function (selectedDates, dateStr, instance) {
+                    selectedSlots = [];
+                    fetchBookedSlots(dateStr);
+                    validateAll();
+                }
+            });
+
+            // Set initial programmatic value (Flatpickr 'defaultDate' handles the input, but we sync our logic)
+            fetchBookedSlots(todayStr);
+            loadBookings(); validateAll();
+        });
+
+        // Use Flatpickr hidden real input for validation since altInput creates a secondary input
+        document.getElementById('bookDate').addEventListener('change', validateAll);
+
+        // ========== SAVE BOOKING ==========
+        const btnSave = document.getElementById('btnSave'); let isSaving = false;
+        btnSave.addEventListener('click', async () => {
+            if (!currentUser) { openLoginModal(); return; }
+            if (isSaving) return;
+            const name = document.getElementById('userName').value.trim(), date = document.getElementById('bookDate').value, nickname = document.getElementById('userNickname').value.trim();
+            const startTime = getStartTime(), endTime = getEndTime();
+            if (!name || !date || !startTime || !endTime || !nickname) return;
+            isSaving = true; btnSave.disabled = true; btnSave.textContent = '⏳ กำลังตรวจสอบสิทธิ์...';
+            try {
+                // Active Booking Limit: Max 1 overall (not restricted to single day, but to parallel sessions)
+                const qCheck = query(collection(db, "bookings"), where("uid", "==", currentUser.uid));
+                const checkSnap = await getDocs(qCheck);
+                let hasActive = false;
+                const dObjCheck = new Date(), currentHCheck = dObjCheck.getHours().toString().padStart(2, '0') + ':00';
+                const todayCheck = new Date(dObjCheck.getTime() - dObjCheck.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+
+                checkSnap.forEach(d => {
+                    const data = d.data();
+                    if (data.status === 'pending' || data.status === 'checked_in' || !data.status) {
+                        if (data.date > todayCheck) hasActive = true;
+                        else if (data.date === todayCheck) {
+                            if (data.end > currentHCheck || data.end === '00:00') hasActive = true;
+                        }
+                    }
+                });
+
+                if (hasActive) {
+                    await Swal.fire('ไม่สามารถจองได้', 'คุณมีคิวจองที่กำลังใช้งาน/ยังมาไม่ถึงอยู่แล้ว<br><small>(จองได้ทีละ 1 คิว เมื่อคิวเดิมหมดเวลาแล้วถึงจะจองใหม่ได้)</small>', 'warning');
+                    btnSave.textContent = '✅ ยืนยันการจอง'; isSaving = false; return;
+                }
+
+                btnSave.textContent = '📤 กำลังบันทึก...';
+                const sanitize = (s) => String(s).replace(/[<>'"&]/g, '').trim();
+                await addDoc(collection(db, "bookings"), { name: sanitize(name), nickname: sanitize(nickname), uid: currentUser.uid, email: currentUser.email, date, start: startTime, end: endTime === '00:00' ? '00:00' : endTime, status: 'pending', timestamp: serverTimestamp() });
+
+                // --- Success notification with check-in info ---
+                const [bookYYY, bookMM, bookDD] = date.split('-').map(Number);
+                const [sHh] = startTime.split(':').map(Number);
+                const checkInDeadH = Math.floor((sHh * 60 + 15) / 60);
+                const checkInDeadM = (sHh * 60 + 15) % 60;
+                const dayNames = ['วันอาทิตย์', 'วันจันทร์', 'วันอังคาร', 'วันพุธ', 'วันพฤหัสบดี', 'วันศุกร์', 'วันเสาร์'];
+                const monthNames = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+                const bookDateObj = new Date(bookYYY, bookMM - 1, bookDD);
+                const thaiDate = `${dayNames[bookDateObj.getDay()]}ที่ ${bookDD} ${monthNames[bookMM - 1]} ${bookYYY + 543}`;
+                const deadlineStr = String(checkInDeadH % 24).padStart(2, '0') + ':' + String(checkInDeadM).padStart(2, '0');
+
+                const now = new Date();
+                const nowH = now.getHours();
+                const isStarted = (date === todayCheck && nowH >= sHh);
+
+                // Timer counts 15 min from NOW (moment booking was confirmed)
+                const targetMs = Date.now() + 15 * 60 * 1000;
+
+                let checkInBlock = "";
+                if (isStarted) {
+                    checkInBlock = `
+                        <div style="background:linear-gradient(135deg, #4F46E5, #6366F1);border-radius:12px;padding:16px;color:#fff;text-align:center;box-shadow:0 4px 12px rgba(79,70,229,0.3);">
+                            <div style="font-size:18px;font-weight:700;margin-bottom:2px;">ถึงเวลาเช็คอินแล้ว!</div>
+                            <div style="font-size:12px;opacity:0.85;margin-bottom:10px;">กรุณาเช็คอินภายใน</div>
+                            <div id="swal-realtime-timer" style="font-size:28px;font-weight:800;background:rgba(255,255,255,0.18);padding:8px 20px;border-radius:10px;margin:4px 0 10px;display:inline-block;min-width:120px;letter-spacing:2px;">
+                                --:--
+                            </div>
+                            <div style="font-size:11px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.2);opacity:0.8;">เพื่อยืนยันสิทธิ์การใช้ห้องของคุณ</div>
+                        </div>`;
+                } else {
+                    checkInBlock = `
+                        <div style="background:rgba(79,70,229,0.06);border:1px solid rgba(79,70,229,0.15);border-radius:10px;padding:12px 14px;">
+                            <div style="font-weight:600;color:#4F46E5;margin-bottom:8px;">เวลาเช็คอิน</div>
+                            <div style="margin-bottom:4px;">• เปิดเช็คอินได้เมื่อ: <b>${startTime} น.</b></div>
+                            <div style="margin-bottom:4px;">• หมดเวลาเช็คอิน: <b style="color:#EF4444;">${deadlineStr} น.</b></div>
+                            <div style="font-size:12px;color:#9CA3AF;margin-top:6px;padding-top:6px;border-top:1px solid #E2E8F0;">⚠️ ต้องเช็คอินภายใน 15 นาทีหลังเวลาเริ่มต้น มิฉะนั้นระบบจะตัดคิวอัตโนมัติ</div>
+                        </div>`;
+                }
+
+                let swalInterval;
+                await Swal.fire({
+                    title: 'จองสำเร็จ!',
+                    html: `
+                        <div style="text-align:left;font-size:14px;line-height:1.8;">
+                            <div style="margin-bottom:12px;">
+                                📅 <b>วัน:</b> ${thaiDate}<br>
+                                ⏰ <b>เวลาใช้ห้อง:</b> ${startTime} – ${endTime === '00:00' ? '00:00 (วันถัดไป)' : endTime}
+                            </div>
+                            ${checkInBlock}
+                        </div>`,
+                    icon: 'success',
+                    didOpen: () => {
+                        const el = document.getElementById('swal-realtime-timer');
+                        if (!el) return;
+                        swalInterval = setInterval(() => {
+                            const diff = targetMs - Date.now();
+                            if (diff <= 0) {
+                                el.innerHTML = '<span style="font-size:13px;">⚠️ หมดเวลา! กรุณาเช็คอินเดี๋ยวนี้เลย!</span>';
+                                clearInterval(swalInterval);
+                                return;
+                            }
+                            const mm = Math.floor(diff / 60000);
+                            const ss = Math.floor((diff % 60000) / 1000);
+                            el.textContent = `${String(mm).padStart(2, '0')}:${String(ss).padStart(2, '0')}`;
+                        }, 1000);
+                    },
+                    willClose: () => { if (swalInterval) clearInterval(swalInterval); },
+                    confirmButtonText: 'ดูการจองของฉัน →',
+                    confirmButtonColor: '#4F46E5',
+                });
+                // Navigate to dashboard
+                switchView('dashboardView');
+                // Restore nickname from cache (don't leave blank after booking)
+                selectedSlots = [];
+                const nicknameEl = document.getElementById('userNickname');
+                const badgeEl = document.getElementById('nicknameSavedBadge');
+                if (cachedNickname) {
+                    nicknameEl.value = cachedNickname;
+                    badgeEl.style.display = 'inline-flex';
+                } else {
+                    nicknameEl.value = '';
+                    badgeEl.style.display = 'none';
+                }
+                renderTimetable(); validateAll();
+            } catch (e) { await Swal.fire('เกิดข้อผิดพลาด', e.message, 'error'); }
+            finally { isSaving = false; btnSave.textContent = '✅ ยืนยันการจอง'; validateAll(); }
+        });
+
+        // ========== DASHBOARD ==========
+        window.handleAutoCancel = async (bookingId, uid) => {
+            try {
+                await updateDoc(doc(db, "bookings", bookingId), { status: 'auto_cancelled' });
+                const userRef = doc(db, "users", uid);
+                const snap = await getDoc(userRef);
+                if (snap.exists()) {
+                    const d = snap.data();
+                    await updateDoc(userRef, {
+                        demerits: (d.demerits || 0) + 1,
+                        last_offense_time: serverTimestamp(),
+                        good_checkins: 0
+                    });
+                }
+            } catch (e) { console.error('Auto Cancel Error', e); }
+        };
+
+        let unsubscribeBookings = null;
+        function loadBookings() {
+            if (unsubscribeBookings) unsubscribeBookings();
+            const q = query(collection(db, "bookings"), orderBy("date", "asc"), orderBy("start", "asc"));
+            unsubscribeBookings = onSnapshot(q, (snapshot) => {
+                const listDiv = document.getElementById('bookingList'); listDiv.innerHTML = '';
+                if (snapshot.empty) { listDiv.innerHTML = '<p style="text-align:center;color:#9CA3AF;margin-top:40px;">ยังไม่มีการจอง</p>'; return; }
+                const grouped = {}, dObj = new Date(), offset = dObj.getTimezoneOffset() * 60000;
+                const todayStr = new Date(dObj.getTime() - offset).toISOString().split('T')[0], nowMins = dObj.getHours() * 60 + dObj.getMinutes();
+                snapshot.forEach(res => {
+                    const d = res.data(), isPending = d.status === 'pending' || !d.status; let isExpired = false;
+                    if (isPending) {
+                        if (d.date < todayStr) isExpired = true;
+                        else if (d.date === todayStr) {
+                            const [sH] = d.start.split(':').map(Number);
+                            const startMins = sH * 60;
+                            let createdMins = startMins;
+                            if (d.timestamp && d.timestamp.toDate) {
+                                createdMins = d.timestamp.toDate().getHours() * 60 + d.timestamp.toDate().getMinutes();
+                            } else if (!d.timestamp) createdMins = nowMins;
+                            // Expire after 15 mins
+                            if (nowMins > Math.max(startMins + 15, createdMins + 15)) isExpired = true;
+                        }
+                    }
+
+                    if (isExpired) {
+                        if (currentUser && d.uid === currentUser.uid && d.status !== 'auto_cancelled') {
+                            window.handleAutoCancel(res.id, currentUser.uid);
+                        }
+                    }
+                    if (d.status === 'auto_cancelled' || d.status === 'cancelled') return; // Hide completely
+                    if (!grouped[d.date]) grouped[d.date] = []; grouped[d.date].push({ id: res.id, ...d });
+                });
+                const localDate = new Date(dObj.getTime() - offset), today = localDate.toISOString().split('T')[0], nowHour = dObj.getHours() + dObj.getMinutes() / 60;
+
+
+                const BAR_COLORS = ['#4F46E5', '#7C3AED', '#6366F1', '#8B5CF6', '#4338CA'];
+                Object.keys(grouped).sort().forEach(date => {
+                    const bookings = grouped[date], isToday = (date === today);
+                    const card = document.createElement('div'); card.className = 'dash-day-card';
+                    const header = document.createElement('div'); header.className = 'dash-day-header';
+                    header.innerHTML = `<span class="dash-date">📅 ${formatThaiDate(date)}${isToday ? ' (วันนี้)' : ''}</span><span class="dash-count">${bookings.length} รายการรวม</span>`;
+                    card.appendChild(header);
+                    const tlWrap = document.createElement('div'); tlWrap.className = 'dash-timeline';
+                    const ruler = document.createElement('div'); ruler.className = 'dash-ruler';
+                    ['00:00', '06:00', '12:00', '18:00', '24:00'].forEach(h => { const s = document.createElement('span'); s.textContent = h; ruler.appendChild(s); });
+                    tlWrap.appendChild(ruler);
+                    const track = document.createElement('div'); track.className = 'dash-track';
+                    if (isToday) { const nl = document.createElement('div'); nl.className = 'dash-now-line'; nl.style.left = ((nowHour / 24) * 100).toFixed(2) + '%'; const nlbl = document.createElement('span'); nlbl.className = 'dash-now-label'; nlbl.textContent = String(Math.floor(nowHour)).padStart(2, '0') + ':00'; nl.appendChild(nlbl); track.appendChild(nl); }
+                    bookings.forEach((b, i) => { let sH = parseInt(b.start), eH = parseInt(b.end); if (eH < sH) eH += 24; const bar = document.createElement('div'); bar.className = 'dash-bar' + (currentUser && b.uid === currentUser.uid ? ' dash-bar-mine' : ''); bar.style.left = (sH / 24 * 100).toFixed(3) + '%'; bar.style.width = ((eH - sH) / 24 * 100).toFixed(3) + '%'; bar.style.background = BAR_COLORS[i % BAR_COLORS.length]; bar.title = b.start + '–' + b.end + ' | ' + b.name; const lbl = document.createElement('span'); lbl.className = 'dash-bar-label'; lbl.textContent = (eH - sH) + ' ชม.'; bar.appendChild(lbl); track.appendChild(bar); });
+                    tlWrap.appendChild(track); card.appendChild(tlWrap);
+
+                    const details = document.createElement('div'); details.className = 'dash-details';
+                    let myBookingsCount = 0;
+                    bookings.forEach(b => {
+                        if (!currentUser || b.uid !== currentUser.uid) return;
+                        myBookingsCount++;
+                        const row = document.createElement('div'); row.className = 'dash-row';
+                        const topPart = document.createElement('div'); topPart.className = 'dash-top-part';
+                        topPart.innerHTML = `<span class="dash-time-badge">${b.start}–${b.end}</span><span class="dash-name">${b.name}${b.nickname ? ` (${b.nickname})` : ''}</span>`;
+                        const bottomPart = document.createElement('div'); bottomPart.className = 'dash-bottom-part';
+                        // REALTIME TIMERS
+                        const dNow = new Date();
+                        const nowMinsL = dNow.getHours() * 60 + dNow.getMinutes();
+                        const [sH] = b.start.split(':').map(Number); const startMins = sH * 60;
+                        let createdMins = startMins;
+                        let targetMsForWait = 0, targetMsForExpiry = 0;
+                        if (b.timestamp && b.timestamp.toDate) { createdMins = b.timestamp.toDate().getHours() * 60 + b.timestamp.toDate().getMinutes(); } else if (!b.timestamp) createdMins = nowMinsL;
+                        // Expiry is back to 15 mins
+                        const expiryMins = Math.max(startMins + 15, createdMins + 15);
+                        const bStatus = b.status || 'pending';
+
+                        if (date === today) {
+                            const [yyyy, mm, dd] = date.split('-').map(Number);
+                            const waitTargetDate = new Date(yyyy, mm - 1, dd, Math.floor((startMins - 15) / 60), (startMins - 15) % 60, 0, 0);
+                            targetMsForWait = waitTargetDate.getTime();
+
+                            let expiryTargetDate = new Date(yyyy, mm - 1, dd, Math.floor((startMins + 15) / 60), (startMins + 15) % 60, 0, 0);
+                            if (b.timestamp && b.timestamp.toDate) {
+                                const createExpiryDate = new Date(b.timestamp.toDate().getTime() + 15 * 60000);
+                                if (createExpiryDate > expiryTargetDate) expiryTargetDate = createExpiryDate;
+                            } else if (!b.timestamp) {
+                                const createExpiryDate = new Date(dNow.getTime() + 15 * 60000);
+                                if (createExpiryDate > expiryTargetDate) expiryTargetDate = createExpiryDate;
+                            }
+                            targetMsForExpiry = expiryTargetDate.getTime();
+                        }
+
+                        // Override status via absolute timestamps if it is today
+                        const isNoShow = date === today && bStatus === 'pending' && dNow.getTime() > targetMsForExpiry;
+                        const canCheckIn = date === today && bStatus === 'pending' && dNow.getTime() >= targetMsForWait && dNow.getTime() <= targetMsForExpiry;
+                        const isWaiting = (date > today && bStatus === 'pending') || (date === today && bStatus === 'pending' && dNow.getTime() < targetMsForWait);
+                        const isPast = (date < today) || (date === today && dNow.getTime() > targetMsForExpiry);
+
+                        if (bStatus === 'checked_in') bottomPart.innerHTML += '<div class="badge-checkedin">✅ ยืนยันแล้ว</div>';
+                        else if (isNoShow) bottomPart.innerHTML += '<div class="badge-noshow" style="background:rgba(239,68,68,0.1);color:#EF4444;">❌ กำลังปรับตกหรืองสละสิทธิ์...</div>';
+                        else if (canCheckIn) {
+                            bottomPart.innerHTML += `<button class="btn-checkin" onclick="window.performCheckIn('${b.id}')">📍 กดเช็คอิน <small class="realtime-timer" data-target-ms="${targetMsForExpiry}" style="opacity:0.85; font-weight:normal;">(กำลังคำนวณเวลา...)</small></button>`;
+                        }
+                        else if (isWaiting) {
+                            let waitText = '⏳ รอเวลาเช็คอิน';
+                            if (date === today) {
+                                waitText += ` <small class="realtime-timer" data-is-wait="true" data-target-ms="${targetMsForWait}" style="opacity:0.6;">(กำลังคำนวณเวลา...)</small>`;
+                            }
+                            bottomPart.innerHTML += `<div style="color:#6B7280;font-size:12px;font-weight:500;background:rgba(79,70,229,0.06);padding:4px 10px;border-radius:6px;">${waitText}</div>`;
+                        }
+                        const delBtn = document.createElement('button'); delBtn.className = 'del-btn'; delBtn.textContent = 'ยกเลิก';
+                        if (isPast || bStatus === 'checked_in' || isNoShow) { delBtn.disabled = true; } else {
+                            delBtn.onclick = async () => {
+                                const res = await Swal.fire({ title: 'ลบการจองนี้?', text: 'คุณต้องการยกเลิกการจองนี้ใช่หรือไม่? การจองจะถูกลบออกจากระบบถาวร', icon: 'warning', showCancelButton: true, confirmButtonColor: '#EF4444', cancelButtonColor: '#9CA3AF', confirmButtonText: 'ยืนยันยกเลิก', cancelButtonText: 'ช่างมัน' });
+                                if (res.isConfirmed) {
+                                    try {
+                                        await deleteDoc(doc(db, "bookings", b.id));
+                                        Swal.fire({ title: 'ลบการจองแล้ว!', icon: 'success', timer: 1500, showConfirmButton: false });
+                                    } catch (e) { Swal.fire('ผิดพลาด', e.message, 'error'); }
+                                }
+                            };
+                        }
+                        bottomPart.appendChild(delBtn);
+                        row.appendChild(topPart); row.appendChild(bottomPart); details.appendChild(row);
+                    });
+
+                    if (myBookingsCount > 0) {
+                        card.appendChild(details);
+                    } else {
+                        const emptyMine = document.createElement('div');
+                        emptyMine.style.cssText = "padding:16px; text-align:center; color:#9CA3AF; font-size:13px;";
+                        emptyMine.textContent = "─ ไม่มีรายการจองของคุณในวันนี้ ─";
+                        card.appendChild(emptyMine);
+                    }
+
+                    listDiv.appendChild(card);
+                });
+            });
+        }
+
+        // Interval for Realtime Timer Update
+        setInterval(() => {
+            const nowMs = Date.now();
+            document.querySelectorAll('.realtime-timer').forEach(el => {
+                const targetMs = parseInt(el.getAttribute('data-target-ms'), 10);
+                const isWait = el.getAttribute('data-is-wait') === 'true';
+                if (!targetMs) return;
+
+                const diffMs = targetMs - nowMs;
+                if (diffMs <= 0) {
+                    el.textContent = isWait ? '(ກำลังเปิดให้เช็คอิน...)' : '(หมดเวลาแล้ว)';
+                    return;
+                }
+
+                const totalSecs = Math.floor(diffMs / 1000);
+                const totalMins = Math.floor(totalSecs / 60);
+
+                if (isWait) {
+                    // Before check-in opens: show H hours M min (no seconds)
+                    if (totalMins >= 60) {
+                        const hours = Math.floor(totalMins / 60);
+                        const mins = totalMins % 60;
+                        el.textContent = mins > 0
+                            ? `(เปิดทำการเช็คอินในอีก ${hours} ชั่วโมง ${mins} นาที)`
+                            : `(เปิดทำการเช็คอินในอีก ${hours} ชั่วโมง)`;
+                    } else {
+                        el.textContent = `(เปิดทำการเช็คอินในอีก ${totalMins} นาที)`;
+                    }
+                } else {
+                    // Check-in window open: show MM:SS countdown
+                    const m = Math.floor(totalSecs / 60);
+                    const s = totalSecs % 60;
+                    const minStr = String(m).padStart(2, '0');
+                    const secStr = String(s).padStart(2, '0');
+                    el.textContent = `(หมดเวลาใน ${minStr}:${secStr})`;
+                }
+            });
+        }, 1000);
+
+        // ========== GPS CHECK-IN ==========
+        window.performCheckIn = async (bookingId) => {
+            if (!navigator.geolocation) return Swal.fire('แจ้งเตือน', 'อุปกรณ์นี้ไม่รองรับการระบุตำแหน่ง GPS', 'warning');
+
+            Swal.fire({
+                title: 'กำลังตรวจสอบตำแหน่ง...',
+                text: 'โปรด "อนุญาต" ให้แอปเข้าถึง GPS เพื่อตรวจสอบตำแหน่งปัจจุบันของคุณ',
+                icon: 'info',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                didOpen: () => { Swal.showLoading(); }
+            });
+
+            navigator.geolocation.getCurrentPosition(async (pos) => {
+                const { latitude: uLat, longitude: uLng } = pos.coords;
+                const [tLat, tLng] = [15.1238914, 104.9065613]; const R = 6371e3;
+                const p1 = uLat * Math.PI / 180, p2 = tLat * Math.PI / 180;
+                const dP = (tLat - uLat) * Math.PI / 180, dL = (tLng - uLng) * Math.PI / 180;
+                const a = Math.sin(dP / 2) ** 2 + Math.cos(p1) * Math.cos(p2) * Math.sin(dL / 2) ** 2;
+                const dist = R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                if (dist <= 200) {
+                    try {
+                        await updateDoc(doc(db, "bookings", bookingId), { status: 'checked_in', checkInTime: serverTimestamp() });
+
+                        // Redemption Logic
+                        const userRef = doc(db, "users", currentUser.uid);
+                        const userSnap = await getDoc(userRef);
+                        if (userSnap.exists()) {
+                            const uData = userSnap.data();
+                            let currentGood = (uData.good_checkins || 0) + 1;
+                            let newDemerits = uData.demerits || 0;
+                            let msg = '✅ เช็คอินสำเร็จ!';
+
+                            if (currentGood >= 3 && newDemerits > 0) {
+                                newDemerits -= 1;
+                                currentGood = 0; // Reset
+                                msg += `< br > <br>🎉 ความประพฤติดี! คุณเช็คอินตรงเวลาครบ 3 ครั้ง<br>ระบบลบแต้มผิด (แบน) ให้ 1 แต้ม`;
+                            }
+                            await updateDoc(userRef, { good_checkins: currentGood, demerits: newDemerits });
+                            Swal.fire('เช็คอินสำเร็จ!', msg, 'success');
+                        } else {
+                            Swal.fire({ title: 'เช็คอินสำเร็จ!', icon: 'success', timer: 2000, showConfirmButton: false });
+                        }
+
+                    } catch (e) { Swal.fire('เช็คอินผิดพลาด', e.message, 'error'); }
+                }
+                else {
+                    let distText = dist >= 1000 ? (dist / 1000).toLocaleString(undefined, { maximumFractionDigits: 2 }) + ' กิโลเมตร' : Math.round(dist).toLocaleString() + ' เมตร';
+                    Swal.fire({
+                        title: 'อยู่นอกระยะเช็คอิน',
+                        html: `❌ คุณอยู่ห่างจากเป้าหมาย <b>${distText}</b><br><small style="color:#EF4444;">(ต้องอยู่ในระยะ 200 เมตรจากอาคารกิจกรรมนักศึกษา)</small>`,
+                        icon: 'error'
+                    });
+                }
+            }, (err) => { Swal.fire('ดึงพิกัดไม่สำเร็จ', (err.code === 1 ? 'คุณปฏิเสธการเข้าถึง GPS' : err.message), 'error'); }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
+        };
+
+        function formatThaiDate(ds) { const m = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.']; const [y, mo, d] = ds.split('-').map(Number); return d + ' ' + m[mo - 1] + ' ' + (y + 543); }
+    </script>
+</body>
+
+</html>

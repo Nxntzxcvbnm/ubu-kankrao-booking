@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>โปรไฟล์ของฉัน — UBU Club Booking</title>
+    <meta name="description" content="จัดการข้อมูลส่วนตัวของคุณในระบบจองห้องชมรม UBU">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .profile-hero {
+            background: linear-gradient(135deg, #1E1B4B 0%, #3730A3 40%, #4F46E5 70%, #8B5CF6 100%);
+            padding: 40px 24px 80px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(6, 182, 212, 0.12);
+            pointer-events: none;
+        }
+
+        .profile-avatar {
+            width: 88px;
+            height: 88px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            margin: 0 auto 14px;
+            display: block;
+            background: rgba(255, 255, 255, 0.1);
+            object-fit: cover;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-avatar-placeholder {
+            width: 88px;
+            height: 88px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            margin: 0 auto 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            background: rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-name-display {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-email-display {
+            font-size: 13px;
+            opacity: .8;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-card-wrapper {
+            margin: -40px auto 0;
+            max-width: 600px;
+            padding: 0 16px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .profile-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(79, 70, 229, 0.12);
+            overflow: hidden;
+            border: 1px solid rgba(139, 92, 246, 0.1);
+        }
+
+        .profile-section {
+            padding: 28px 28px 0;
+        }
+
+        .profile-section:last-of-type {
+            padding-bottom: 28px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 2px solid rgba(79, 70, 229, 0.06);
+        }
+
+        .section-header-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: white;
+        }
+
+        .section-header-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .readonly-field {
+            background: rgba(79, 70, 229, 0.03);
+            border: 1px solid rgba(139, 92, 246, 0.12);
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-top: 8px;
+            font-size: 15px;
+            color: #6B7280;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: not-allowed;
+        }
+
+        .readonly-field .field-icon {
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .readonly-field .field-value {
+            font-weight: 500;
+            color: #374151;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .readonly-badge {
+            margin-left: auto;
+            background: rgba(79, 70, 229, 0.08);
+            color: #6366F1;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .input-group-profile {
+            margin-bottom: 4px;
+        }
+
+        .input-group-profile label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 16px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .input-group-profile input,
+        .input-group-profile select {
+            margin-top: 6px;
+            border-radius: 12px;
+            border: 1.5px solid rgba(139, 92, 246, 0.15);
+            transition: all .2s;
+        }
+
+        .input-group-profile input:focus,
+        .input-group-profile select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .input-group-profile input.has-value {
+            border-color: rgba(16, 185, 129, 0.3);
+            background: rgba(16, 185, 129, 0.03);
+        }
+
+        .char-count {
+            text-align: right;
+            font-size: 11px;
+            color: #9CA3AF;
+            margin-top: 4px;
+        }
+
+        .profile-divider {
+            height: 1px;
+            background: rgba(79, 70, 229, 0.06);
+            margin: 8px 0;
+        }
+
+        .btn-save-profile {
+            width: calc(100% - 56px);
+            margin: 0 28px 28px;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-family: 'Kanit', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .3s;
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-save-profile:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(79, 70, 229, 0.35);
+        }
+
+        .btn-save-profile:disabled {
+            background: #C4B5FD;
+            box-shadow: none;
+            cursor: not-allowed;
+            transform: none;
+            opacity: .6;
+        }
+
+        .save-status {
+            text-align: center;
+            font-size: 13px;
+            padding: 0 28px 20px;
+            min-height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .save-status.success {
+            color: #059669;
+        }
+
+        .save-status.error {
+            color: #DC2626;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            padding: 20px 28px;
+            background: rgba(79, 70, 229, 0.03);
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 12px;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid rgba(139, 92, 246, 0.1);
+        }
+
+        .stat-box-num {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-box-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .danger-zone {
+            margin: 0 28px 28px;
+            padding: 16px 20px;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 14px;
+            background: rgba(239, 68, 68, 0.04);
+        }
+
+        .danger-zone-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #DC2626;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-logout-profile {
+            background: white;
+            color: #DC2626;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-family: 'Kanit', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-logout-profile:hover {
+            background: #DC2626;
+            color: white;
+            border-color: #DC2626;
+        }
+
+        @media(max-width:480px) {
+            .profile-hero {
+                padding: 30px 16px 70px;
+            }
+
+            .profile-card-wrapper {
+                padding: 0 12px;
+            }
+
+            .profile-section {
+                padding: 20px 20px 0;
+            }
+
+            .btn-save-profile {
+                width: calc(100% - 40px);
+                margin: 0 20px 20px;
+            }
+
+            .danger-zone {
+                margin: 0 20px 20px;
+            }
+
+            .stats-row {
+                padding: 16px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="user-bar">
+        <div class="user-bar-left">
+            <img src="logo.png" alt="Club Logo"
+                style="border-radius:6px;background:white;padding:4px;height:48px;width:auto;flex-shrink:0;">
+            <span class="site-title">โปรไฟล์ของฉัน</span>
+        </div>
+        <div class="user-bar-right">
+            <a href="index.html"
+                style="color:rgba(255,255,255,0.85);font-size:13px;text-decoration:none;display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);padding:7px 14px;border-radius:8px;transition:all .2s;"
+                onmouseover="this.style.background='rgba(255,255,255,0.2)'"
+                onmouseout="this.style.background='rgba(255,255,255,0.1)'">← กลับหน้าหลัก</a>
+        </div>
+    </header>
+    <div class="profile-hero">
+        <div id="avatarContainer" class="profile-avatar-placeholder">👤</div>
+        <div class="profile-name-display" id="profileDisplayName">กำลังโหลด...</div>
+        <div class="profile-email-display" id="profileEmail">—</div>
+    </div>
+    <div style="max-width:600px;margin:0 auto;padding:0 16px;">
+        <div class="stats-row"
+            style="border-radius:0 0 16px 16px;margin:0;transform:none;margin-top:-40px;position:relative;z-index:2;">
+            <div class="stat-box">
+                <div class="stat-box-num" id="statTotalBookings">—</div>
+                <div class="stat-box-label">การจองทั้งหมด</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-box-num" id="statCheckedIn">—</div>
+                <div class="stat-box-label">เช็คอินสำเร็จ</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-box-num" id="statNoShow">—</div>
+                <div class="stat-box-label">ไม่มาตามนัด</div>
+            </div>
+        </div>
+    </div>
+    <div class="profile-card-wrapper" style="margin-top:16px;">
+        <div class="profile-card">
+            <div class="profile-section">
+                <div class="section-header">
+                    <div class="section-header-icon">🎓</div>
+                    <div class="section-header-title">ข้อมูลจากมหาวิทยาลัย (แก้ไขไม่ได้)</div>
+                </div>
+                <label style="font-size:13px;color:var(--text-muted);font-weight:500;">ชื่อ-นามสกุล</label>
+                <div class="readonly-field"><span class="field-icon">👤</span><span class="field-value"
+                        id="roName">กำลังโหลด...</span><span class="readonly-badge">🔒 ล็อค</span></div>
+                <label
+                    style="font-size:13px;color:var(--text-muted);font-weight:500;display:block;margin-top:14px;">อีเมลมหาวิทยาลัย</label>
+                <div class="readonly-field"><span class="field-icon">📧</span><span class="field-value"
+                        id="roEmail">กำลังโหลด...</span><span class="readonly-badge">🔒 ล็อค</span></div>
+            </div>
+            <div class="profile-divider"></div>
+            <div class="profile-section">
+                <div class="section-header">
+                    <div class="section-header-icon">✏️</div>
+                    <div class="section-header-title">ข้อมูลส่วนตัว (แก้ไขได้)</div>
+                </div>
+                <div class="input-group-profile"><label for="inputNickname">🏷️ ชื่อเล่น <span
+                            style="color:#EF4444;">*</span></label><input type="text" id="inputNickname"
+                        placeholder="ระบุชื่อเล่น..." maxlength="20" autocomplete="nickname" spellcheck="false">
+                    <div class="char-count"><span id="nicknameCount">0</span>/20</div>
+                </div>
+                <div class="input-group-profile"><label for="inputStudentId">🎫 รหัสนักศึกษา</label><input type="text"
+                        id="inputStudentId" placeholder="เช่น 6710xxx" maxlength="15" autocomplete="off"
+                        inputmode="numeric">
+                    <div class="char-count"><span id="studentIdCount">0</span>/15</div>
+                </div>
+                <div class="input-group-profile"><label for="inputFaculty">🏛️ คณะ / สาขา</label><select
+                        id="inputFaculty">
+                        <option value="">— เลือกคณะ —</option>
+                        <option value="เกษตรศาสตร์">คณะเกษตรศาสตร์</option>
+                        <option value="วิศวกรรมศาสตร์">คณะวิศวกรรมศาสตร์</option>
+                        <option value="วิทยาศาสตร์">คณะวิทยาศาสตร์</option>
+                        <option value="แพทยศาสตร์">คณะแพทยศาสตร์</option>
+                        <option value="เภสัชศาสตร์">คณะเภสัชศาสตร์</option>
+                        <option value="พยาบาลศาสตร์">คณะพยาบาลศาสตร์</option>
+                        <option value="นิติศาสตร์">คณะนิติศาสตร์</option>
+                        <option value="บริหารศาสตร์">คณะบริหารศาสตร์</option>
+                        <option value="ศิลปประยุกต์และสถาปัตยกรรมศาสตร์">คณะศิลปประยุกต์ฯ</option>
+                        <option value="รัฐศาสตร์">คณะรัฐศาสตร์</option>
+                        <option value="ศิลปศาสตร์">คณะศิลปศาสตร์</option>
+                        <option value="วิทยาลัยแพทยศาสตร์และการสาธารณสุข">วิทยาลัยแพทย์ฯ</option>
+                        <option value="อื่นๆ">อื่นๆ</option>
+                    </select></div>
+                <div class="input-group-profile"><label for="inputPhone">📱 เบอร์โทรศัพท์ (ไม่บังคับ)</label><input
+                        type="tel" id="inputPhone" placeholder="เช่น 08x-xxx-xxxx" maxlength="15" autocomplete="tel"
+                        inputmode="tel"></div>
+            </div>
+            <div class="profile-divider" style="margin:8px 28px;"></div>
+            <div class="save-status" id="saveStatus"></div>
+            <button class="btn-save-profile" id="btnSaveProfile" disabled><span id="saveIcon">💾</span><span
+                    id="saveBtnText">กรอกข้อมูลก่อนบันทึก</span></button>
+            <div class="danger-zone">
+                <div class="danger-zone-title">⚠️ ออกจากระบบ</div><button class="btn-logout-profile" id="btnLogout">🚪
+                    ออกจากระบบ</button>
+            </div>
+        </div>
+    </div>
+    <div style="height:40px;"></div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, serverTimestamp, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        const firebaseConfig = { apiKey: "AIzaSyCQWDZabKe7vG6Z8rT-g2gb0799cSbyGiw", authDomain: "booking-kankrao.firebaseapp.com", projectId: "booking-kankrao", storageBucket: "booking-kankrao.firebasestorage.app", messagingSenderId: "985093751532", appId: "1:985093751532:web:e1f4710941e593e902dbc9", measurementId: "G-X418WYDZ8H" };
+        const app = initializeApp(firebaseConfig), auth = getAuth(app), db = getFirestore(app);
+        let currentUser = null, originalData = {};
+        onAuthStateChanged(auth, async (user) => { if (!user || !user.email.endsWith('@ubu.ac.th')) { window.location.replace('login.html'); return; } currentUser = user; await loadProfile(user); await loadBookingStats(user); });
+        async function loadProfile(user) { const dn = user.displayName || user.email.split('@')[0]; document.getElementById('profileDisplayName').textContent = dn; document.getElementById('profileEmail').textContent = user.email; document.getElementById('roName').textContent = dn; document.getElementById('roEmail').textContent = user.email; const ac = document.getElementById('avatarContainer'); if (user.photoURL) ac.outerHTML = `<img src="${user.photoURL}" alt="Avatar" class="profile-avatar" id="avatarContainer" referrerpolicy="no-referrer">`; try { const snap = await getDoc(doc(db, "users", user.uid)); if (snap.exists()) { const d = snap.data(); originalData = d; setFV('inputNickname', d.nickname || ''); setFV('inputStudentId', d.studentId || ''); setFV('inputPhone', d.phone || ''); if (d.faculty) document.getElementById('inputFaculty').value = d.faculty; updateCC('inputNickname', 'nicknameCount'); updateCC('inputStudentId', 'studentIdCount'); } updateSaveButton(); } catch (e) { console.error("Failed to load profile:", e); } }
+        function setFV(id, v) { const el = document.getElementById(id); el.value = v; if (v) el.classList.add('has-value'); }
+        async function loadBookingStats(user) { try { const q = query(collection(db, "bookings"), where("uid", "==", user.uid)); const snap = await getDocs(q); let t = 0, c = 0, n = 0; snap.forEach(d => { t++; const s = d.data().status; if (s === 'checked_in') c++; else if (s === 'noshow') n++; }); document.getElementById('statTotalBookings').textContent = t; document.getElementById('statCheckedIn').textContent = c; document.getElementById('statNoShow').textContent = n; } catch (e) { console.error("Stats error:", e); } }
+        function updateCC(iid, cid) { document.getElementById(cid).textContent = document.getElementById(iid).value.length; }
+        document.getElementById('inputNickname').addEventListener('input', e => { updateCC('inputNickname', 'nicknameCount'); e.target.classList.toggle('has-value', !!e.target.value.trim()); updateSaveButton(); });
+        document.getElementById('inputStudentId').addEventListener('input', e => { updateCC('inputStudentId', 'studentIdCount'); e.target.classList.toggle('has-value', !!e.target.value.trim()); });
+        document.getElementById('inputPhone').addEventListener('input', e => { e.target.classList.toggle('has-value', !!e.target.value.trim()); });
+        function updateSaveButton() { const btn = document.getElementById('btnSaveProfile'), txt = document.getElementById('saveBtnText'), nn = document.getElementById('inputNickname').value.trim(); if (!nn) { btn.disabled = true; txt.textContent = 'กรุณากรอกชื่อเล่นก่อน'; } else { btn.disabled = false; txt.textContent = 'บันทึกข้อมูลโปรไฟล์'; } }
+        document.getElementById('btnSaveProfile').addEventListener('click', async () => { if (!currentUser) return; const btn = document.getElementById('btnSaveProfile'), sEl = document.getElementById('saveStatus'); const nn = document.getElementById('inputNickname').value.trim(), si = document.getElementById('inputStudentId').value.trim(), fc = document.getElementById('inputFaculty').value, ph = document.getElementById('inputPhone').value.trim(); if (!nn) return; const san = s => String(s || '').replace(/[<>'"&]/g, '').trim(); btn.disabled = true; document.getElementById('saveBtnText').textContent = 'กำลังบันทึก...'; document.getElementById('saveIcon').textContent = '⏳'; sEl.className = 'save-status'; sEl.textContent = ''; try { await setDoc(doc(db, "users", currentUser.uid), { uid: currentUser.uid, email: currentUser.email, nickname: san(nn), studentId: san(si), faculty: san(fc), phone: san(ph), updatedAt: serverTimestamp() }, { merge: true }); sEl.className = 'save-status success'; sEl.textContent = '✅ บันทึกเรียบร้อยแล้ว!'; setTimeout(() => { sEl.textContent = ''; sEl.className = 'save-status'; }, 3000); } catch (e) { console.error('Save failed:', e); sEl.className = 'save-status error'; sEl.textContent = e.code === 'permission-denied' ? '❌ ไม่มีสิทธิ์ — แจ้งผู้ดูแลระบบ' : '❌ บันทึกไม่สำเร็จ: ' + e.message; } finally { btn.disabled = false; document.getElementById('saveBtnText').textContent = 'บันทึกข้อมูลโปรไฟล์'; document.getElementById('saveIcon').textContent = '💾'; updateSaveButton(); } });
+        document.getElementById('btnLogout').addEventListener('click', async () => { if (confirm('ต้องการออกจากระบบหรือไม่?')) { sessionStorage.removeItem('ubu_authed'); await signOut(auth); window.location.replace('login.html'); } });
+    </script>
+</body>
+
+</html>

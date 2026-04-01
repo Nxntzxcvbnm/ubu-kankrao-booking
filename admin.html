@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>UBU Club Management System — Admin</title>
+    <meta name="description" content="ระบบจัดการห้องชมรม UBU สำหรับผู้ดูแลระบบ">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* ─── User Management specific styles ─── */
+        .user-mgmt-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-input-admin {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px 16px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: 'Kanit', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .search-input-admin:focus {
+            outline: none;
+            border-color: var(--ubu-navy);
+            box-shadow: 0 0 0 3px rgba(10, 61, 145, 0.1);
+        }
+
+        .user-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 14px;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--ubu-navy);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .user-card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+            transform: translateY(-1px);
+        }
+
+        .user-card.admin-card::before {
+            background: var(--ubu-gold);
+        }
+
+        .user-card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+
+        .user-avatar-admin {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--ubu-navy) 0%, var(--ubu-navy-light) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            flex-shrink: 0;
+            object-fit: cover;
+        }
+
+        .user-info-block {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-info-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 2px;
+        }
+
+        .user-info-email {
+            font-size: 12px;
+            color: var(--text-muted);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .user-badges {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .role-badge {
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .role-badge.admin {
+            background: rgba(253, 185, 19, 0.15);
+            color: #b45309;
+            border: 1px solid rgba(253, 185, 19, 0.4);
+        }
+
+        .role-badge.student {
+            background: rgba(10, 61, 145, 0.08);
+            color: var(--ubu-navy);
+            border: 1px solid rgba(10, 61, 145, 0.15);
+        }
+
+        .user-fields-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .user-field-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 10px 12px;
+        }
+
+        .user-field-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .user-field-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        .user-field-value.empty {
+            color: #cbd5e1;
+            font-style: italic;
+            font-size: 12px;
+        }
+
+        /* Editable inline fields */
+        .edit-section {
+            display: none;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 16px;
+            margin-top: 4px;
+        }
+
+        .edit-section.open {
+            display: block;
+        }
+
+        .edit-fields-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .edit-field-group label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 4px;
+            margin-top: 0;
+        }
+
+        .edit-field-group input,
+        .edit-field-group select {
+            padding: 9px 12px;
+            font-size: 14px;
+            border-radius: 8px;
+            border: 1.5px solid #e2e8f0;
+            margin-top: 0;
+        }
+
+        .edit-field-group input:focus,
+        .edit-field-group select:focus {
+            border-color: var(--ubu-navy);
+            box-shadow: 0 0 0 3px rgba(10, 61, 145, 0.08);
+        }
+
+        .user-action-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn-edit-user {
+            background: white;
+            color: var(--ubu-navy);
+            border: 1.5px solid #e2e8f0;
+            padding: 7px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Kanit', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-edit-user:hover {
+            border-color: var(--ubu-navy);
+            background: rgba(10, 61, 145, 0.05);
+        }
+
+        .btn-save-user {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            border: none;
+            padding: 7px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Kanit', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-save-user:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+        }
+
+        .btn-save-user:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-cancel-edit {
+            background: white;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: 'Kanit', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-cancel-edit:hover {
+            background: #f8fafc;
+        }
+
+        .btn-promote-admin {
+            background: rgba(253, 185, 19, 0.1);
+            color: #b45309;
+            border: 1px solid rgba(253, 185, 19, 0.35);
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-family: 'Kanit', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+
+        .btn-promote-admin:hover {
+            background: rgba(253, 185, 19, 0.2);
+        }
+
+        .user-booking-summary {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .book-stat-pill {
+            background: #f1f5f9;
+            color: #475569;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .book-stat-pill.success {
+            background: #ecfdf5;
+            color: #059669;
+        }
+
+        .book-stat-pill.warn {
+            background: #fef9c3;
+            color: #92400e;
+        }
+
+        .empty-users-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #94a3b8;
+        }
+
+        .loader-pulse {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #e2e8f0;
+            border-bottom-color: var(--ubu-navy);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .user-fields-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .edit-fields-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body style="background: #f8fafc;">
+
+    <!-- Corporate Admin Header -->
+    <header class="user-bar admin-header">
+        <div class="user-bar-left">
+            <img src="logo.png" alt="Club Logo"
+                style="border-radius:6px; background:white; padding:4px; height:48px; width:auto; flex-shrink:0; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <span class="site-title" style="font-weight:600; font-size:18px;">UBU Club Management (Admin)</span>
+        </div>
+        <div class="user-bar-right">
+            <span id="userEmail"
+                style="color:rgba(255,255,255,0.9); font-size:13px; font-weight:500; max-width:160px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">กำลังตรวจสอบ...</span>
+            <button class="btn-logout" onclick="window.handleLogout()">ออกจากระบบ</button>
+        </div>
+    </header>
+
+    <div class="container" id="adminApp" style="display: none; max-width: 1100px; margin-top: 30px;">
+
+        <div class="nav-tabs" style="justify-content:flex-start; margin-bottom: 25px;">
+            <button class="tab-btn active" onclick="openPage('dashPage', this)">📈 ภาพรวม (Dashboard)</button>
+            <button class="tab-btn" onclick="openPage('manageList', this)">📋 System Logs</button>
+            <button class="tab-btn" onclick="openPage('userMgmt', this)">👥 จัดการผู้ใช้งาน</button>
+            <button class="tab-btn" onclick="openPage('godReserve', this)">⭐ Override</button>
+            <button class="tab-btn" style="margin-left:auto; color:#64748b;"
+                onclick="window.location.href='index.html'">🏠 กลับหน้าผู้ใช้</button>
+        </div>
+
+        <!-- 1. Dashboard -->
+        <div id="dashPage" class="page active">
+            <h2 style="margin-bottom: 20px; color:var(--ubu-navy); display:flex; align-items:center; gap:10px;">
+                📊 ข้อมูลสถิติการใช้งาน ณ ปัจจุบัน
+            </h2>
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="stat-title"><span class="stat-icon">📅</span> ยอดรวมการใช้งาน</div>
+                    <div class="stat-value" id="statTotalBooks">0</div>
+                    <div style="font-size:12px; color:#94a3b8; margin-top:8px;">รายการจองในระบบ</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title"><span class="stat-icon">⚡</span> รายการของวันนี้</div>
+                    <div class="stat-value" id="statTodayBooks">0</div>
+                    <div style="font-size:12px; color:#94a3b8; margin-top:8px;">การจองที่มีคิวในวันนี้</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title"><span class="stat-icon">⏳</span> กำลังรอเช็คอิน</div>
+                    <div class="stat-value" id="statPendingBooks" style="color:#d97706;">0</div>
+                    <div style="font-size:12px; color:#94a3b8; margin-top:8px;">สถานะรอดำเนินการ</div>
+                </div>
+                <div class="stat-card" style="border-right: 4px solid var(--ubu-gold);">
+                    <div class="stat-title"><span class="stat-icon">👥</span> ผู้ใช้งาน (Unique)</div>
+                    <div class="stat-value" id="statUniqueUsers">0</div>
+                    <div style="font-size:12px; color:#94a3b8; margin-top:8px;">นักศึกษาที่เคยใช้งาน</div>
+                </div>
+            </div>
+            <div class="card">
+                <h3 style="margin-bottom: 15px; color:#334155;">🔥 รายการจองวันนี้</h3>
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>เวลา</th>
+                                <th>ชื่อผู้จอง</th>
+                                <th>อีเมล</th>
+                                <th>สถานะ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="todayTableBody">
+                            <tr>
+                                <td colspan="4" style="text-align:center;">กำลังประมวลผล...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. System Logs -->
+        <div id="manageList" class="page">
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                    <h2 style="margin:0;">📋 ฐานข้อมูลการจองทั้งหมด</h2>
+                    <span
+                        style="font-size:12px; background:#f1f5f9; padding:6px 12px; border-radius:12px; color:#64748b;">บันทึกเวลาจริง</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>วันที่</th>
+                                <th>ช่วงเวลา</th>
+                                <th>ผู้รับผิดชอบ</th>
+                                <th>สถานะ</th>
+                                <th>การจัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminTableBody">
+                            <tr>
+                                <td colspan="5" style="text-align:center;">กำลังเรียกข้อมูลจากเซิร์ฟเวอร์...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. User Management (NEW) -->
+        <div id="userMgmt" class="page">
+            <div class="card">
+                <div
+                    style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; flex-wrap:wrap; gap:12px;">
+                    <h2 style="margin:0;">👥 จัดการผู้ใช้งาน</h2>
+                    <span id="userCountBadge"
+                        style="font-size:12px; background:#f1f5f9; padding:6px 12px; border-radius:12px; color:#64748b;">
+                        กำลังโหลด...
+                    </span>
+                </div>
+                <p style="color:#64748b; font-size:13px; margin-bottom:20px;">
+                    แก้ไขข้อมูลส่วนตัวของผู้ใช้งาน เช่น ชื่อเล่น รหัสนักศึกษา คณะ และบทบาท
+                </p>
+
+                <div class="user-mgmt-toolbar">
+                    <input type="search" class="search-input-admin" id="userSearchInput"
+                        placeholder="🔍 ค้นหาชื่อ อีเมล หรือชื่อเล่น..." autocomplete="off">
+                    <button class="btn-edit-user" onclick="loadAllUsers()" style="white-space:nowrap;">
+                        🔄 รีเฟรช
+                    </button>
+                </div>
+
+                <div id="userListContainer">
+                    <div class="empty-users-state">
+                        <span class="loader-pulse"></span>
+                        <p style="margin-top:12px;">กำลังโหลดข้อมูลผู้ใช้...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Override (God Mode) -->
+        <div id="godReserve" class="page">
+            <div class="card" style="border-top: 4px solid var(--ubu-gold);">
+                <h2>⭐ เครื่องมือจัดสรรสิทธิ์พิเศษ (Admin Override)</h2>
+                <div
+                    style="background:#fffbeb; border:1px solid #fde68a; padding:15px 20px; border-radius:10px; margin-bottom:25px;">
+                    <strong style="color:#b45309;">⚠️ โหมดควบคุมพิเศษ (Override Mode)</strong>
+                    <p style="color:#d97706; font-size:13px; margin:5px 0 0 0;">
+                        ข้ามข้อจำกัดทุกประการ — ไม่จำกัดชั่วโมง, ไม่สนใจการจองซ้อน, สถานะจะถูกล็อกเป็น "ยืนยันแล้ว"
+                        ทันที
+                    </p>
+                </div>
+                <div class="input-group">
+                    <label>ชื่อกิจกรรม / ผู้รับมอบหมาย</label>
+                    <input type="text" id="godName" placeholder="ระบุชื่องาน หรือหน่วยงานที่รับผิดชอบ...">
+                    <label>วันที่จัดกิจกรรม</label>
+                    <input type="date" id="godDate">
+                    <div style="display:flex; gap:15px; width:100%;">
+                        <div style="flex:1;">
+                            <label>เวลาเริ่มต้น</label>
+                            <select id="godStart" class="input-field"
+                                style="width:100%; padding:10px; border-radius:8px; border:1px solid #cbd5e1;"></select>
+                        </div>
+                        <div style="flex:1;">
+                            <label>เวลาสิ้นสุด</label>
+                            <select id="godEnd" class="input-field"
+                                style="width:100%; padding:10px; border-radius:8px; border:1px solid #cbd5e1;"></select>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 24px;">
+                    <button class="btn-submit btn-god-mode" id="btnGodSave" style="width:100%; letter-spacing:0.5px;">
+                        📌 ยืนยันการจัดสรรสิทธิ์ (Force Commit)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import {
+            getFirestore, collection, addDoc, onSnapshot, query, orderBy, getDoc,
+            deleteDoc, doc, serverTimestamp, updateDoc, getDocs, where, setDoc
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCQWDZabKe7vG6Z8rT-g2gb0799cSbyGiw",
+            authDomain: "booking-kankrao.firebaseapp.com",
+            projectId: "booking-kankrao",
+            storageBucket: "booking-kankrao.firebasestorage.app",
+            messagingSenderId: "985093751532",
+            appId: "1:985093751532:web:e1f4710941e593e902dbc9",
+            measurementId: "G-X418WYDZ8H"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // 🔒 Admin whitelist
+        const ADMIN_EMAILS = Object.freeze(["wissanupong.bu.67@ubu.ac.th"]);
+
+        let currentUser = null;
+        let allUsersCache = [];
+        const todayGlobal = new Date();
+
+        // ============================================================
+        // 🔒 AUTH GUARD FOR ADMIN
+        // ============================================================
+        onAuthStateChanged(auth, (user) => {
+            if (!user || !user.email) {
+                window.location.replace('login.html');
+                return;
+            }
+            if (!ADMIN_EMAILS.includes(user.email)) {
+                alert("⛔ ACCESS DENIED: ไม่มีสิทธิ์เข้าถึงหน้านี้");
+                window.location.replace('index.html');
+                return;
+            }
+            currentUser = user;
+            sessionStorage.setItem('ubu_authed', 'true'); // Keep flag so index.html guard passes
+            const emailEl = document.getElementById('userEmail');
+            emailEl.title = user.email;
+            emailEl.textContent = (window.innerWidth < 640)
+                ? '👮 ' + user.email.split('@')[0]
+                : '👮 ' + user.email;
+            document.getElementById('adminApp').style.display = 'block';
+            initForm();
+            loadAllBookings();
+        });
+
+        window.handleLogout = async () => {
+            const res = await Swal.fire({ title: 'ออกจากระบบ?', text: 'คุณต้องการออกจากระบบหน้าแอดมินใช่หรือไม่?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#EF4444', cancelButtonColor: '#9CA3AF', confirmButtonText: 'ออกจากระบบ', cancelButtonText: 'ยกเลิก' });
+            if (res.isConfirmed) {
+                sessionStorage.removeItem('ubu_authed');
+                await signOut(auth);
+                window.location.replace('login.html');
+            }
+        };
+
+        window.openPage = (pageId, btn) => {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            btn.classList.add('active');
+            // Lazy-load users only when that tab is opened
+            if (pageId === 'userMgmt' && allUsersCache.length === 0) {
+                loadAllUsers();
+            }
+        };
+
+        // ============================================================
+        // God Mode Form
+        // ============================================================
+        function initForm() {
+            const offset = todayGlobal.getTimezoneOffset() * 60000;
+            const todayLocal = new Date(todayGlobal.getTime() - offset).toISOString().split('T')[0];
+            document.getElementById('godDate').value = todayLocal;
+            const startSel = document.getElementById('godStart');
+            const endSel = document.getElementById('godEnd');
+            for (let i = 0; i < 24; i++) {
+                const h = String(i).padStart(2, '0') + ':00';
+                startSel.add(new Option(h, h));
+                endSel.add(new Option(h, h));
+            }
+            endSel.add(new Option('24:00', '00:00'));
+        }
+
+        document.getElementById('btnGodSave').addEventListener('click', async () => {
+            if (!currentUser) return;
+            const name = document.getElementById('godName').value.trim();
+            const date = document.getElementById('godDate').value;
+            const start = document.getElementById('godStart').value;
+            const end = document.getElementById('godEnd').value;
+            if (!name || !date || !start || !end) return alert('กรุณาระบุข้อมูลให้ครบถ้วน');
+            if (start === end) return alert('เวลาเริ่มต้นและสิ้นสุดต้องไม่ซ้ำกัน');
+            const btn = document.getElementById('btnGodSave');
+            btn.innerHTML = '⚡ กำลังดำเนินการ...';
+            btn.disabled = true;
+            try {
+                // 🔒 Sanitize
+                const sanitize = (s) => String(s).replace(/[<>'"&]/g, '').trim();
+                await addDoc(collection(db, "bookings"), {
+                    name: `⭐ ${sanitize(name)} (Admin)`,
+                    uid: currentUser.uid,
+                    email: currentUser.email,
+                    date, start, end,
+                    status: 'checked_in',
+                    timestamp: serverTimestamp()
+                });
+                alert('✅ กระบวนการจัดสรรสิทธิ์เสร็จสมบูรณ์');
+                document.getElementById('godName').value = '';
+                window.openPage('manageList', document.querySelectorAll('.tab-btn')[1]);
+            } catch (e) {
+                alert('เกิดข้อผิดพลาดจากเซิร์ฟเวอร์: ' + e.message);
+            } finally {
+                btn.innerHTML = '📌 ยืนยันการจัดสรรสิทธิ์ (Force Commit)';
+                btn.disabled = false;
+            }
+        });
+
+        // ============================================================
+        // Booking Analytics & Logs
+        // ============================================================
+        let unsubscribeAdmin = null;
+        function loadAllBookings() {
+            if (unsubscribeAdmin) unsubscribeAdmin();
+            const q = query(collection(db, "bookings"), orderBy("date", "desc"));
+            const offset = todayGlobal.getTimezoneOffset() * 60000;
+            const todayStr = new Date(todayGlobal.getTime() - offset).toISOString().split('T')[0];
+
+            unsubscribeAdmin = onSnapshot(q, (snapshot) => {
+                const tbody = document.getElementById('adminTableBody');
+                const todayBody = document.getElementById('todayTableBody');
+                tbody.innerHTML = '';
+                todayBody.innerHTML = '';
+                let totalCount = 0, todayCount = 0, pendingCount = 0;
+                let uniqueUsers = new Set();
+                let todayRowsHTML = '';
+
+                if (snapshot.empty) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:30px;color:#94a3b8;">ไม่มีประวัติในฐานข้อมูล</td></tr>';
+                    todayBody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;color:#94a3b8;">ยังไม่มีรายการสำหรับวันนี้</td></tr>';
+                    updateCards(0, 0, 0, 0);
+                    return;
+                }
+
+                let records = [];
+                snapshot.forEach(d => records.push({ id: d.id, ...d.data() }));
+                records.sort((a, b) => a.date === b.date ? a.start.localeCompare(b.start) : 0);
+
+                records.forEach(data => {
+                    totalCount++;
+                    if (data.uid) uniqueUsers.add(data.uid);
+                    if (data.status === 'pending') pendingCount++;
+                    const dParts = data.date.split('-');
+                    const thDate = `${dParts[2]}/${dParts[1]}/${parseInt(dParts[0]) + 543}`;
+                    const [sH] = data.start.split(':').map(Number); const startMins = sH * 60;
+                    let computedStatus = data.status || 'pending';
+                    const now = new Date();
+
+                    if (data.date === todayStr) {
+                        const [yyyy, mm, dd] = data.date.split('-').map(Number);
+                        let expiryTargetDate = new Date(yyyy, mm - 1, dd, Math.floor((startMins + 15) / 60), (startMins + 15) % 60, 0, 0);
+                        if (data.timestamp && data.timestamp.toDate) {
+                            const createExpiryDate = new Date(data.timestamp.toDate().getTime() + 15 * 60000);
+                            if (createExpiryDate > expiryTargetDate) expiryTargetDate = createExpiryDate;
+                        } else if (!data.timestamp) {
+                            const createExpiryDate = new Date(todayGlobal.getTime() + 15 * 60000);
+                            if (createExpiryDate > expiryTargetDate) expiryTargetDate = createExpiryDate;
+                        }
+                        if (computedStatus === 'pending' && now.getTime() > expiryTargetDate.getTime()) computedStatus = 'no_show';
+                    } else if (data.date < todayStr && computedStatus === 'pending') {
+                        computedStatus = 'no_show';
+                    }
+
+                    let statusHtml = '';
+                    if (computedStatus === 'checked_in') statusHtml = `<span class="badge-status status-checkedin">✅ ยืนยันแล้ว</span>`;
+                    else if (computedStatus === 'pending') statusHtml = `<span class="badge-status status-pending">⏳ รอเช็คอิน</span>`;
+                    else if (computedStatus === 'no_show') statusHtml = `<span class="badge-status" style="background:rgba(239,68,68,0.1);color:#EF4444;border:1px solid rgba(239,68,68,0.2);">❌ ปรับตก (No-Show)</span>`;
+                    else if (computedStatus === 'cancelled') statusHtml = `<span class="badge-status" style="background:#f1f5f9;border:1px solid #cbd5e1;color:#475569;">🗑️ ยกเลิก</span>`;
+                    else statusHtml = `<span class="badge-status" style="background:#f1f5f9;border:1px solid #cbd5e1;color:#475569;">${computedStatus}</span>`;
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td style="font-weight:500;color:#334155;">${thDate}</td>
+                        <td><span style="background:#e2e8f0;color:#334155;padding:6px 10px;border-radius:8px;font-weight:600;font-size:13px;">${data.start} — ${data.end === '00:00' ? '24:00' : data.end}</span></td>
+                        <td>
+                            <div style="font-weight:600;color:var(--ubu-navy);">${data.name}${data.nickname ? ` (${data.nickname})` : ''}</div>
+                            <div style="color:#64748b;font-size:11px;">${data.email || 'N/A'}</div>
+                        </td>
+                        <td>${statusHtml}</td>
+                        <td>
+                            <div style="display:flex;gap:8px;">
+                                ${computedStatus !== 'checked_in' && computedStatus !== 'cancelled' ? `<button class="btn-checkin" style="padding:4px 10px;font-size:11px;border-radius:6px;box-shadow:none;animation:none;" onclick="window.forceCheckIn('${data.id}')">📍 ช่วยเช็คอิน</button>` : ''}
+                                <button class="del-btn" style="padding:4px 10px;font-size:11px;background:#fff1f2;color:#be123c;border-color:#fecdd3;border-radius:6px;" onclick="window.forceDelete('${data.id}', '${data.name}', '${data.nickname || ''}')">🗑️ ลบ/ยกเลิก</button>
+                            </div>
+                        </td>`;
+                    tbody.appendChild(tr);
+
+                    if (data.date === todayStr) {
+                        todayCount++;
+                        todayRowsHTML += `<tr>
+                            <td style="font-weight:600;color:var(--ubu-navy);">${data.start} - ${data.end}</td>
+                            <td style="font-weight:500;">${data.name}${data.nickname ? ` (${data.nickname})` : ''}</td>
+                            <td style="color:#64748b;font-size:12px;">${data.email || '-'}</td>
+                            <td>${statusHtml}</td>
+                        </tr>`;
+                    }
+                });
+
+                todayBody.innerHTML = todayCount > 0
+                    ? todayRowsHTML
+                    : '<tr><td colspan="4" style="text-align:center;padding:20px;color:#94a3b8;">ยังไม่มีคิวในวันนี้</td></tr>';
+                updateCards(totalCount, todayCount, pendingCount, uniqueUsers.size);
+            });
+        }
+
+        function updateCards(total, today, pending, users) {
+            document.getElementById('statTotalBooks').textContent = total;
+            document.getElementById('statTodayBooks').textContent = today;
+            document.getElementById('statPendingBooks').textContent = pending;
+            document.getElementById('statUniqueUsers').textContent = users;
+        }
+
+        window.forceDelete = async (id, name, nickname) => {
+            const displayName = nickname ? `${name} (${nickname})` : name;
+            const res = await Swal.fire({ title: 'เพิกถอนสิทธิ์?', html: `คุณกำลังจะเพิกถอนและลบสิทธิ์ของ <b>${displayName}</b><br><small>การทำรายการนี้เป็นการลบข้อมูลถาวรในฐานข้อมูล</small>`, icon: 'warning', showCancelButton: true, confirmButtonColor: '#EF4444', cancelButtonColor: '#9CA3AF', confirmButtonText: 'ลบทันที (Delete)', cancelButtonText: 'ยกเลิก' });
+            if (res.isConfirmed) {
+                try {
+                    await deleteDoc(doc(db, "bookings", id));
+                    Swal.fire({ title: 'ลบข้อมูลสำเร็จ!', icon: 'success', timer: 1500, showConfirmButton: false });
+                } catch (e) { Swal.fire('เกิดข้อผิดพลาด', e.message, 'error'); }
+            }
+        };
+
+        window.forceCheckIn = async (id) => {
+            const res = await Swal.fire({ title: 'บังคับเช็คอินให้?', html: `ยืนยันการตั้งสถานะเป็น <b>"✅ ยืนยันแล้ว"</b><br><small>ใช้สำหรับกรณีฉุกเฉิน GPS ทำงานผิดพลาดเท่านั้น<br>มันจะไปข้ามระบบออโต้ทั้งหมด</small>`, icon: 'question', showCancelButton: true, confirmButtonColor: '#4F46E5', cancelButtonColor: '#9CA3AF', confirmButtonText: 'ยืนยันการเช็คอินฉุกเฉิน', cancelButtonText: 'ยกเลิก' });
+            if (res.isConfirmed) {
+                try {
+                    await updateDoc(doc(db, "bookings", id), { status: 'checked_in', checkInTime: serverTimestamp() });
+                    Swal.fire({ title: 'จัดการสำเร็จ!', icon: 'success', timer: 1500, showConfirmButton: false });
+                } catch (e) { Swal.fire('เกิดข้อผิดพลาด', e.message, 'error'); }
+            }
+        };
+
+        // ============================================================
+        // 👥 USER MANAGEMENT
+        // ============================================================
+        window.loadAllUsers = async function () {
+            const container = document.getElementById('userListContainer');
+            container.innerHTML = `<div class="empty-users-state"><span class="loader-pulse"></span><p style="margin-top:12px;">กำลังโหลดข้อมูลผู้ใช้...</p></div>`;
+
+            try {
+                const snap = await getDocs(collection(db, "users"));
+                allUsersCache = [];
+                snap.forEach(d => allUsersCache.push({ docId: d.id, ...d.data() }));
+
+                // Get booking counts per user
+                const bookingSnap = await getDocs(collection(db, "bookings"));
+                const bookingStats = {}; // uid -> { total, checkedIn }
+                bookingSnap.forEach(d => {
+                    const bd = d.data();
+                    if (!bd.uid) return;
+                    if (!bookingStats[bd.uid]) bookingStats[bd.uid] = { total: 0, checkedIn: 0 };
+                    bookingStats[bd.uid].total++;
+                    if (bd.status === 'checked_in') bookingStats[bd.uid].checkedIn++;
+                });
+
+                document.getElementById('userCountBadge').textContent = `${allUsersCache.length} ผู้ใช้งานในระบบ`;
+                renderUsers(allUsersCache, bookingStats);
+            } catch (e) {
+                container.innerHTML = `<div class="empty-users-state" style="color:#dc2626;">❌ ไม่สามารถโหลดข้อมูลได้: ${e.message}</div>`;
+            }
+        };
+
+        function renderUsers(users, bookingStats) {
+            const container = document.getElementById('userListContainer');
+            if (users.length === 0) {
+                container.innerHTML = '<div class="empty-users-state">🫥 ไม่พบผู้ใช้งานในระบบ</div>';
+                return;
+            }
+
+            container.innerHTML = '';
+            users.forEach(user => {
+                const stats = bookingStats ? (bookingStats[user.uid] || { total: 0, checkedIn: 0 }) : { total: 0, checkedIn: 0 };
+                const isAdmin = ADMIN_EMAILS.includes(user.email);
+                const card = document.createElement('div');
+                card.className = 'user-card' + (isAdmin ? ' admin-card' : '');
+                card.dataset.uid = user.uid;
+
+                const lastLogin = user.lastLoginAt
+                    ? (user.lastLoginAt.toDate ? user.lastLoginAt.toDate().toLocaleDateString('th-TH') : '—')
+                    : '—';
+                const createdAt = user.createdAt
+                    ? (user.createdAt.toDate ? user.createdAt.toDate().toLocaleDateString('th-TH') : '—')
+                    : '—';
+
+                card.innerHTML = `
+                    <div class="user-card-header">
+                        <div style="display:flex; align-items:center; gap:12px; flex:1; min-width:0;">
+                            ${user.photoURL
+                        ? `<img src="${user.photoURL}" alt="Avatar" class="user-avatar-admin" referrerpolicy="no-referrer" onerror="this.style.display='none'">`
+                        : `<div class="user-avatar-admin">👤</div>`}
+                            <div class="user-info-block">
+                                <div class="user-info-name">${escHtml(user.displayName || '(ไม่ระบุชื่อ)')}</div>
+                                <div class="user-info-email">${escHtml(user.email || '—')}</div>
+                            </div>
+                        </div>
+                        <div class="user-badges">
+                            ${user.demerits > 0 ? `<span class="role-badge" style="background:#fef2f2;color:#ef4444;border:1px solid #fca5a5;">⚠️ ติดแบน ${user.demerits} แต้ม</span>` : ''}
+                            <span class="role-badge ${isAdmin ? 'admin' : 'student'}">${isAdmin ? '👮 Admin' : '🎓 Student'}</span>
+                        </div>
+                    </div>
+
+                    <div class="user-booking-summary">
+                        <span class="book-stat-pill">📅 จอง ${stats.total} ครั้ง</span>
+                        <span class="book-stat-pill success">✅ เช็คอิน ${stats.checkedIn} ครั้ง</span>
+                        <span class="book-stat-pill warn">📅 เข้าใหม่: ${createdAt}</span>
+                        <span class="book-stat-pill">🕒 Login ล่าสุด: ${lastLogin}</span>
+                    </div>
+
+                    <div class="user-fields-grid">
+                        <div class="user-field-box">
+                            <div class="user-field-label">ชื่อเล่น</div>
+                            <div class="user-field-value ${user.nickname ? '' : 'empty'}">${escHtml(user.nickname || '(ยังไม่ได้กรอก)')}</div>
+                        </div>
+                        <div class="user-field-box">
+                            <div class="user-field-label">รหัสนักศึกษา</div>
+                            <div class="user-field-value ${user.studentId ? '' : 'empty'}">${escHtml(user.studentId || '(ยังไม่ระบุ)')}</div>
+                        </div>
+                        <div class="user-field-box">
+                            <div class="user-field-label">คณะ</div>
+                            <div class="user-field-value ${user.faculty ? '' : 'empty'}">${escHtml(user.faculty || '(ยังไม่ระบุ)')}</div>
+                        </div>
+                        <div class="user-field-box">
+                            <div class="user-field-label">เบอร์โทร</div>
+                            <div class="user-field-value ${user.phone ? '' : 'empty'}">${escHtml(user.phone || '(ยังไม่ระบุ)')}</div>
+                        </div>
+                    </div>
+
+                    <div class="user-action-row" style="gap:8px; display:flex; flex-wrap:wrap; margin-top:10px;">
+                        <button class="btn-edit-user" onclick="window.toggleEditSection('${user.uid}')">✏️ แก้ไขข้อมูล</button>
+                        ${!isAdmin ? `<button class="btn-promote-admin" onclick="window.promoteToAdmin('${user.uid}', '${escHtml(user.email)}')">⭐ กำหนดเป็น Admin</button>` : `<span style="font-size:12px;color:#b45309;background:rgba(253,185,19,0.1);padding:4px 10px;border-radius:6px;display:inline-flex;align-items:center;">⭐ Admin ปัจจุบัน</span>`}
+                        <button class="btn-demerit-add" style="padding:6px 12px;font-size:12px;background:#fff1f2;color:#be123c;border:1px solid #fecdd3;border-radius:6px;cursor:pointer;" onclick="window.updateDemerits('${user.uid}', 1, '${escHtml(user.email)}')">🛑 +1 แบน</button>
+                        ${user.demerits > 0 ? `<button class="btn-demerit-sub" style="padding:6px 12px;font-size:12px;background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;border-radius:6px;cursor:pointer;" onclick="window.updateDemerits('${user.uid}', -1, '${escHtml(user.email)}')">🟢 -1 ให้อภัย</button>` : ''}
+                    </div>
+
+                    <!-- Edit Section -->
+                    <div class="edit-section" id="editSection-${user.uid}">
+                        <div class="edit-fields-grid">
+                            <div class="edit-field-group">
+                                <label>ชื่อเล่น</label>
+                                <input type="text" id="edit-nickname-${user.uid}" value="${escHtml(user.nickname || '')}" maxlength="20" placeholder="ชื่อเล่น">
+                            </div>
+                            <div class="edit-field-group">
+                                <label>รหัสนักศึกษา</label>
+                                <input type="text" id="edit-studentId-${user.uid}" value="${escHtml(user.studentId || '')}" maxlength="15" placeholder="6710xxx">
+                            </div>
+                            <div class="edit-field-group">
+                                <label>คณะ</label>
+                                <select id="edit-faculty-${user.uid}">
+                                    <option value="">— เลือกคณะ —</option>
+                                    ${['เกษตรศาสตร์', 'วิศวกรรมศาสตร์', 'วิทยาศาสตร์', 'แพทยศาสตร์', 'เภสัชศาสตร์', 'พยาบาลศาสตร์', 'นิติศาสตร์', 'บริหารศาสตร์', 'ศิลปประยุกต์และสถาปัตยกรรมศาสตร์', 'รัฐศาสตร์', 'ศิลปศาสตร์', 'วิทยาลัยแพทยศาสตร์และการสาธารณสุข', 'อื่นๆ']
+                        .map(f => `<option value="${f}" ${user.faculty === f ? 'selected' : ''}>${f}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div class="edit-field-group">
+                                <label>เบอร์โทรศัพท์</label>
+                                <input type="tel" id="edit-phone-${user.uid}" value="${escHtml(user.phone || '')}" maxlength="15" placeholder="08x-xxx-xxxx">
+                            </div>
+                        </div>
+                        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                            <button class="btn-save-user" onclick="window.saveUserEdits('${user.uid}')">
+                                💾 บันทึกการแก้ไข
+                            </button>
+                            <button class="btn-cancel-edit" onclick="window.toggleEditSection('${user.uid}')">
+                                ยกเลิก
+                            </button>
+                        </div>
+                        <div id="editStatus-${user.uid}" style="font-size:13px; margin-top:8px; min-height:20px;"></div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // ✅ Must be window.* so onclick in HTML can access from module scope
+        window.toggleEditSection = function (uid) {
+            const section = document.getElementById(`editSection-${uid}`);
+            if (section) section.classList.toggle('open');
+        };
+
+        window.saveUserEdits = async (uid) => {
+            const sanitize = (s) => String(s || '').replace(/[<>'"&]/g, '').trim();
+            const nickname = sanitize(document.getElementById(`edit-nickname-${uid}`)?.value);
+            const studentId = sanitize(document.getElementById(`edit-studentId-${uid}`)?.value);
+            const faculty = sanitize(document.getElementById(`edit-faculty-${uid}`)?.value);
+            const phone = sanitize(document.getElementById(`edit-phone-${uid}`)?.value);
+            const statusEl = document.getElementById(`editStatus-${uid}`);
+            if (!statusEl) return;
+
+            statusEl.textContent = '⏳ กำลังบันทึก...';
+            statusEl.style.color = '#64748b';
+
+            try {
+                // ✅ ไม่ส่ง updatedBy เพื่อหลีกเลี่ยงปัญหา Rules
+                await setDoc(doc(db, "users", uid), {
+                    nickname, studentId, faculty, phone,
+                    updatedAt: serverTimestamp()
+                }, { merge: true });
+
+                statusEl.textContent = '✅ บันทึกสำเร็จ!';
+                statusEl.style.color = '#059669';
+                setTimeout(() => {
+                    statusEl.textContent = '';
+                    window.toggleEditSection(uid);
+                    loadAllUsers();
+                }, 1500);
+            } catch (e) {
+                console.error('[Admin] Save error:', e.code, e.message);
+                statusEl.textContent = e.code === 'permission-denied'
+                    ? '❌ Firestore Rules ยังไม่อนุญาต — กรุณา Publish Rules'
+                    : `❌ ${e.code}: ${e.message}`;
+                statusEl.style.color = '#dc2626';
+            }
+        };
+
+        window.updateDemerits = async (uid, change, email) => {
+            const actionText = change > 0 ? 'เพิ่มโทษแบน (+1)' : 'ลดโทษแบน (-1)';
+            const res = await Swal.fire({
+                title: 'ยืนยันการตั้งค่าโทษ',
+                html: `คุณกำลังจะ <b>${actionText}</b> ให้กับผู้ใช้<br><b>${email}</b><br><small>ระบบจะอัปเดตข้อมูลผู้ใช้ทันที</small>`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: change > 0 ? '#EF4444' : '#10B981',
+                cancelButtonColor: '#9CA3AF',
+                confirmButtonText: 'ยืนยัน',
+                cancelButtonText: 'ยกเลิก'
+            });
+
+            if (res.isConfirmed) {
+                try {
+                    const userRef = doc(db, "users", uid);
+                    const userSnap = await getDoc(userRef);
+                    if (userSnap.exists()) {
+                        let currentDemerits = userSnap.data().demerits || 0;
+                        currentDemerits += change;
+                        if (currentDemerits < 0) currentDemerits = 0;
+                        await updateDoc(userRef, { demerits: currentDemerits });
+                        Swal.fire({ title: 'อัปเดตสำเร็จ!', icon: 'success', timer: 1500, showConfirmButton: false });
+                        loadAllUsers(); // re-render
+                    }
+                } catch (e) { Swal.fire('ผิดพลาด', e.message, 'error'); }
+            }
+        };
+
+        window.promoteToAdmin = async (uid, email) => {
+            const res = await Swal.fire({ title: 'ตั้งเป็น Admin?', html: `⚠️ คุณกำลังจะกำหนดให้ <b>[${email}]</b> เป็น Admin<br><br><small style="color:#d97706;">หมายเหตุ: ต้องทำการเพิ่มอีเมลนี้ในโค้ดฝั่ง ADMIN_EMAILS ด้วยระบบถึงจะอนุญาตให้เข้าถึงหน้าจัดการได้</small>`, icon: 'warning', showCancelButton: true, confirmButtonColor: '#F59E0B', cancelButtonColor: '#9CA3AF', confirmButtonText: 'แต่งตั้งเป็น Admin', cancelButtonText: 'ยกเลิก' });
+            if (res.isConfirmed) {
+                try {
+                    await setDoc(doc(db, "users", uid), { role: 'admin', updatedBy: currentUser?.email }, { merge: true });
+                    Swal.fire({ title: 'แต่งตั้งสำเร็จ', html: `อัปเดตข้อมูลในฐานข้อมูลแล้ว<br><b>อย่าลืมนำอีเมลไปเพิ่มใน Source Code ด้วยล่ะ!</b>`, icon: 'success' });
+                    loadAllUsers();
+                } catch (e) { Swal.fire('เกิดข้อผิดพลาด', e.message, 'error'); }
+            }
+        };
+
+        // Search filter
+        document.getElementById('userSearchInput').addEventListener('input', (e) => {
+            const q = e.target.value.toLowerCase().trim();
+            if (q === '') {
+                renderUsers(allUsersCache, null);
+                return;
+            }
+            const filtered = allUsersCache.filter(u =>
+                (u.displayName || '').toLowerCase().includes(q) ||
+                (u.email || '').toLowerCase().includes(q) ||
+                (u.nickname || '').toLowerCase().includes(q) ||
+                (u.studentId || '').toLowerCase().includes(q)
+            );
+            renderUsers(filtered, null);
+        });
+
+        // 🔒 XSS prevention helper
+        function escHtml(str) {
+            return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+    </script>
+
+</body>
+
+</html>
