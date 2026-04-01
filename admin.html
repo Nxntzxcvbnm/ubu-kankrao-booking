@@ -352,6 +352,61 @@
         }
 
         @media (max-width: 640px) {
+            .nav-toggle {
+                display: block !important;
+            }
+
+            .admin-header {
+                padding: 10px 16px;
+                flex-wrap: wrap;
+                position: sticky;
+                top: 0;
+                z-index: 1000;
+            }
+
+            .user-bar-right {
+                display: none;
+                /* In hamburger menu instead */
+            }
+
+            .nav-tabs {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 10px;
+                gap: 5px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                border-bottom: 1px solid #e2e8f0;
+                display: none !important;
+                z-index: 999;
+            }
+
+            .nav-tabs.open {
+                display: flex !important;
+                animation: slideDownNav 0.3s ease forwards;
+            }
+
+            @keyframes slideDownNav {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .tab-btn {
+                width: 100%;
+                justify-content: flex-start;
+                border-radius: 8px;
+            }
+
             .user-fields-grid {
                 grid-template-columns: 1fr 1fr;
             }
@@ -359,6 +414,76 @@
             .edit-fields-grid {
                 grid-template-columns: 1fr;
             }
+
+            .site-title {
+                font-size: 15px !important;
+            }
+
+            .mobile-only {
+                display: flex !important;
+            }
+        }
+
+        .mobile-only {
+            display: none;
+        }
+
+        /* Nav Toggle shared classes */
+        .nav-toggle {
+            display: none;
+            width: 38px;
+            height: 38px;
+            position: relative;
+            cursor: pointer;
+            z-index: 1100;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+
+        .nav-toggle:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .nav-toggle span {
+            display: block;
+            position: absolute;
+            height: 2px;
+            width: 20px;
+            background: #fff;
+            border-radius: 2px;
+            opacity: 1;
+            left: 9px;
+            transform: rotate(0deg);
+            transition: .25s ease-in-out;
+        }
+
+        .nav-toggle span:nth-child(1) {
+            top: 12px;
+        }
+
+        .nav-toggle span:nth-child(2) {
+            top: 18px;
+        }
+
+        .nav-toggle span:nth-child(3) {
+            top: 24px;
+        }
+
+        .nav-toggle.active span:nth-child(1) {
+            top: 18px;
+            transform: rotate(135deg);
+        }
+
+        .nav-toggle.active span:nth-child(2) {
+            opacity: 0;
+            left: -40px;
+        }
+
+        .nav-toggle.active span:nth-child(3) {
+            top: 18px;
+            transform: rotate(-135deg);
         }
     </style>
 </head>
@@ -377,6 +502,11 @@
                 style="color:rgba(255,255,255,0.9); font-size:13px; font-weight:500; max-width:160px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">กำลังตรวจสอบ...</span>
             <button class="btn-logout" onclick="window.handleLogout()">ออกจากระบบ</button>
         </div>
+        <div class="nav-toggle" id="adminNavToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </header>
 
     <div class="container" id="adminApp" style="display: none; max-width: 1100px; margin-top: 30px;">
@@ -388,6 +518,9 @@
             <button class="tab-btn" onclick="openPage('godReserve', this)">⭐ Override</button>
             <button class="tab-btn" style="margin-left:auto; color:#64748b;"
                 onclick="window.location.href='index.html'">🏠 กลับหน้าผู้ใช้</button>
+            <button class="tab-btn mobile-only dangerous" onclick="window.handleLogout()"
+                style="color:#ef4444; background:rgba(239,68,68,0.05); border-top:1px solid #fee2e2; margin-top:10px;">🚪
+                ออกจากระบบ</button>
         </div>
 
         <!-- 1. Dashboard -->
@@ -1031,6 +1164,25 @@
         // 🔒 XSS prevention helper
         function escHtml(str) {
             return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        // --- 📱 MOBILE MENU LOGIC ---
+        const navToggle = document.getElementById('adminNavToggle');
+        const navTabs = document.querySelector('.nav-tabs');
+
+        if (navToggle && navTabs) {
+            navToggle.addEventListener('click', () => {
+                navToggle.classList.toggle('active');
+                navTabs.classList.toggle('open');
+            });
+
+            // Close menu when clicking a link
+            navTabs.addEventListener('click', (e) => {
+                if (e.target.classList.contains('tab-btn')) {
+                    navToggle.classList.remove('active');
+                    navTabs.classList.remove('open');
+                }
+            });
         }
     </script>
 
