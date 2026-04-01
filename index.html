@@ -958,7 +958,8 @@
             <button class="spa-tab active" onclick="switchView('homeView')">หน้าหลัก</button>
             <button class="spa-tab" onclick="switchView('mapView')">แผนที่</button>
             <button class="spa-tab" onclick="switchView('dashboardView')">การจองของฉัน</button>
-            <button class="spa-tab" onclick="switchView('toolsView')">วิธีการใช้งาน</button>
+            <button class="spa-tab" onclick="switchView('featuresView')">คุณสมบัติ</button>
+            <button class="spa-tab" onclick="switchView('toolsView')">วิธีการจอง</button>
         </div>
 
         <div class="auth-right" id="authRight">
@@ -1014,13 +1015,15 @@
                         style="background-color: #fff; cursor: pointer;">
                     <div class="field-hint neutral" id="hintDate">📅 เลือกวันที่ต้องการจอง</div>
 
-                    <label for="userNickname">ชื่อเล่น <span style="color:#EF4444;">*</span>
+                    <label for="userNickname">ชื่อวง / กลุ่ม <span
+                            style="font-size:12px;color:#94A3B8;font-weight:400;">(ถ้ามี)</span>
                         <span id="nicknameSavedBadge" class="nickname-saved-badge" style="display:none;">✅
                             โหลดจากโปรไฟล์</span>
                     </label>
-                    <input type="text" id="userNickname" placeholder="ระบุชื่อเล่นของคุณ..." style="font-weight:500;"
-                        maxlength="20" autocomplete="off">
-                    <div class="field-hint neutral" id="hintNickname">💡 ชื่อเล่นที่แสดงในตารางการจอง</div>
+                    <input type="text" id="userNickname" placeholder="ระบุชื่อวงหรือชื่อกลุ่มของคุณ (ไม่จำเป็น)..."
+                        style="font-weight:500;" maxlength="40" autocomplete="off">
+                    <div class="field-hint neutral" id="hintNickname">💡 ระบุชื่อวงหรือชื่อกลุ่มเพื่อแสดงในตาราง (ถ้ามี)
+                    </div>
                 </div>
 
                 <p class="hour-notice">📌 คลิกเลือกช่วงเวลาทีละช่อง (1 ชม./ช่อง) สูงสุด 3 ช่อง —
@@ -1059,8 +1062,6 @@
                     <div class="check-item" id="checkTime"><span
                             class="check-icon">⬜</span><span>เลือกช่วงเวลาแล้ว</span>
                     </div>
-                    <div class="check-item" id="checkNickname"><span
-                            class="check-icon">⬜</span><span>กรอกชื่อเล่นแล้ว</span></div>
                 </div>
 
                 <button id="btnSave" class="btn-submit" disabled style="opacity:0.5;cursor:not-allowed;">✅
@@ -1116,8 +1117,8 @@
         </div>
     </div> <!-- End dashboardView -->
 
-    <div id="toolsView" class="spa-view">
-        <!-- ========== TOOLS / GUIDE SECTION ========== -->
+    <!-- ========== FEATURES VIEW ========== -->
+    <div id="featuresView" class="spa-view">
         <div
             style="background: linear-gradient(135deg, #1E1B4B 0%, #3730A3 40%, #4F46E5 80%); padding: 52px 24px 40px; text-align: center; color: #fff; position:relative; overflow:hidden;">
             <div
@@ -1126,11 +1127,10 @@
             <div style="position:relative;">
                 <div
                     style="display:inline-block;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);padding:6px 18px;border-radius:50px;font-size:13px;margin-bottom:20px;">
-                    ✨ ระบบจองห้องชมรม UBU</div>
-                <h1 style="font-size:clamp(22px,5vw,36px);font-weight:700;margin-bottom:12px;">วิธีใช้งานและคุณสมบัติ
-                </h1>
+                    🏅 คุณสมบัติและระบบ</div>
+                <h1 style="font-size:clamp(22px,5vw,36px);font-weight:700;margin-bottom:12px;">คุณสมบัติเด่นของระบบ</h1>
                 <p style="color:rgba(255,255,255,0.75);font-size:15px;font-weight:300;max-width:500px;margin:0 auto;">
-                    ทำความเข้าใจระบบจองห้องชมรม UBU อย่างครบถ้วน เพื่อใช้งานได้อย่างถูกต้องและมีประสิทธิภาพ</p>
+                    ทำความเข้าใจการทำงานและกฎเกณฑ์ต่างๆ เพื่อรักษาเครดิตและสิทธิ์การจองของคุณ</p>
             </div>
         </div>
 
@@ -1273,7 +1273,27 @@
                     </table>
                 </div>
             </div>
+        </div>
+    </div> <!-- End featuresView -->
 
+    <!-- ========== TOOLS / GUIDE VIEW ========== -->
+    <div id="toolsView" class="spa-view">
+        <div
+            style="background: linear-gradient(135deg, #1E1B4B 0%, #3730A3 40%, #4F46E5 80%); padding: 52px 24px 40px; text-align: center; color: #fff; position:relative; overflow:hidden;">
+            <div
+                style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 0%, rgba(139,92,246,0.3),transparent);pointer-events:none;">
+            </div>
+            <div style="position:relative;">
+                <div
+                    style="display:inline-block;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);padding:6px 18px;border-radius:50px;font-size:13px;margin-bottom:20px;">
+                    📝 วิธีการจองและใช้งาน</div>
+                <h1 style="font-size:clamp(22px,5vw,36px);font-weight:700;margin-bottom:12px;">ขั้นตอนการใช้งานระบบ</h1>
+                <p style="color:rgba(255,255,255,0.75);font-size:15px;font-weight:300;max-width:500px;margin:0 auto;">
+                    คู่มือแนะนำวิธีการจองห้องและเช็คอินผ่านแอปพลิเคชัน UBU Club Booking</p>
+            </div>
+        </div>
+
+        <div style="max-width:1000px;margin:0 auto;padding:40px 20px 16px;">
             <!-- How-to Steps -->
             <div style="text-align:center;margin-bottom:36px;">
                 <div
@@ -1324,7 +1344,8 @@
                         3</div>
                     <div>
                         <div style="font-size:17px;font-weight:600;color:#1E293B;margin-bottom:6px;">ยืนยันการจอง</div>
-                        <div style="font-size:14px;color:#64748B;line-height:1.7;">กรอกชื่อเล่น เลือกช่วงเวลา แล้วกด
+                        <div style="font-size:14px;color:#64748B;line-height:1.7;">เลือกช่วงเวลา ระบุชื่อวง (ถ้ามี)
+                            แล้วกด
                             <b>✅ ยืนยันการจอง</b> รายการจะปรากฏใน <b>การจองของฉัน</b> พร้อมนับถอยหลัง
                         </div>
                     </div>
@@ -1435,17 +1456,26 @@
 
         // ========== SPA NAVIGATION ==========
         window.switchView = (viewId) => {
-            document.querySelectorAll('.spa-view').forEach(v => v.classList.remove('active'));
-            document.querySelectorAll('.spa-tab').forEach(t => t.classList.remove('active'));
-            document.getElementById(viewId).classList.add('active');
+            const views = document.querySelectorAll('.spa-view');
+            const tabs = document.querySelectorAll('.spa-tab');
+            views.forEach(v => v.classList.remove('active'));
+            tabs.forEach(t => t.classList.remove('active'));
 
-            // Activate the corresponding tab
-            if (viewId === 'homeView') {
-                document.querySelector('.spa-tab:nth-child(1)').classList.add('active');
-            } else if (viewId === 'dashboardView') {
-                document.querySelector('.spa-tab:nth-child(3)').classList.add('active');
-                if (currentUser) loadBookings(); // Refresh bookings on open
+            const targetView = document.getElementById(viewId);
+            if (targetView) targetView.classList.add('active');
+
+            // Find index of the tab and set active
+            if (viewId === 'homeView') tabs[0].classList.add('active');
+            else if (viewId === 'mapView') tabs[1].classList.add('active');
+            else if (viewId === 'dashboardView') {
+                tabs[2].classList.add('active');
+                if (currentUser) loadBookings();
             }
+            else if (viewId === 'featuresView') tabs[3].classList.add('active');
+            else if (viewId === 'toolsView') tabs[4].classList.add('active');
+
+            // Ensure we scroll to top on view change
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
         window.openMapModal = () => document.getElementById('mapModal').classList.add('open');
@@ -1524,8 +1554,9 @@
                     }
                 });
 
-                const nickname = await getUserNickname(user.uid);
-                const rawDisplayName = nickname || user.displayName || user.email.split('@')[0];
+                const bandName = await getUserBandName(user.uid);
+                const realName = user.displayName || user.email.split('@')[0];
+                const rawDisplayName = realName + (bandName ? ` (${bandName})` : '');
                 // 🔒 Escape HTML to prevent XSS from displayName/photoURL
                 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
                 const displayName = esc(rawDisplayName);
@@ -1555,7 +1586,7 @@
                 </div>`;
 
                 document.getElementById('userName').value = user.displayName || user.email.split('@')[0];
-                await autoFillNickname(user.uid);
+                await autoFillBandName(user.uid);
 
                 // ✅ Re-init timetable after auth confirmed (fixes blank slots on login)
                 const dateEl = document.getElementById('bookDate');
@@ -1584,19 +1615,21 @@
             }
         });
 
-        // Cached nickname to avoid repeated Firestore reads
-        let cachedNickname = '';
+        // Cached band name to avoid repeated Firestore reads
+        let cachedBandName = '';
 
-        async function getUserNickname(uid) {
+        async function getUserBandName(uid) {
             try {
                 const s = await getDoc(doc(db, "users", uid));
-                return s.exists() ? (s.data().nickname || '') : '';
+                if (!s.exists()) return '';
+                const d = s.data();
+                return d.bandName || d.nickname || '';
             } catch { return ''; }
         }
 
-        async function autoFillNickname(uid) {
-            const n = await getUserNickname(uid);
-            cachedNickname = n; // cache it
+        async function autoFillBandName(uid) {
+            const n = await getUserBandName(uid);
+            cachedBandName = n; // cache it
             const el = document.getElementById('userNickname');
             const b = document.getElementById('nicknameSavedBadge');
             if (n) {
@@ -1796,11 +1829,15 @@
 
         // ========== VALIDATION ==========
         function validateAll() {
-            const date = document.getElementById('bookDate').value, nickname = document.getElementById('userNickname').value.trim();
-            const hasDate = !!date, hasTime = selectedSlots.length > 0, hasNickname = nickname.length >= 1;
-            updateCheckItem('checkDate', hasDate, 'เลือกวันที่แล้ว'); updateCheckItem('checkTime', hasTime, 'เลือกช่วงเวลาแล้ว'); updateCheckItem('checkNickname', hasNickname, 'กรอกชื่อเล่นแล้ว');
-            const hintDate = document.getElementById('hintDate'); hintDate.className = 'field-hint ' + (hasDate ? 'valid' : 'neutral'); hintDate.textContent = hasDate ? '✅ เลือกวันที่แล้ว' : '📅 เลือกวันที่ต้องการจอง';
-            const hintNick = document.getElementById('hintNickname'); hintNick.className = 'field-hint ' + (hasNickname ? 'valid' : 'invalid'); hintNick.textContent = hasNickname ? '✅ ชื่อเล่นพร้อมแล้ว' : '⚠️ กรุณากรอกชื่อเล่น';
+            const date = document.getElementById('bookDate').value;
+            const hasDate = !!date, hasTime = selectedSlots.length > 0;
+            updateCheckItem('checkDate', hasDate, 'เลือกวันที่แล้ว');
+            updateCheckItem('checkTime', hasTime, 'เลือกช่วงเวลาแล้ว');
+
+            const hintDate = document.getElementById('hintDate');
+            hintDate.className = 'field-hint ' + (hasDate ? 'valid' : 'neutral');
+            hintDate.textContent = hasDate ? '✅ เลือกวันที่แล้ว' : '📅 เลือกวันที่ต้องการจอง';
+
             const btnSave = document.getElementById('btnSave'), btnHint = document.getElementById('btnSaveHint');
 
             // Timeout Check
@@ -1818,7 +1855,7 @@
                 }
             }
 
-            const allValid = hasDate && hasTime && hasNickname && !!currentUser && !isBanned;
+            const allValid = hasDate && hasTime && !!currentUser && !isBanned;
             btnSave.disabled = !allValid; btnSave.style.opacity = allValid ? '1' : '0.5'; btnSave.style.cursor = allValid ? 'pointer' : 'not-allowed';
 
             if (isBanned) {
@@ -1827,7 +1864,14 @@
                 btnHint.style.color = '#EF4444';
             }
             else if (!currentUser) { btnHint.textContent = '🔑 กรุณาเข้าสู่ระบบก่อนจอง'; btnHint.style.display = 'block'; }
-            else if (!allValid) { const m = []; if (!hasDate) m.push('วันที่'); if (!hasTime) m.push('ช่วงเวลา'); if (!hasNickname) m.push('ชื่อเล่น'); btnHint.textContent = '⚠️ ยังขาด: ' + m.join(', '); btnHint.style.display = 'block'; btnHint.style.color = '#9CA3AF'; }
+            else if (!allValid) {
+                const m = [];
+                if (!hasDate) m.push('วันที่');
+                if (!hasTime) m.push('ช่วงเวลา');
+                btnHint.textContent = '⚠️ ยังขาด: ' + m.join(', ');
+                btnHint.style.display = 'block';
+                btnHint.style.color = '#9CA3AF';
+            }
             else { btnHint.style.display = 'none'; }
         }
         function updateCheckItem(id, done, text) { const el = document.getElementById(id); el.className = 'check-item' + (done ? ' done' : ''); el.innerHTML = `<span class="check-icon">${done ? '✅' : '⬜'}</span><span>${text}</span>`; }
@@ -1878,9 +1922,11 @@
         btnSave.addEventListener('click', async () => {
             if (!currentUser) { openLoginModal(); return; }
             if (isSaving) return;
-            const name = document.getElementById('userName').value.trim(), date = document.getElementById('bookDate').value, nickname = document.getElementById('userNickname').value.trim();
+            const name = document.getElementById('userName').value.trim();
+            const date = document.getElementById('bookDate').value;
+            const bandName = document.getElementById('userNickname').value.trim();
             const startTime = getStartTime(), endTime = getEndTime();
-            if (!name || !date || !startTime || !endTime || !nickname) return;
+            if (!name || !date || !startTime || !endTime) return;
             isSaving = true; btnSave.disabled = true; btnSave.textContent = '⏳ กำลังตรวจสอบสิทธิ์...';
             try {
                 // Active Booking Limit: Max 1 overall (not restricted to single day, but to parallel sessions)
@@ -1907,7 +1953,17 @@
 
                 btnSave.textContent = '📤 กำลังบันทึก...';
                 const sanitize = (s) => String(s).replace(/[<>'"&]/g, '').trim();
-                await addDoc(collection(db, "bookings"), { name: sanitize(name), nickname: sanitize(nickname), uid: currentUser.uid, email: currentUser.email, date, start: startTime, end: endTime === '00:00' ? '00:00' : endTime, status: 'pending', timestamp: serverTimestamp() });
+                await addDoc(collection(db, "bookings"), {
+                    name: sanitize(name),
+                    bandName: sanitize(bandName),
+                    uid: currentUser.uid,
+                    email: currentUser.email,
+                    date,
+                    start: startTime,
+                    end: endTime === '00:00' ? '00:00' : endTime,
+                    status: 'pending',
+                    timestamp: serverTimestamp()
+                });
 
                 // --- Success notification with check-in info ---
                 const [bookYYY, bookMM, bookDD] = date.split('-').map(Number);
@@ -2123,7 +2179,7 @@
                         const delBtn = document.createElement('button'); delBtn.className = 'del-btn'; delBtn.textContent = 'ยกเลิก';
                         if (isPast || bStatus === 'checked_in' || isNoShow) { delBtn.disabled = true; } else {
                             delBtn.onclick = async () => {
-                                const res = await Swal.fire({ title: 'ลบการจองนี้?', text: 'คุณต้องการยกเลิกการจองนี้ใช่หรือไม่? การจองจะถูกลบออกจากระบบถาวร', icon: 'warning', showCancelButton: true, confirmButtonColor: '#EF4444', cancelButtonColor: '#9CA3AF', confirmButtonText: 'ยืนยันยกเลิก', cancelButtonText: 'ช่างมัน' });
+                                const res = await Swal.fire({ title: 'ลบการจองนี้?', text: 'คุณต้องการยกเลิกการจองนี้ใช่หรือไม่? การจองจะถูกลบออกจากระบบถาวร', icon: 'warning', showCancelButton: true, confirmButtonColor: '#EF4444', cancelButtonColor: '#9CA3AF', confirmButtonText: 'ยืนยันยกเลิก', cancelButtonText: 'ไม่ยกเลิก' });
                                 if (res.isConfirmed) {
                                     try {
                                         await deleteDoc(doc(db, "bookings", b.id));

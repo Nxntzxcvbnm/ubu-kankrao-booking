@@ -367,7 +367,7 @@
         history.replaceState(null, '', 'login.html');
         window.addEventListener('popstate', () => { window.location.replace('public_page.html'); });
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, setPersistence, browserSessionPersistence, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = { apiKey: "AIzaSyCQWDZabKe7vG6Z8rT-g2gb0799cSbyGiw", authDomain: "booking-kankrao.firebaseapp.com", projectId: "booking-kankrao", storageBucket: "booking-kankrao.firebasestorage.app", messagingSenderId: "985093751532", appId: "1:985093751532:web:e1f4710941e593e902dbc9", measurementId: "G-X418WYDZ8H" };
@@ -380,8 +380,43 @@
         function hideMsg() { msgBox.className = ''; msgBox.textContent = ''; }
         function redirectAfterLogin(user) { sessionStorage.setItem('ubu_authed', 'true'); if (ADMIN_EMAILS.includes(user.email)) { window.location.replace("admin.html"); } else { window.location.replace("index.html"); } }
         onAuthStateChanged(auth, (user) => { if (user && user.email && user.email.endsWith('@ubu.ac.th')) { showMsg("✅ พบเซสชั่นที่ใช้งานอยู่...", "success"); setTimeout(() => redirectAfterLogin(user), 800); } });
+
         async function upsertUserProfile(user) { const ref = doc(db, "users", user.uid); const snap = await getDoc(ref); if (!snap.exists()) { await setDoc(ref, { uid: user.uid, email: user.email, displayName: user.displayName || '', photoURL: user.photoURL || '', nickname: '', studentId: '', faculty: '', phone: '', role: 'student', createdAt: serverTimestamp(), lastLoginAt: serverTimestamp() }); } else { await setDoc(ref, { lastLoginAt: serverTimestamp(), displayName: user.displayName || snap.data().displayName || '', photoURL: user.photoURL || snap.data().photoURL || '' }, { merge: true }); } }
-        btnGoogle.addEventListener('click', async () => { btnGoogle.disabled = true; btnGoogle.innerHTML = `<span class="loader"></span><span>กำลังนำไปยัง Google...</span>`; hideMsg(); try { const result = await signInWithPopup(auth, googleProvider); const user = result.user; if (!user.email || !user.email.endsWith('@ubu.ac.th')) { await signOut(auth); showMsg("❌ ต้องใช้บัญชี @ubu.ac.th เท่านั้น", "error"); resetBtn(); return; } showMsg("✅ ยินดีต้อนรับ " + (user.displayName || user.email.split('@')[0]), "success"); btnGoogle.innerHTML = `<span>กำลังโหลดข้อมูล...</span>`; await upsertUserProfile(user); setTimeout(() => redirectAfterLogin(user), 600); } catch (err) { const msgs = { 'auth/popup-closed-by-user': '⚠️ หน้าต่างถูกปิดก่อนล็อกอิน', 'auth/popup-blocked': '⚠️ Popup ถูกบล็อก', 'auth/network-request-failed': '❌ ไม่มีอินเทอร์เน็ต' }; if (err.code !== 'auth/cancelled-popup-request') showMsg(msgs[err.code] || '🔒 เกิดข้อผิดพลาด กรุณาลองใหม่', "error"); resetBtn(); } });
+
+        btnGoogle.addEventListener('click', async () => {
+            btnGoogle.disabled = true;
+            btnGoogle.innerHTML = `<span class="loader"></span><span>กำลังนำไปยัง Google...</span>`;
+            hideMsg();
+            try {
+                // 🔐 บังคับให้เบราว์เซอร์จำสถานะการล็อกอิน (แก้ปัญหา State หาย)
+                await setPersistence(auth, browserSessionPersistence);
+                
+                const result = await signInWithPopup(auth, googleProvider);
+                const user = result.user;
+                if (!user.email || !user.email.endsWith('@ubu.ac.th')) {
+                    await signOut(auth);
+                    showMsg("❌ ต้องใช้บัญชี @ubu.ac.th เท่านั้น", "error");
+                    resetBtn();
+                    return;
+                }
+                showMsg("✅ ยินดีต้อนรับ " + (user.displayName || user.email.split('@')[0]), "success");
+                btnGoogle.innerHTML = `<span>กำลังโหลดข้อมูล...</span>`;
+                await upsertUserProfile(user);
+                setTimeout(() => redirectAfterLogin(user), 600);
+            } catch (err) {
+                console.error("Auth Error:", err);
+                const msgs = { 
+                    'auth/popup-closed-by-user': '⚠️ หน้าต่างถูกปิดก่อนล็อกอิน', 
+                    'auth/popup-blocked': '⚠️ Popup ถูกบล็อก (กรุณาอนุญาต)', 
+                    'auth/unauthorized-domain': '❌ โดเมนยังไม่ได้รับอนุญาต (Firebase Authorized Domain)',
+                    'auth/network-request-failed': '❌ ไม่มีอินเทอร์เน็ต' 
+                };
+                if (err.code !== 'auth/cancelled-popup-request') {
+                    showMsg(msgs[err.code] || '🔒 เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง', "error");
+                }
+                resetBtn();
+            }
+        });
         function resetBtn() { btnGoogle.disabled = false; btnGoogle.innerHTML = `<img src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg" alt="Google"><span>เข้าสู่ระบบด้วยบัญชี UBU</span>`; }
     </script>
 </body>

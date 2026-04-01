@@ -480,12 +480,12 @@
                     </span>
                 </div>
                 <p style="color:#64748b; font-size:13px; margin-bottom:20px;">
-                    แก้ไขข้อมูลส่วนตัวของผู้ใช้งาน เช่น ชื่อเล่น รหัสนักศึกษา คณะ และบทบาท
+                    แก้ไขข้อมูลส่วนตัวของผู้ใช้งาน เช่น ชื่อวง/กลุ่ม รหัสนักศึกษา คณะ และบทบาท
                 </p>
 
                 <div class="user-mgmt-toolbar">
                     <input type="search" class="search-input-admin" id="userSearchInput"
-                        placeholder="🔍 ค้นหาชื่อ อีเมล หรือชื่อเล่น..." autocomplete="off">
+                        placeholder="🔍 ค้นหาชื่อ อีเมล หรือชื่อวง..." autocomplete="off">
                     <button class="btn-edit-user" onclick="loadAllUsers()" style="white-space:nowrap;">
                         🔄 รีเฟรช
                     </button>
@@ -731,14 +731,14 @@
                         <td style="font-weight:500;color:#334155;">${thDate}</td>
                         <td><span style="background:#e2e8f0;color:#334155;padding:6px 10px;border-radius:8px;font-weight:600;font-size:13px;">${data.start} — ${data.end === '00:00' ? '24:00' : data.end}</span></td>
                         <td>
-                            <div style="font-weight:600;color:var(--ubu-navy);">${data.name}${data.nickname ? ` (${data.nickname})` : ''}</div>
+                            <div style="font-weight:600;color:var(--ubu-navy);">${data.name}${data.bandName ? ` (${data.bandName})` : (data.nickname ? ` (${data.nickname})` : '')}</div>
                             <div style="color:#64748b;font-size:11px;">${data.email || 'N/A'}</div>
                         </td>
                         <td>${statusHtml}</td>
                         <td>
                             <div style="display:flex;gap:8px;">
                                 ${computedStatus !== 'checked_in' && computedStatus !== 'cancelled' ? `<button class="btn-checkin" style="padding:4px 10px;font-size:11px;border-radius:6px;box-shadow:none;animation:none;" onclick="window.forceCheckIn('${data.id}')">📍 ช่วยเช็คอิน</button>` : ''}
-                                <button class="del-btn" style="padding:4px 10px;font-size:11px;background:#fff1f2;color:#be123c;border-color:#fecdd3;border-radius:6px;" onclick="window.forceDelete('${data.id}', '${data.name}', '${data.nickname || ''}')">🗑️ ลบ/ยกเลิก</button>
+                                <button class="del-btn" style="padding:4px 10px;font-size:11px;background:#fff1f2;color:#be123c;border-color:#fecdd3;border-radius:6px;" onclick="window.forceDelete('${data.id}', '${data.name}', '${data.bandName || data.nickname || ''}')">🗑️ ลบ/ยกเลิก</button>
                             </div>
                         </td>`;
                     tbody.appendChild(tr);
@@ -747,7 +747,7 @@
                         todayCount++;
                         todayRowsHTML += `<tr>
                             <td style="font-weight:600;color:var(--ubu-navy);">${data.start} - ${data.end}</td>
-                            <td style="font-weight:500;">${data.name}${data.nickname ? ` (${data.nickname})` : ''}</td>
+                            <td style="font-weight:500;">${data.name}${data.bandName ? ` (${data.bandName})` : (data.nickname ? ` (${data.nickname})` : '')}</td>
                             <td style="color:#64748b;font-size:12px;">${data.email || '-'}</td>
                             <td>${statusHtml}</td>
                         </tr>`;
@@ -867,8 +867,8 @@
 
                     <div class="user-fields-grid">
                         <div class="user-field-box">
-                            <div class="user-field-label">ชื่อเล่น</div>
-                            <div class="user-field-value ${user.nickname ? '' : 'empty'}">${escHtml(user.nickname || '(ยังไม่ได้กรอก)')}</div>
+                            <div class="user-field-label">ชื่อวง / กลุ่ม</div>
+                            <div class="user-field-value ${user.bandName || user.nickname ? '' : 'empty'}">${escHtml(user.bandName || user.nickname || '(ยังไม่ได้ระบุ)')}</div>
                         </div>
                         <div class="user-field-box">
                             <div class="user-field-label">รหัสนักศึกษา</div>
@@ -895,8 +895,8 @@
                     <div class="edit-section" id="editSection-${user.uid}">
                         <div class="edit-fields-grid">
                             <div class="edit-field-group">
-                                <label>ชื่อเล่น</label>
-                                <input type="text" id="edit-nickname-${user.uid}" value="${escHtml(user.nickname || '')}" maxlength="20" placeholder="ชื่อเล่น">
+                                <label>ชื่อวง / กลุ่ม</label>
+                                <input type="text" id="edit-nickname-${user.uid}" value="${escHtml(user.bandName || user.nickname || '')}" maxlength="40" placeholder="ชื่อวงหรือกลุ่ม">
                             </div>
                             <div class="edit-field-group">
                                 <label>รหัสนักศึกษา</label>
@@ -938,7 +938,7 @@
 
         window.saveUserEdits = async (uid) => {
             const sanitize = (s) => String(s || '').replace(/[<>'"&]/g, '').trim();
-            const nickname = sanitize(document.getElementById(`edit-nickname-${uid}`)?.value);
+            const bandName = sanitize(document.getElementById(`edit-nickname-${uid}`)?.value);
             const studentId = sanitize(document.getElementById(`edit-studentId-${uid}`)?.value);
             const faculty = sanitize(document.getElementById(`edit-faculty-${uid}`)?.value);
             const phone = sanitize(document.getElementById(`edit-phone-${uid}`)?.value);
@@ -951,7 +951,7 @@
             try {
                 // ✅ ไม่ส่ง updatedBy เพื่อหลีกเลี่ยงปัญหา Rules
                 await setDoc(doc(db, "users", uid), {
-                    nickname, studentId, faculty, phone,
+                    bandName, nickname: bandName, studentId, faculty, phone,
                     updatedAt: serverTimestamp()
                 }, { merge: true });
 
@@ -1021,6 +1021,7 @@
             const filtered = allUsersCache.filter(u =>
                 (u.displayName || '').toLowerCase().includes(q) ||
                 (u.email || '').toLowerCase().includes(q) ||
+                (u.bandName || '').toLowerCase().includes(q) ||
                 (u.nickname || '').toLowerCase().includes(q) ||
                 (u.studentId || '').toLowerCase().includes(q)
             );
