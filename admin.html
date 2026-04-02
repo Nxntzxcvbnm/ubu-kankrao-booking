@@ -1118,7 +1118,8 @@
             <button class="spa-tab" onclick="switchView('dashboardView')">การจองของฉัน</button>
             <button class="spa-tab" onclick="switchView('featuresView')">คุณสมบัติ</button>
             <button class="spa-tab" onclick="switchView('toolsView')">วิธีการจอง</button>
-            <button class="spa-tab" onclick="switchView('adminPanelView')" id="adminNavTab" style="display:none; color:#F59E0B; font-weight:700;">⚙️ แผงควบคุมแอดมิน</button>
+            <button class="spa-tab" onclick="switchView('adminPanelView')" id="adminNavTab"
+                style="display:none; color:#F59E0B; font-weight:700;">⚙️ แผงควบคุมแอดมิน</button>
             <button class="spa-tab mobile-only" id="mobileProfileBtn" onclick="window.location.href='profile.html'">👤
                 บัญชีส่วนตัว (โปรไฟล์)</button>
             <button class="spa-tab mobile-only" onclick="window.handleLogout()"
@@ -1251,10 +1252,14 @@
                 <p style="color: var(--text-muted); font-size: 15px; margin-bottom: 16px;">อาคารกิจกรรมนักศึกษา
                     มหาวิทยาลัยอุบลราชธานี<br />(กรุณาอยู่ในรัศมี 200 เมตร เพื่อเช็คอินผ่านระบบจอง)</p>
                 <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-                    <button onclick="switchView('homeView'); window.scrollTo({top:0, behavior:'smooth'});" style="background: linear-gradient(135deg, #10B981, #059669); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+                    <button onclick="switchView('homeView'); window.scrollTo({top:0, behavior:'smooth'});"
+                        style="background: linear-gradient(135deg, #10B981, #059669); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); transition: all 0.3s;"
+                        onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
                         ➕ สร้างการจอง
                     </button>
-                    <button onclick="switchView('dashboardView'); window.scrollTo({top:0, behavior:'smooth'});" style="background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+                    <button onclick="switchView('dashboardView'); window.scrollTo({top:0, behavior:'smooth'});"
+                        style="background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); transition: all 0.3s;"
+                        onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
                         📋 ตรวจสอบการจอง
                     </button>
                 </div>
@@ -1276,12 +1281,16 @@
             <div class="sec-label">My Bookings</div>
             <div class="sec-title">📅 การจองของฉัน</div>
             <div class="sec-sub">ตรวจสอบสถานะ ทำการเช็คอิน หรือยกเลิกการจองห้องของคุณ</div>
-            
+
             <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px;">
-                <button onclick="switchView('homeView'); window.scrollTo({top:0, behavior:'smooth'});" style="background: linear-gradient(135deg, #10B981, #059669); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+                <button onclick="switchView('homeView'); window.scrollTo({top:0, behavior:'smooth'});"
+                    style="background: linear-gradient(135deg, #10B981, #059669); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); transition: all 0.3s;"
+                    onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
                     ➕ สร้างการจอง
                 </button>
-                <button onclick="switchView('mapView'); window.scrollTo({top:0, behavior:'smooth'});" style="background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+                <button onclick="switchView('mapView'); window.scrollTo({top:0, behavior:'smooth'});"
+                    style="background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); transition: all 0.3s;"
+                    onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
                     🗺️ ดูแผนที่
                 </button>
             </div>
@@ -1577,40 +1586,58 @@
 
     <!-- ========== ADMIN PANEL VIEW ========== -->
     <div id="adminPanelView" class="spa-view">
-        <div style="background: linear-gradient(135deg, #1E1B4B 0%, #3730A3 40%, #4F46E5 80%); padding: 52px 24px 40px; text-align: center; color: #fff; position:relative; overflow:hidden;">
+        <div
+            style="background: linear-gradient(135deg, #1E1B4B 0%, #3730A3 40%, #4F46E5 80%); padding: 52px 24px 40px; text-align: center; color: #fff; position:relative; overflow:hidden;">
             <div style="position:relative;">
-                <div style="display:inline-block;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);padding:6px 18px;border-radius:50px;font-size:13px;margin-bottom:20px;">⚙️ Admin Only</div>
-                <h1 style="font-size:clamp(22px,5vw,36px);font-weight:700;margin-bottom:12px;">แผงคุมระบบ (Admin Dashboard)</h1>
-                <p style="color:rgba(255,255,255,0.75);font-size:15px;max-width:500px;margin:0 auto;">จัดการข้อมูลของระบบ, สมาชิก, และการจองทั้งหมด</p>
+                <div
+                    style="display:inline-block;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);padding:6px 18px;border-radius:50px;font-size:13px;margin-bottom:20px;">
+                    ⚙️ Admin Only</div>
+                <h1 style="font-size:clamp(22px,5vw,36px);font-weight:700;margin-bottom:12px;">แผงคุมระบบ (Admin
+                    Dashboard)</h1>
+                <p style="color:rgba(255,255,255,0.75);font-size:15px;max-width:500px;margin:0 auto;">
+                    จัดการข้อมูลของระบบ, สมาชิก, และการจองทั้งหมด</p>
                 <div style="margin-top:20px;">
-                    <button onclick="switchView('homeView');" style="background: #10B981; color: white; border: none; padding: 10px 24px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer;">
+                    <button onclick="switchView('homeView');"
+                        style="background: #10B981; color: white; border: none; padding: 10px 24px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer;">
                         🔙 กลับสู่หน้าผู้ใช้ทั่วไป
                     </button>
                 </div>
             </div>
         </div>
-        
+
         <div class="section-block" style="max-width: 1000px; margin-top: 20px;">
             <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom: 24px;">
-                <button onclick="window.switchAdminTab('stats')" id="adminTab-stats" style="padding:10px 20px; border-radius:20px; font-weight:bold; cursor:pointer; background:#4F46E5; color:white; border:none;">📊 สถิติภาพรวม</button>
-                <button onclick="window.switchAdminTab('users')" id="adminTab-users" style="padding:10px 20px; border-radius:20px; font-weight:bold; cursor:pointer; background:#e2e8f0; color:#333; border:none;">👥 จัดการผู้ใช้</button>
-                <button onclick="window.switchAdminTab('bookings')" id="adminTab-bookings" style="padding:10px 20px; border-radius:20px; font-weight:bold; cursor:pointer; background:#e2e8f0; color:#333; border:none;">📅 จัดการการจอง</button>
-                <button onclick="window.switchAdminTab('special')" id="adminTab-special" style="padding:10px 20px; border-radius:20px; font-weight:bold; cursor:pointer; background:#e2e8f0; color:#333; border:none;">⭐ จองแบบพิเศษ</button>
+                <button onclick="window.switchAdminTab('stats')" id="adminTab-stats"
+                    style="padding:10px 20px; border-radius:20px; font-weight:bold; cursor:pointer; background:#4F46E5; color:white; border:none;">📊
+                    สถิติภาพรวม</button>
+                <button onclick="window.switchAdminTab('users')" id="adminTab-users"
+                    style="padding:10px 20px; border-radius:20px; font-weight:bold; cursor:pointer; background:#e2e8f0; color:#333; border:none;">👥
+                    จัดการผู้ใช้</button>
+                <button onclick="window.switchAdminTab('bookings')" id="adminTab-bookings"
+                    style="padding:10px 20px; border-radius:20px; font-weight:bold; cursor:pointer; background:#e2e8f0; color:#333; border:none;">📅
+                    จัดการการจอง</button>
+                <button onclick="window.switchAdminTab('special')" id="adminTab-special"
+                    style="padding:10px 20px; border-radius:20px; font-weight:bold; cursor:pointer; background:#e2e8f0; color:#333; border:none;">⭐
+                    จองแบบพิเศษ</button>
             </div>
 
             <!-- Stats View -->
             <div id="adminContent-stats" class="admin-content-view">
                 <div style="display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px;">
-                    <div style="flex:1; background:#f0f9ff; padding:20px; border-radius:12px; border:1px solid #bae6fd; text-align:center;">
+                    <div
+                        style="flex:1; background:#f0f9ff; padding:20px; border-radius:12px; border:1px solid #bae6fd; text-align:center;">
                         <h4 style="color:#0ea5e9; margin-bottom:8px;">ผู้ใช้ทั้งหมด</h4>
                         <div id="adminStatTotalUsers" style="font-size:32px; font-weight:bold; color:#0369a1;">...</div>
                     </div>
-                    <div style="flex:1; background:#fdf4ff; padding:20px; border-radius:12px; border:1px solid #fbcfe8; text-align:center;">
+                    <div
+                        style="flex:1; background:#fdf4ff; padding:20px; border-radius:12px; border:1px solid #fbcfe8; text-align:center;">
                         <h4 style="color:#d946ef; margin-bottom:8px;">คิวจองในระบบ</h4>
-                        <div id="adminStatTotalBookings" style="font-size:32px; font-weight:bold; color:#86198f;">...</div>
+                        <div id="adminStatTotalBookings" style="font-size:32px; font-weight:bold; color:#86198f;">...
+                        </div>
                     </div>
                 </div>
-                <div style="background:#fef2f2; padding:20px; border-radius:12px; border:1px solid #fecaca; text-align:center;">
+                <div
+                    style="background:#fef2f2; padding:20px; border-radius:12px; border:1px solid #fecaca; text-align:center;">
                     <h4 style="color:#ef4444; margin-bottom:8px;">ผู้ที่โดนตักเตือน (มีแต้มผิด)</h4>
                     <div id="adminStatBannedUsers" style="font-size:32px; font-weight:bold; color:#b91c1c;">...</div>
                 </div>
@@ -1624,50 +1651,89 @@
                 <div style="overflow-x:auto;">
                     <table style="width:100%; border-collapse:collapse; font-size:14px; text-align:left;">
                         <thead style="background:#f1f5f9; border-bottom:2px solid #e2e8f0;">
-                            <tr><th style="padding:12px;">อีเมล</th><th style="padding:12px;">ชื่อ / วง</th><th style="padding:12px;">แต้มผิด</th><th style="padding:12px;">จัดการ</th></tr>
+                            <tr>
+                                <th style="padding:12px;">อีเมล</th>
+                                <th style="padding:12px;">ชื่อ / วง</th>
+                                <th style="padding:12px;">แต้มผิด</th>
+                                <th style="padding:12px;">จัดการ</th>
+                            </tr>
                         </thead>
-                        <tbody id="adminUsersTableBody"><tr><td colspan="4" style="text-align:center; padding:20px;">กำลังโหลด...</td></tr></tbody>
+                        <tbody id="adminUsersTableBody">
+                            <tr>
+                                <td colspan="4" style="text-align:center; padding:20px;">กำลังโหลด...</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
-            
+
             <!-- Bookings View -->
             <div id="adminContent-bookings" class="admin-content-view" style="display:none;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
                     <h3 style="font-size:18px; color:#1E1B4B;">คิวจองทั้งหมดในระบบ</h3>
                 </div>
-                <div id="adminBookingsTableBody" style="display:flex; flex-direction:column; gap:10px;">กำลังโหลด...</div>
+                <div id="adminBookingsTableBody" style="display:flex; flex-direction:column; gap:10px;">กำลังโหลด...
+                </div>
             </div>
-            
+
             <!-- Special View -->
             <div id="adminContent-special" class="admin-content-view" style="display:none;">
-                <div class="card" style="background:#fffbeb; border:1px solid #f59e0b; padding:20px; border-radius:12px;">
-                    <h3 style="font-size:18px; color:#b45309; margin-bottom:16px;">⚡ จองแบบแอดมิน (ข้ามเงื่อนไขทุกอย่าง)</h3>
+                <div class="card"
+                    style="background:#fffbeb; border:1px solid #f59e0b; padding:20px; border-radius:12px;">
+                    <h3 style="font-size:18px; color:#b45309; margin-bottom:16px;">⚡ จองแบบแอดมิน (ข้ามเงื่อนไขทุกอย่าง)
+                    </h3>
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
-                        <div><label>วันที่จอง (yyyy-mm-dd)</label><input type="date" id="adminSpecialDate" style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;"></div>
-                        <div><label>ชื่อผู้ใช้งาน / กิจกรรม</label><input type="text" id="adminSpecialName" placeholder="เช่น ชมรมคอรัส" style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;"></div>
+                        <div><label>วันที่จอง (yyyy-mm-dd)</label><input type="date" id="adminSpecialDate"
+                                style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;"></div>
+                        <div><label>ชื่อผู้ใช้งาน / กิจกรรม</label><input type="text" id="adminSpecialName"
+                                placeholder="เช่น ชมรมคอรัส"
+                                style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;"></div>
                         <div>
                             <label>เวลาเริ่ม</label>
-                            <select id="adminSpecialStart" style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
-                                <option value="09:00">09:00</option><option value="10:00">10:00</option><option value="11:00">11:00</option>
-                                <option value="12:00">12:00</option><option value="13:00">13:00</option><option value="14:00">14:00</option>
-                                <option value="15:00">15:00</option><option value="16:00">16:00</option><option value="17:00">17:00</option>
-                                <option value="18:00">18:00</option><option value="19:00">19:00</option><option value="20:00">20:00</option>
-                                <option value="21:00">21:00</option><option value="22:00">22:00</option><option value="23:00">23:00</option>
+                            <select id="adminSpecialStart"
+                                style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
+                                <option value="09:00">09:00</option>
+                                <option value="10:00">10:00</option>
+                                <option value="11:00">11:00</option>
+                                <option value="12:00">12:00</option>
+                                <option value="13:00">13:00</option>
+                                <option value="14:00">14:00</option>
+                                <option value="15:00">15:00</option>
+                                <option value="16:00">16:00</option>
+                                <option value="17:00">17:00</option>
+                                <option value="18:00">18:00</option>
+                                <option value="19:00">19:00</option>
+                                <option value="20:00">20:00</option>
+                                <option value="21:00">21:00</option>
+                                <option value="22:00">22:00</option>
+                                <option value="23:00">23:00</option>
                             </select>
                         </div>
                         <div>
                             <label>เวลาสิ้นสุด</label>
-                            <select id="adminSpecialEnd" style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
-                                <option value="10:00">10:00</option><option value="11:00">11:00</option><option value="12:00">12:00</option>
-                                <option value="13:00">13:00</option><option value="14:00">14:00</option><option value="15:00">15:00</option>
-                                <option value="16:00">16:00</option><option value="17:00">17:00</option><option value="18:00">18:00</option>
-                                <option value="19:00">19:00</option><option value="20:00">20:00</option><option value="21:00">21:00</option>
-                                <option value="22:00">22:00</option><option value="23:00">23:00</option><option value="00:00">00:00</option>
+                            <select id="adminSpecialEnd"
+                                style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
+                                <option value="10:00">10:00</option>
+                                <option value="11:00">11:00</option>
+                                <option value="12:00">12:00</option>
+                                <option value="13:00">13:00</option>
+                                <option value="14:00">14:00</option>
+                                <option value="15:00">15:00</option>
+                                <option value="16:00">16:00</option>
+                                <option value="17:00">17:00</option>
+                                <option value="18:00">18:00</option>
+                                <option value="19:00">19:00</option>
+                                <option value="20:00">20:00</option>
+                                <option value="21:00">21:00</option>
+                                <option value="22:00">22:00</option>
+                                <option value="23:00">23:00</option>
+                                <option value="00:00">00:00</option>
                             </select>
                         </div>
                     </div>
-                    <button id="adminBtnSpecialBook" style="background:#f59e0b; color:#fff; font-weight:bold; padding:12px; border:none; width:100%; border-radius:8px; cursor:pointer;" onclick="window.submitAdminSpecialBooking()">✅ ยืนยันแทรกคิวจอง</button>
+                    <button id="adminBtnSpecialBook"
+                        style="background:#f59e0b; color:#fff; font-weight:bold; padding:12px; border:none; width:100%; border-radius:8px; cursor:pointer;"
+                        onclick="window.submitAdminSpecialBooking()">✅ ยืนยันแทรกคิวจอง</button>
                 </div>
             </div>
         </div>
@@ -1753,7 +1819,7 @@
             else if (viewId === 'toolsView') tabs[4].classList.add('active');
             else if (viewId === 'adminPanelView') {
                 const admTab = document.getElementById('adminNavTab');
-                if(admTab) admTab.classList.add('active');
+                if (admTab) admTab.classList.add('active');
                 if (currentUser && ADMIN_EMAILS.includes(currentUser.email)) {
                     if (typeof window.loadAdminData === 'function') {
                         window.loadAdminData();
@@ -2654,10 +2720,10 @@
                 const totalUsers = usersSnap.size;
                 let bannedCount = 0;
                 usersSnap.forEach(d => { if ((d.data().demerits || 0) > 0) bannedCount++; });
-                
+
                 // Count Bookings
                 const bookingsSnap = await getDocs(collection(db, "bookings"));
-                
+
                 document.getElementById('adminStatTotalUsers').textContent = totalUsers;
                 document.getElementById('adminStatBannedUsers').textContent = bannedCount;
                 document.getElementById('adminStatTotalBookings').textContent = bookingsSnap.size;
@@ -2679,7 +2745,7 @@
                     const name = u.displayName || 'Unknown';
                     const nick = u.nickname ? ` (${u.nickname})` : '';
                     const demeritHtml = demerits > 0 ? `<span style="color:#ef4444;font-weight:bold;">${demerits} แต้ม</span>` : `<span style="color:#10b981;">ปกติดี</span>`;
-                    
+
                     html += `<tr style="border-bottom:1px solid #e2e8f0;">
                         <td style="padding:12px;">${u.email}<br><small style="color:#9ca3af;">${role}</small></td>
                         <td style="padding:12px;">${name}${nick}</td>
@@ -2741,10 +2807,10 @@
                 // Fetch sorted by date only. We sort by start locally to avoid requiring composite indexing.
                 const q = query(collection(db, "bookings"), orderBy("date", "desc"));
                 const snap = await getDocs(q);
-                
+
                 let bks = [];
                 snap.forEach(d => bks.push({ id: d.id, ...d.data() }));
-                
+
                 // Secondary sort locally
                 bks.sort((a, b) => {
                     if (a.date === b.date) {
@@ -2756,7 +2822,7 @@
                 let html = '';
                 bks.forEach(b => {
                     let st = b.status === "checked_in" ? '<span style="color:#10b981;font-weight:bold;">เซ็คอินแล้ว</span>' :
-                             (b.status === "pending" || !b.status) ? '<span style="color:#f59e0b;font-weight:bold;">รอการใช้งาน</span>' : b.status;
+                        (b.status === "pending" || !b.status) ? '<span style="color:#f59e0b;font-weight:bold;">รอการใช้งาน</span>' : b.status;
                     html += `
                     <div style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:12px; display:flex; justify-content:space-between; align-items:center;">
                         <div>
@@ -2768,7 +2834,7 @@
                     </div>`;
                 });
                 container.innerHTML = html || 'ไม่มีการจองในระบบ';
-            } catch(e) { container.innerHTML = `<span style="color:red;">Error: ${e.message}</span>`; }
+            } catch (e) { container.innerHTML = `<span style="color:red;">Error: ${e.message}</span>`; }
         }
 
         window.adminDeleteBooking = async (bid) => {
@@ -2787,12 +2853,12 @@
             const name = document.getElementById('adminSpecialName').value.trim();
             const start = document.getElementById('adminSpecialStart').value;
             const end = document.getElementById('adminSpecialEnd').value;
-            
+
             if (!date || !name || !start || !end) {
                 Swal.fire('ข้อมูลไม่ครบ', 'กรุณากรอกวันที่ ชื่อผู้จอง และเวลาให้ครบ', 'warning');
                 return;
             }
-            
+
             try {
                 await addDoc(collection(db, "bookings"), {
                     name: name,
@@ -2807,7 +2873,7 @@
                 });
                 Swal.fire('สำเร็จ', 'แทรกคิวจองลงระบบแล้ว', 'success');
                 document.getElementById('adminSpecialName').value = '';
-                if(document.getElementById('adminSpecialDate')) document.getElementById('adminSpecialDate').value = '';
+                if (document.getElementById('adminSpecialDate')) document.getElementById('adminSpecialDate').value = '';
             } catch (e) { Swal.fire('ผิดพลาด', e.message, 'error'); }
         };
 

@@ -331,7 +331,7 @@
         history.replaceState(null, '', 'login.html');
         window.addEventListener('popstate', () => { window.location.replace('public_page.html'); });
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, setPersistence, browserSessionPersistence, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, setPersistence, browserLocalPersistence, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = { apiKey: "AIzaSyCQWDZabKe7vG6Z8rT-g2gb0799cSbyGiw", authDomain: "booking-kankrao.firebaseapp.com", projectId: "booking-kankrao", storageBucket: "booking-kankrao.firebasestorage.app", messagingSenderId: "985093751532", appId: "1:985093751532:web:e1f4710941e593e902dbc9", measurementId: "G-X418WYDZ8H" };
@@ -352,8 +352,8 @@
             btnGoogle.innerHTML = `<span class="loader"></span><span>กำลังนำไปยัง Google...</span>`;
             hideMsg();
             try {
-                // 🔐 บังคับให้เบราว์เซอร์จำสถานะการล็อกอิน (แก้ปัญหา State หาย)
-                await setPersistence(auth, browserSessionPersistence);
+                // 🔐 บังคับให้เบราว์เซอร์จำสถานะการล็อกอินแบบถาวร (Local Persistence)
+                await setPersistence(auth, browserLocalPersistence);
 
                 const result = await signInWithPopup(auth, googleProvider);
                 const user = result.user;

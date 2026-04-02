@@ -1118,7 +1118,8 @@
             <button class="spa-tab" onclick="switchView('dashboardView')">การจองของฉัน</button>
             <button class="spa-tab" onclick="switchView('featuresView')">คุณสมบัติ</button>
             <button class="spa-tab" onclick="switchView('toolsView')">วิธีการจอง</button>
-            <button class="spa-tab" onclick="window.location.href='admin.html';" id="adminNavTab" style="display:none; color:#F59E0B; font-weight:700;">⚙️ แผงควบคุมแอดมิน</button>
+            <button class="spa-tab" onclick="window.location.href='admin.html';" id="adminNavTab"
+                style="display:none; color:#F59E0B; font-weight:700;">⚙️ แผงควบคุมแอดมิน</button>
             <button class="spa-tab mobile-only" id="mobileProfileBtn" onclick="window.location.href='profile.html'">👤
                 บัญชีส่วนตัว (โปรไฟล์)</button>
             <button class="spa-tab mobile-only" onclick="window.handleLogout()"
@@ -1251,10 +1252,14 @@
                 <p style="color: var(--text-muted); font-size: 15px; margin-bottom: 16px;">อาคารกิจกรรมนักศึกษา
                     มหาวิทยาลัยอุบลราชธานี<br />(กรุณาอยู่ในรัศมี 200 เมตร เพื่อเช็คอินผ่านระบบจอง)</p>
                 <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-                    <button onclick="switchView('homeView'); window.scrollTo({top:0, behavior:'smooth'});" style="background: linear-gradient(135deg, #10B981, #059669); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+                    <button onclick="switchView('homeView'); window.scrollTo({top:0, behavior:'smooth'});"
+                        style="background: linear-gradient(135deg, #10B981, #059669); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); transition: all 0.3s;"
+                        onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
                         ➕ สร้างการจอง
                     </button>
-                    <button onclick="switchView('dashboardView'); window.scrollTo({top:0, behavior:'smooth'});" style="background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+                    <button onclick="switchView('dashboardView'); window.scrollTo({top:0, behavior:'smooth'});"
+                        style="background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); transition: all 0.3s;"
+                        onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
                         📋 ตรวจสอบการจอง
                     </button>
                 </div>
@@ -1278,10 +1283,14 @@
             <div class="sec-sub">ตรวจสอบสถานะ ทำการเช็คอิน หรือยกเลิกการจองห้องของคุณ</div>
 
             <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px;">
-                <button onclick="switchView('homeView'); window.scrollTo({top:0, behavior:'smooth'});" style="background: linear-gradient(135deg, #10B981, #059669); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+                <button onclick="switchView('homeView'); window.scrollTo({top:0, behavior:'smooth'});"
+                    style="background: linear-gradient(135deg, #10B981, #059669); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); transition: all 0.3s;"
+                    onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
                     ➕ สร้างการจอง
                 </button>
-                <button onclick="switchView('mapView'); window.scrollTo({top:0, behavior:'smooth'});" style="background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+                <button onclick="switchView('mapView'); window.scrollTo({top:0, behavior:'smooth'});"
+                    style="background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); transition: all 0.3s;"
+                    onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
                     🗺️ ดูแผนที่
                 </button>
             </div>
