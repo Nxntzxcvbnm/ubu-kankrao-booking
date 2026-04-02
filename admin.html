@@ -1118,6 +1118,7 @@
             <button class="spa-tab" onclick="switchView('dashboardView')">การจองของฉัน</button>
             <button class="spa-tab" onclick="switchView('featuresView')">คุณสมบัติ</button>
             <button class="spa-tab" onclick="switchView('toolsView')">วิธีการจอง</button>
+            <button class="spa-tab" onclick="switchView('adminPanelView')" id="adminNavTab" style="display:none; color:#F59E0B; font-weight:700;">⚙️ แผงควบคุมแอดมิน</button>
             <button class="spa-tab mobile-only" id="mobileProfileBtn" onclick="window.location.href='profile.html'">👤
                 บัญชีส่วนตัว (โปรไฟล์)</button>
             <button class="spa-tab mobile-only" onclick="window.handleLogout()"
@@ -1247,8 +1248,16 @@
                 <h1
                     style="color: var(--primary-dark); margin-bottom: 8px; font-size: clamp(20px, 5vw, 24px); font-weight: 600;">
                     📍 พิกัดจุดเช็คอิน</h1>
-                <p style="color: var(--text-muted); font-size: 15px;">อาคารกิจกรรมนักศึกษา
+                <p style="color: var(--text-muted); font-size: 15px; margin-bottom: 16px;">อาคารกิจกรรมนักศึกษา
                     มหาวิทยาลัยอุบลราชธานี<br />(กรุณาอยู่ในรัศมี 200 เมตร เพื่อเช็คอินผ่านระบบจอง)</p>
+                <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                    <button onclick="switchView('homeView'); window.scrollTo({top:0, behavior:'smooth'});" style="background: linear-gradient(135deg, #10B981, #059669); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+                        ➕ สร้างการจอง
+                    </button>
+                    <button onclick="switchView('dashboardView'); window.scrollTo({top:0, behavior:'smooth'});" style="background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+                        📋 ตรวจสอบการจอง
+                    </button>
+                </div>
             </div>
 
             <div
@@ -1266,19 +1275,19 @@
         <div class="section-block">
             <div class="sec-label">My Bookings</div>
             <div class="sec-title">📅 การจองของฉัน</div>
-            <div class="sec-sub">รายการจองของคุณ และตารางคิวห้องชมรมทั้งหมด</div>
-
-
-
-            <!-- Global Timeline Info -->
-            <div class="global-timeline-box" style="margin-bottom: 24px; text-align: left;">
-                <h4 style="font-size: 15px; color: var(--primary-dark); margin-bottom: 12px; font-weight: 600;">⏱️
-                    สถานะการจองห้องวันนี้</h4>
-                <div class="timetable-grid" id="globalTimetableGrid"></div>
+            <div class="sec-sub">ตรวจสอบสถานะ ทำการเช็คอิน หรือยกเลิกการจองห้องของคุณ</div>
+            
+            <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px;">
+                <button onclick="switchView('homeView'); window.scrollTo({top:0, behavior:'smooth'});" style="background: linear-gradient(135deg, #10B981, #059669); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+                    ➕ สร้างการจอง
+                </button>
+                <button onclick="switchView('mapView'); window.scrollTo({top:0, behavior:'smooth'});" style="background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+                    🗺️ ดูแผนที่
+                </button>
             </div>
 
             <h4
-                style="font-size: 15px; color: var(--primary-dark); margin-bottom: 12px; margin-top:20px; font-weight: 600; text-align: left;">
+                style="font-size: 15px; color: var(--primary-dark); margin-bottom: 12px; font-weight: 600; text-align: left;">
                 📋 รายการของฉัน</h4>
             <div id="bookingList" class="booking-dashboard"></div>
         </div>
@@ -1416,25 +1425,25 @@
                                 <td style="padding:12px 16px;"><span
                                         style="background:#FEE2E2;color:#EF4444;padding:3px 10px;border-radius:20px;font-weight:600;">-2
                                         แต้ม</span></td>
-                                <td style="padding:12px 16px;color:#374151;">10 นาที</td>
+                                <td style="padding:12px 16px;color:#374151;">25 นาที</td>
                             </tr>
                             <tr style="border-bottom:1px solid #F1F5F9;">
                                 <td style="padding:12px 16px;"><span
                                         style="background:#FEE2E2;color:#DC2626;padding:3px 10px;border-radius:20px;font-weight:600;">-3
                                         แต้ม</span></td>
-                                <td style="padding:12px 16px;color:#374151;">15 นาที</td>
+                                <td style="padding:12px 16px;color:#374151;">2 ชั่วโมง 5 นาที</td>
                             </tr>
                             <tr style="border-bottom:1px solid #F1F5F9;">
                                 <td style="padding:12px 16px;"><span
                                         style="background:#FFE4E6;color:#BE123C;padding:3px 10px;border-radius:20px;font-weight:600;">-4
                                         แต้ม</span></td>
-                                <td style="padding:12px 16px;color:#374151;">20 นาที</td>
+                                <td style="padding:12px 16px;color:#374151;">10 ชั่วโมง 25 นาที</td>
                             </tr>
                             <tr>
                                 <td style="padding:12px 16px;"><span
                                         style="background:#F3E8FF;color:#7C3AED;padding:3px 10px;border-radius:20px;font-weight:600;">-N
                                         แต้ม</span></td>
-                                <td style="padding:12px 16px;color:#374151;">N × 5 นาที</td>
+                                <td style="padding:12px 16px;color:#374151;">5 ยกกำลัง N นาที</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1467,9 +1476,9 @@
                     style="display:inline-block;background:rgba(79,70,229,0.08);border:1px solid rgba(99,102,241,0.2);color:#4F46E5;padding:5px 16px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;">
                     วิธีใช้งาน</div>
                 <h2 style="font-size:clamp(20px,4vw,28px);font-weight:700;color:#1E293B;margin-bottom:8px;">
-                    เริ่มต้นได้ใน 4 ขั้นตอน</h2>
+                    เริ่มต้นง่ายๆ ใน 3 ขั้นตอน</h2>
                 <p style="color:#64748B;font-size:14px;max-width:420px;margin:0 auto;">ไม่ต้องติดตั้งแอป
-                    ใช้ได้ทันทีผ่านบัญชีมหาวิทยาลัย</p>
+                    จัดการการจองได้อย่างรวดเร็ว</p>
             </div>
 
             <div style="display:flex;flex-direction:column;gap:0;max-width:700px;margin:0 auto 56px;">
@@ -1480,21 +1489,6 @@
                     <div
                         style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0;box-shadow:0 0 0 6px rgba(79,70,229,0.1);">
                         1</div>
-                    <div>
-                        <div style="font-size:17px;font-weight:600;color:#1E293B;margin-bottom:6px;">
-                            เข้าสู่ระบบด้วยบัญชี UBU</div>
-                        <div style="font-size:14px;color:#64748B;line-height:1.7;">ใช้อีเมล <strong
-                                style="color:#4F46E5;">@ubu.ac.th</strong> ผ่าน Google Sign-in ได้เลยทันที
-                            ไม่ต้องสมัครใหม่ หรือจดจำรหัสผ่านแยกต่างหาก</div>
-                    </div>
-                </div>
-                <div style="display:flex;gap:24px;align-items:flex-start;padding:28px 0;position:relative;">
-                    <div
-                        style="position:absolute;left:22px;top:76px;bottom:0;width:2px;background:linear-gradient(to bottom,rgba(79,70,229,0.3),transparent);">
-                    </div>
-                    <div
-                        style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0;box-shadow:0 0 0 6px rgba(79,70,229,0.1);">
-                        2</div>
                     <div>
                         <div style="font-size:17px;font-weight:600;color:#1E293B;margin-bottom:6px;">
                             เลือกวันที่ต้องการใช้ห้อง</div>
@@ -1508,7 +1502,7 @@
                     </div>
                     <div
                         style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0;box-shadow:0 0 0 6px rgba(79,70,229,0.1);">
-                        3</div>
+                        2</div>
                     <div>
                         <div style="font-size:17px;font-weight:600;color:#1E293B;margin-bottom:6px;">ยืนยันการจอง</div>
                         <div style="font-size:14px;color:#64748B;line-height:1.7;">เลือกช่วงเวลา ระบุชื่อวง (ถ้ามี)
@@ -1520,7 +1514,7 @@
                 <div style="display:flex;gap:24px;align-items:flex-start;padding:28px 0;">
                     <div
                         style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0;box-shadow:0 0 0 6px rgba(79,70,229,0.1);">
-                        4</div>
+                        3</div>
                     <div>
                         <div style="font-size:17px;font-weight:600;color:#1E293B;margin-bottom:6px;">เช็คอินเมื่อมาถึง
                         </div>
@@ -1581,6 +1575,104 @@
         </div>
     </div> <!-- End toolsView -->
 
+    <!-- ========== ADMIN PANEL VIEW ========== -->
+    <div id="adminPanelView" class="spa-view">
+        <div style="background: linear-gradient(135deg, #1E1B4B 0%, #3730A3 40%, #4F46E5 80%); padding: 52px 24px 40px; text-align: center; color: #fff; position:relative; overflow:hidden;">
+            <div style="position:relative;">
+                <div style="display:inline-block;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);padding:6px 18px;border-radius:50px;font-size:13px;margin-bottom:20px;">⚙️ Admin Only</div>
+                <h1 style="font-size:clamp(22px,5vw,36px);font-weight:700;margin-bottom:12px;">แผงคุมระบบ (Admin Dashboard)</h1>
+                <p style="color:rgba(255,255,255,0.75);font-size:15px;max-width:500px;margin:0 auto;">จัดการข้อมูลของระบบ, สมาชิก, และการจองทั้งหมด</p>
+                <div style="margin-top:20px;">
+                    <button onclick="switchView('homeView');" style="background: #10B981; color: white; border: none; padding: 10px 24px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer;">
+                        🔙 กลับสู่หน้าผู้ใช้ทั่วไป
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section-block" style="max-width: 1000px; margin-top: 20px;">
+            <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom: 24px;">
+                <button onclick="window.switchAdminTab('stats')" id="adminTab-stats" style="padding:10px 20px; border-radius:20px; font-weight:bold; cursor:pointer; background:#4F46E5; color:white; border:none;">📊 สถิติภาพรวม</button>
+                <button onclick="window.switchAdminTab('users')" id="adminTab-users" style="padding:10px 20px; border-radius:20px; font-weight:bold; cursor:pointer; background:#e2e8f0; color:#333; border:none;">👥 จัดการผู้ใช้</button>
+                <button onclick="window.switchAdminTab('bookings')" id="adminTab-bookings" style="padding:10px 20px; border-radius:20px; font-weight:bold; cursor:pointer; background:#e2e8f0; color:#333; border:none;">📅 จัดการการจอง</button>
+                <button onclick="window.switchAdminTab('special')" id="adminTab-special" style="padding:10px 20px; border-radius:20px; font-weight:bold; cursor:pointer; background:#e2e8f0; color:#333; border:none;">⭐ จองแบบพิเศษ</button>
+            </div>
+
+            <!-- Stats View -->
+            <div id="adminContent-stats" class="admin-content-view">
+                <div style="display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px;">
+                    <div style="flex:1; background:#f0f9ff; padding:20px; border-radius:12px; border:1px solid #bae6fd; text-align:center;">
+                        <h4 style="color:#0ea5e9; margin-bottom:8px;">ผู้ใช้ทั้งหมด</h4>
+                        <div id="adminStatTotalUsers" style="font-size:32px; font-weight:bold; color:#0369a1;">...</div>
+                    </div>
+                    <div style="flex:1; background:#fdf4ff; padding:20px; border-radius:12px; border:1px solid #fbcfe8; text-align:center;">
+                        <h4 style="color:#d946ef; margin-bottom:8px;">คิวจองในระบบ</h4>
+                        <div id="adminStatTotalBookings" style="font-size:32px; font-weight:bold; color:#86198f;">...</div>
+                    </div>
+                </div>
+                <div style="background:#fef2f2; padding:20px; border-radius:12px; border:1px solid #fecaca; text-align:center;">
+                    <h4 style="color:#ef4444; margin-bottom:8px;">ผู้ที่โดนตักเตือน (มีแต้มผิด)</h4>
+                    <div id="adminStatBannedUsers" style="font-size:32px; font-weight:bold; color:#b91c1c;">...</div>
+                </div>
+            </div>
+
+            <!-- Users View -->
+            <div id="adminContent-users" class="admin-content-view" style="display:none;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                    <h3 style="font-size:18px; color:#1E1B4B;">รายชื่อสมาชิกทั้งหมด</h3>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table style="width:100%; border-collapse:collapse; font-size:14px; text-align:left;">
+                        <thead style="background:#f1f5f9; border-bottom:2px solid #e2e8f0;">
+                            <tr><th style="padding:12px;">อีเมล</th><th style="padding:12px;">ชื่อ / วง</th><th style="padding:12px;">แต้มผิด</th><th style="padding:12px;">จัดการ</th></tr>
+                        </thead>
+                        <tbody id="adminUsersTableBody"><tr><td colspan="4" style="text-align:center; padding:20px;">กำลังโหลด...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Bookings View -->
+            <div id="adminContent-bookings" class="admin-content-view" style="display:none;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                    <h3 style="font-size:18px; color:#1E1B4B;">คิวจองทั้งหมดในระบบ</h3>
+                </div>
+                <div id="adminBookingsTableBody" style="display:flex; flex-direction:column; gap:10px;">กำลังโหลด...</div>
+            </div>
+            
+            <!-- Special View -->
+            <div id="adminContent-special" class="admin-content-view" style="display:none;">
+                <div class="card" style="background:#fffbeb; border:1px solid #f59e0b; padding:20px; border-radius:12px;">
+                    <h3 style="font-size:18px; color:#b45309; margin-bottom:16px;">⚡ จองแบบแอดมิน (ข้ามเงื่อนไขทุกอย่าง)</h3>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+                        <div><label>วันที่จอง (yyyy-mm-dd)</label><input type="date" id="adminSpecialDate" style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;"></div>
+                        <div><label>ชื่อผู้ใช้งาน / กิจกรรม</label><input type="text" id="adminSpecialName" placeholder="เช่น ชมรมคอรัส" style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;"></div>
+                        <div>
+                            <label>เวลาเริ่ม</label>
+                            <select id="adminSpecialStart" style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
+                                <option value="09:00">09:00</option><option value="10:00">10:00</option><option value="11:00">11:00</option>
+                                <option value="12:00">12:00</option><option value="13:00">13:00</option><option value="14:00">14:00</option>
+                                <option value="15:00">15:00</option><option value="16:00">16:00</option><option value="17:00">17:00</option>
+                                <option value="18:00">18:00</option><option value="19:00">19:00</option><option value="20:00">20:00</option>
+                                <option value="21:00">21:00</option><option value="22:00">22:00</option><option value="23:00">23:00</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>เวลาสิ้นสุด</label>
+                            <select id="adminSpecialEnd" style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
+                                <option value="10:00">10:00</option><option value="11:00">11:00</option><option value="12:00">12:00</option>
+                                <option value="13:00">13:00</option><option value="14:00">14:00</option><option value="15:00">15:00</option>
+                                <option value="16:00">16:00</option><option value="17:00">17:00</option><option value="18:00">18:00</option>
+                                <option value="19:00">19:00</option><option value="20:00">20:00</option><option value="21:00">21:00</option>
+                                <option value="22:00">22:00</option><option value="23:00">23:00</option><option value="00:00">00:00</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button id="adminBtnSpecialBook" style="background:#f59e0b; color:#fff; font-weight:bold; padding:12px; border:none; width:100%; border-radius:8px; cursor:pointer;" onclick="window.submitAdminSpecialBooking()">✅ ยืนยันแทรกคิวจอง</button>
+                </div>
+            </div>
+        </div>
+    </div> <!-- End adminPanelView -->
+
     <!-- ========== FOOTER ========== -->
     <footer style="text-align:center;padding:30px 24px;font-size:13px;color:#9CA3AF;">
         <p>© 2026 มหาวิทยาลัยอุบลราชธานี · สร้างเพื่อนักศึกษา UBU</p>
@@ -1632,7 +1724,7 @@
 
         // ========== AUTH GUARD ==========
         // Fast redirect: if no session flag, go to login immediately
-        if (!sessionStorage.getItem('ubu_authed')) {
+        if (!localStorage.getItem('ubu_authed')) {
             window.location.replace('login.html');
         }
 
@@ -1659,6 +1751,18 @@
             }
             else if (viewId === 'featuresView') tabs[3].classList.add('active');
             else if (viewId === 'toolsView') tabs[4].classList.add('active');
+            else if (viewId === 'adminPanelView') {
+                const admTab = document.getElementById('adminNavTab');
+                if(admTab) admTab.classList.add('active');
+                if (currentUser && ADMIN_EMAILS.includes(currentUser.email)) {
+                    if (typeof window.loadAdminData === 'function') {
+                        window.loadAdminData();
+                        if (!document.querySelector('.admin-content-view[style*="display: block"]')) {
+                            window.switchAdminTab('stats');
+                        }
+                    }
+                }
+            }
 
             // Ensure we scroll to top on view change
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1702,7 +1806,7 @@
                 }
                 showMsg("✅ ยินดีต้อนรับ " + (user.displayName || user.email.split('@')[0]), "success");
                 await upsertUserProfile(user);
-                sessionStorage.setItem('ubu_authed', 'true');
+                localStorage.setItem('ubu_authed', 'true');
                 setTimeout(() => { closeLoginModal(); }, 800);
             } catch (err) {
                 const msgs = { 'auth/popup-closed-by-user': '⚠️ ปิดหน้าต่างก่อนล็อกอินเสร็จ', 'auth/popup-blocked': '⚠️ Popup ถูกบล็อก', 'auth/network-request-failed': '❌ ไม่มีอินเทอร์เน็ต' };
@@ -1728,7 +1832,7 @@
 
             if (user && user.email && user.email.endsWith('@ubu.ac.th')) {
                 currentUser = user;
-                sessionStorage.setItem('ubu_authed', 'true');
+                localStorage.setItem('ubu_authed', 'true');
                 spaTabs.style.display = 'flex'; // Show tabs
 
                 // Listen to User Profile changes for Demerits logic
@@ -1774,6 +1878,11 @@
                 document.getElementById('userName').value = user.displayName || user.email.split('@')[0];
                 await autoFillBandName(user.uid);
 
+                if (ADMIN_EMAILS.includes(user.email)) {
+                    const admTab = document.getElementById('adminNavTab');
+                    if (admTab) admTab.style.display = 'block';
+                }
+
                 // ✅ Re-init timetable after auth confirmed (fixes blank slots on login)
                 const dateEl = document.getElementById('bookDate');
                 const selectedDate = dateEl ? dateEl.value : null;
@@ -1798,7 +1907,7 @@
                 document.getElementById('userName').placeholder = 'กรุณาเข้าสู่ระบบก่อน...';
 
                 // Not authenticated — redirect to login
-                sessionStorage.removeItem('ubu_authed');
+                localStorage.removeItem('ubu_authed');
                 window.location.replace('login.html');
             }
         });
@@ -1827,7 +1936,7 @@
 
         window.handleLogout = async () => {
             const res = await Swal.fire({ title: 'ออกจากระบบ?', text: 'คุณต้องการออกจากระบบใช่หรือไม่?', icon: 'question', showCancelButton: true, confirmButtonColor: '#EF4444', cancelButtonColor: '#9CA3AF', confirmButtonText: 'ออกจากระบบ', cancelButtonText: 'ยกเลิก' });
-            if (res.isConfirmed) { sessionStorage.removeItem('ubu_authed'); await signOut(auth); window.location.replace('login.html'); }
+            if (res.isConfirmed) { localStorage.removeItem('ubu_authed'); await signOut(auth); window.location.replace('login.html'); }
         };
 
         // ========== TIMETABLE ==========
@@ -2029,14 +2138,22 @@
             // Timeout Check
             let isBanned = false;
             let banTimeRemaining = 0;
+            let formattedBanTime = "";
             if (globalUserProfile && (globalUserProfile.demerits || 0) > 0) {
-                const limitMinutes = globalUserProfile.demerits * 5;
+                const limitMinutes = Math.pow(5, globalUserProfile.demerits);
                 if (globalUserProfile.last_offense_time) {
                     const offenseTime = globalUserProfile.last_offense_time.toDate();
                     const diffMins = (new Date() - offenseTime) / 60000;
                     if (diffMins < limitMinutes) {
                         isBanned = true;
                         banTimeRemaining = Math.ceil(limitMinutes - diffMins);
+                        if (banTimeRemaining >= 60) {
+                            const h = Math.floor(banTimeRemaining / 60);
+                            const m = banTimeRemaining % 60;
+                            formattedBanTime = m > 0 ? `${h} ชั่วโมง ${m} นาที` : `${h} ชั่วโมง`;
+                        } else {
+                            formattedBanTime = `${banTimeRemaining} นาที`;
+                        }
                     }
                 }
             }
@@ -2045,7 +2162,7 @@
             btnSave.disabled = !allValid; btnSave.style.opacity = allValid ? '1' : '0.5'; btnSave.style.cursor = allValid ? 'pointer' : 'not-allowed';
 
             if (isBanned) {
-                btnHint.textContent = `🚫 ระงับการจองชั่วคราว (${globalUserProfile.demerits} แต้มผิด) รออีก ${banTimeRemaining} นาที`;
+                btnHint.textContent = `🚫 ระงับการจองชั่วคราว (${globalUserProfile.demerits} แต้มผิด) รออีก ${formattedBanTime}`;
                 btnHint.style.display = 'block';
                 btnHint.style.color = '#EF4444';
             }
@@ -2133,7 +2250,21 @@
                 });
 
                 if (hasActive) {
-                    await Swal.fire('ไม่สามารถจองได้', 'คุณมีคิวจองที่กำลังใช้งาน/ยังมาไม่ถึงอยู่แล้ว<br><small>(จองได้ทีละ 1 คิว เมื่อคิวเดิมหมดเวลาแล้วถึงจะจองใหม่ได้)</small>', 'warning');
+                    await Swal.fire({
+                        title: 'ไม่สามารถจองได้',
+                        html: 'คุณมีคิวจองที่กำลังใช้งาน/ยังมาไม่ถึงอยู่แล้ว<br><small>(จองได้ทีละ 1 คิว เมื่อคิวเดิมหมดเวลาแล้วถึงจะจองใหม่ได้)</small>',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'รับทราบ',
+                        cancelButtonText: '📋 ดูรายการจอง',
+                        confirmButtonColor: '#9CA3AF',
+                        cancelButtonColor: '#4F46E5'
+                    }).then((result) => {
+                        if (result.dismiss === Swal.DismissReason.cancel) {
+                            switchView('dashboardView');
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }
+                    });
                     btnSave.textContent = '✅ ยืนยันการจอง'; isSaving = false; return;
                 }
 
@@ -2369,7 +2500,6 @@
                                 if (res.isConfirmed) {
                                     try {
                                         await deleteDoc(doc(db, "bookings", b.id));
-                                        Swal.fire({ title: 'ลบการจองแล้ว!', icon: 'success', timer: 1500, showConfirmButton: false });
                                     } catch (e) { Swal.fire('ผิดพลาด', e.message, 'error'); }
                                 }
                             };
@@ -2482,10 +2612,203 @@
                     Swal.fire({
                         title: 'อยู่นอกระยะเช็คอิน',
                         html: `❌ คุณอยู่ห่างจากเป้าหมาย <b>${distText}</b><br><small style="color:#EF4444;">(ต้องอยู่ในระยะ 200 เมตรจากอาคารกิจกรรมนักศึกษา)</small>`,
-                        icon: 'error'
+                        icon: 'error',
+                        showCancelButton: true,
+                        confirmButtonText: 'รับทราบ',
+                        cancelButtonText: '🗺️ ดูแผนที่พิกัด',
+                        confirmButtonColor: '#9CA3AF',
+                        cancelButtonColor: '#4F46E5'
+                    }).then((result) => {
+                        if (result.dismiss === Swal.DismissReason.cancel) {
+                            switchView('mapView');
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }
                     });
                 }
             }, (err) => { Swal.fire('ดึงพิกัดไม่สำเร็จ', (err.code === 1 ? 'คุณปฏิเสธการเข้าถึง GPS' : err.message), 'error'); }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
+        };
+
+        // ==========================================
+        //         ADMIN PANEL LOGIC SECTION
+        // ==========================================
+        window.switchAdminTab = (tabId) => {
+            document.querySelectorAll('.admin-content-view').forEach(el => el.style.display = 'none');
+            document.getElementById('adminContent-' + tabId).style.display = 'block';
+            document.querySelectorAll('[id^="adminTab-"]').forEach(btn => {
+                btn.style.background = '#e2e8f0';
+                btn.style.color = '#333';
+            });
+            const activeBtn = document.getElementById('adminTab-' + tabId);
+            activeBtn.style.background = '#4F46E5';
+            activeBtn.style.color = 'white';
+
+            if (tabId === 'users') fetchAdminUsers();
+            else if (tabId === 'bookings') fetchAdminBookings();
+        };
+
+        window.loadAdminData = async () => {
+            if (!currentUser || !ADMIN_EMAILS.includes(currentUser.email)) return;
+            try {
+                // Count Users
+                const usersSnap = await getDocs(collection(db, "users"));
+                const totalUsers = usersSnap.size;
+                let bannedCount = 0;
+                usersSnap.forEach(d => { if ((d.data().demerits || 0) > 0) bannedCount++; });
+                
+                // Count Bookings
+                const bookingsSnap = await getDocs(collection(db, "bookings"));
+                
+                document.getElementById('adminStatTotalUsers').textContent = totalUsers;
+                document.getElementById('adminStatBannedUsers').textContent = bannedCount;
+                document.getElementById('adminStatTotalBookings').textContent = bookingsSnap.size;
+            } catch (e) { console.error('Error loading admin stats:', e); }
+        };
+
+        // --- USERS MANAGEMENT ---
+        async function fetchAdminUsers() {
+            const tbody = document.getElementById('adminUsersTableBody');
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:20px;">กำลังโหลด...</td></tr>';
+            try {
+                const q = query(collection(db, "users"), orderBy("lastLoginAt", "desc"));
+                const snap = await getDocs(q);
+                let html = '';
+                snap.forEach(docSnap => {
+                    const u = docSnap.data();
+                    const demerits = u.demerits || 0;
+                    const role = ADMIN_EMAILS.includes(u.email) ? '<span style="color:#8B5CF6;font-weight:bold;">Admin</span>' : 'Student';
+                    const name = u.displayName || 'Unknown';
+                    const nick = u.nickname ? ` (${u.nickname})` : '';
+                    const demeritHtml = demerits > 0 ? `<span style="color:#ef4444;font-weight:bold;">${demerits} แต้ม</span>` : `<span style="color:#10b981;">ปกติดี</span>`;
+                    
+                    html += `<tr style="border-bottom:1px solid #e2e8f0;">
+                        <td style="padding:12px;">${u.email}<br><small style="color:#9ca3af;">${role}</small></td>
+                        <td style="padding:12px;">${name}${nick}</td>
+                        <td style="padding:12px;">${demeritHtml}</td>
+                        <td style="padding:12px; display:flex; gap:6px;">
+                            <button onclick="window.adminEditUser('${docSnap.id}', '${u.nickname || ''}')" style="padding:4px 8px; border-radius:4px; border:none; background:#3b82f6; color:#fff; cursor:pointer; font-size:12px;">แก้ไขผู้ใช้</button>
+                            <button onclick="window.adminEditDemerits('${docSnap.id}', ${demerits}, '${u.email}')" style="padding:4px 8px; border-radius:4px; border:none; background:#f59e0b; color:#fff; cursor:pointer; font-size:12px;">ปรับแต้มผิด</button>
+                        </td>
+                    </tr>`;
+                });
+                tbody.innerHTML = html || '<tr><td colspan="4" style="text-align:center;">ไม่มีข้อมูลผู้ใช้</td></tr>';
+            } catch (e) {
+                tbody.innerHTML = `<tr><td colspan="4" style="color:red; text-align:center;">${e.message}</td></tr>`;
+            }
+        }
+
+        window.adminEditDemerits = async (uid, currentDemerits, email) => {
+            const { value: newVal } = await Swal.fire({
+                title: 'จัดการแต้มผิด',
+                text: `บัญชี: ${email} (แต้มผิดปัจจุบัน: ${currentDemerits})`,
+                input: 'number',
+                inputLabel: 'ระบุแต้มผิดใหม่ (0 คือปกติดี/ลบโทษ)',
+                inputValue: currentDemerits,
+                showCancelButton: true,
+                inputValidator: (val) => { if (val < 0) return 'น้อยกว่า 0 ไม่ได้'; }
+            });
+            if (newVal !== undefined) {
+                try {
+                    await updateDoc(doc(db, "users", uid), { demerits: parseInt(newVal) });
+                    Swal.fire('สำเร็จ', 'อัพเดตแต้มผิดเรียบร้อย', 'success');
+                    fetchAdminUsers();
+                    loadAdminData(); // Refresh stats
+                } catch (e) { Swal.fire('ผิดพลาด', e.message, 'error'); }
+            }
+        };
+
+        window.adminEditUser = async (uid, currentNick) => {
+            const { value: formValues } = await Swal.fire({
+                title: 'แก้ไขข้อมูลผู้ใช้',
+                html: `<input id="swal-input-nick" class="swal2-input" placeholder="ชื่อเล่น/ชื่อวง" value="${currentNick}">`,
+                focusConfirm: false,
+                showCancelButton: true,
+                preConfirm: () => { return document.getElementById('swal-input-nick').value; }
+            });
+            if (formValues !== undefined) {
+                try {
+                    await updateDoc(doc(db, "users", uid), { nickname: formValues.trim() });
+                    Swal.fire('สำเร็จ', 'อัพเดตข้อมูลเรียบร้อย', 'success');
+                    fetchAdminUsers();
+                } catch (e) { Swal.fire('ผิดพลาด', e.message, 'error'); }
+            }
+        };
+
+        // --- BOOKING MANAGEMENT ---
+        async function fetchAdminBookings() {
+            const container = document.getElementById('adminBookingsTableBody');
+            container.innerHTML = 'กำลังโหลดข้อมูล...';
+            try {
+                // Fetch sorted by date only. We sort by start locally to avoid requiring composite indexing.
+                const q = query(collection(db, "bookings"), orderBy("date", "desc"));
+                const snap = await getDocs(q);
+                
+                let bks = [];
+                snap.forEach(d => bks.push({ id: d.id, ...d.data() }));
+                
+                // Secondary sort locally
+                bks.sort((a, b) => {
+                    if (a.date === b.date) {
+                        return (b.start || "").localeCompare(a.start || "");
+                    }
+                    return 0;
+                });
+
+                let html = '';
+                bks.forEach(b => {
+                    let st = b.status === "checked_in" ? '<span style="color:#10b981;font-weight:bold;">เซ็คอินแล้ว</span>' :
+                             (b.status === "pending" || !b.status) ? '<span style="color:#f59e0b;font-weight:bold;">รอการใช้งาน</span>' : b.status;
+                    html += `
+                    <div style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:12px; display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-weight:bold; color:#1e1b4b;">${b.date} เวลา ${b.start} - ${b.end}</div>
+                            <div style="font-size:13px; color:#64748b;">${b.name} ${b.bandName ? `(${b.bandName})` : ''} — ${b.email}</div>
+                            <div style="font-size:12px; margin-top:4px;">สถานะ: ${st}</div>
+                        </div>
+                        <button onclick="window.adminDeleteBooking('${b.id}')" style="background:#ef4444; color:#fff; border:none; padding:8px 12px; border-radius:6px; cursor:pointer;">ลบทิ้ง</button>
+                    </div>`;
+                });
+                container.innerHTML = html || 'ไม่มีการจองในระบบ';
+            } catch(e) { container.innerHTML = `<span style="color:red;">Error: ${e.message}</span>`; }
+        }
+
+        window.adminDeleteBooking = async (bid) => {
+            const res = await Swal.fire({ title: 'ลบการจองนี้ถาวร?', text: 'คุณในฐานะแอดมิน กำลังจะลบการจองนี้ออกจากระบบอย่างสิ้นเชิง', icon: 'warning', showCancelButton: true, confirmButtonColor: '#EF4444' });
+            if (res.isConfirmed) {
+                try {
+                    await deleteDoc(doc(db, "bookings", bid));
+                    fetchAdminBookings(); // Refresh
+                } catch (e) { Swal.fire('Error', e.message, 'error'); }
+            }
+        };
+
+        // --- SPECIAL LOGIC ---
+        window.submitAdminSpecialBooking = async () => {
+            const date = document.getElementById('adminSpecialDate').value;
+            const name = document.getElementById('adminSpecialName').value.trim();
+            const start = document.getElementById('adminSpecialStart').value;
+            const end = document.getElementById('adminSpecialEnd').value;
+            
+            if (!date || !name || !start || !end) {
+                Swal.fire('ข้อมูลไม่ครบ', 'กรุณากรอกวันที่ ชื่อผู้จอง และเวลาให้ครบ', 'warning');
+                return;
+            }
+            
+            try {
+                await addDoc(collection(db, "bookings"), {
+                    name: name,
+                    bandName: '(Admin Override)',
+                    email: currentUser.email,
+                    uid: currentUser.uid,
+                    date: date,
+                    start: start,
+                    end: end,
+                    status: 'pending',
+                    timestamp: serverTimestamp()
+                });
+                Swal.fire('สำเร็จ', 'แทรกคิวจองลงระบบแล้ว', 'success');
+                document.getElementById('adminSpecialName').value = '';
+                if(document.getElementById('adminSpecialDate')) document.getElementById('adminSpecialDate').value = '';
+            } catch (e) { Swal.fire('ผิดพลาด', e.message, 'error'); }
         };
 
         function formatThaiDate(ds) { const m = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.']; const [y, mo, d] = ds.split('-').map(Number); return d + ' ' + m[mo - 1] + ' ' + (y + 543); }

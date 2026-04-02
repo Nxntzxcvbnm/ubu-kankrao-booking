@@ -342,7 +342,7 @@
         const msgBox = document.getElementById('msg'), btnGoogle = document.getElementById('btnGoogleLogin');
         function showMsg(t, type) { msgBox.textContent = t; msgBox.className = type + ' show'; }
         function hideMsg() { msgBox.className = ''; msgBox.textContent = ''; }
-        function redirectAfterLogin(user) { sessionStorage.setItem('ubu_authed', 'true'); if (ADMIN_EMAILS.includes(user.email)) { window.location.replace("admin.html"); } else { window.location.replace("index.html"); } }
+        function redirectAfterLogin(user) { localStorage.setItem('ubu_authed', 'true'); if (ADMIN_EMAILS.includes(user.email)) { window.location.replace("admin.html"); } else { window.location.replace("index.html"); } }
         onAuthStateChanged(auth, (user) => { if (user && user.email && user.email.endsWith('@ubu.ac.th')) { showMsg("✅ พบเซสชั่นที่ใช้งานอยู่...", "success"); setTimeout(() => redirectAfterLogin(user), 800); } });
 
         async function upsertUserProfile(user) { const ref = doc(db, "users", user.uid); const snap = await getDoc(ref); if (!snap.exists()) { await setDoc(ref, { uid: user.uid, email: user.email, displayName: user.displayName || '', photoURL: user.photoURL || '', nickname: '', studentId: '', faculty: '', phone: '', role: 'student', createdAt: serverTimestamp(), lastLoginAt: serverTimestamp() }); } else { await setDoc(ref, { lastLoginAt: serverTimestamp(), displayName: user.displayName || snap.data().displayName || '', photoURL: user.photoURL || snap.data().photoURL || '' }, { merge: true }); } }

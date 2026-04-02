@@ -1118,6 +1118,7 @@
             <button class="spa-tab" onclick="switchView('dashboardView')">การจองของฉัน</button>
             <button class="spa-tab" onclick="switchView('featuresView')">คุณสมบัติ</button>
             <button class="spa-tab" onclick="switchView('toolsView')">วิธีการจอง</button>
+            <button class="spa-tab" onclick="window.location.href='admin.html';" id="adminNavTab" style="display:none; color:#F59E0B; font-weight:700;">⚙️ แผงควบคุมแอดมิน</button>
             <button class="spa-tab mobile-only" id="mobileProfileBtn" onclick="window.location.href='profile.html'">👤
                 บัญชีส่วนตัว (โปรไฟล์)</button>
             <button class="spa-tab mobile-only" onclick="window.handleLogout()"
@@ -1247,8 +1248,16 @@
                 <h1
                     style="color: var(--primary-dark); margin-bottom: 8px; font-size: clamp(20px, 5vw, 24px); font-weight: 600;">
                     📍 พิกัดจุดเช็คอิน</h1>
-                <p style="color: var(--text-muted); font-size: 15px;">อาคารกิจกรรมนักศึกษา
+                <p style="color: var(--text-muted); font-size: 15px; margin-bottom: 16px;">อาคารกิจกรรมนักศึกษา
                     มหาวิทยาลัยอุบลราชธานี<br />(กรุณาอยู่ในรัศมี 200 เมตร เพื่อเช็คอินผ่านระบบจอง)</p>
+                <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                    <button onclick="switchView('homeView'); window.scrollTo({top:0, behavior:'smooth'});" style="background: linear-gradient(135deg, #10B981, #059669); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+                        ➕ สร้างการจอง
+                    </button>
+                    <button onclick="switchView('dashboardView'); window.scrollTo({top:0, behavior:'smooth'});" style="background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+                        📋 ตรวจสอบการจอง
+                    </button>
+                </div>
             </div>
 
             <div
@@ -1266,19 +1275,19 @@
         <div class="section-block">
             <div class="sec-label">My Bookings</div>
             <div class="sec-title">📅 การจองของฉัน</div>
-            <div class="sec-sub">รายการจองของคุณ และตารางคิวห้องชมรมทั้งหมด</div>
+            <div class="sec-sub">ตรวจสอบสถานะ ทำการเช็คอิน หรือยกเลิกการจองห้องของคุณ</div>
 
-
-
-            <!-- Global Timeline Info -->
-            <div class="global-timeline-box" style="margin-bottom: 24px; text-align: left;">
-                <h4 style="font-size: 15px; color: var(--primary-dark); margin-bottom: 12px; font-weight: 600;">⏱️
-                    สถานะการจองห้องวันนี้</h4>
-                <div class="timetable-grid" id="globalTimetableGrid"></div>
+            <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px;">
+                <button onclick="switchView('homeView'); window.scrollTo({top:0, behavior:'smooth'});" style="background: linear-gradient(135deg, #10B981, #059669); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+                    ➕ สร้างการจอง
+                </button>
+                <button onclick="switchView('mapView'); window.scrollTo({top:0, behavior:'smooth'});" style="background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+                    🗺️ ดูแผนที่
+                </button>
             </div>
 
             <h4
-                style="font-size: 15px; color: var(--primary-dark); margin-bottom: 12px; margin-top:20px; font-weight: 600; text-align: left;">
+                style="font-size: 15px; color: var(--primary-dark); margin-bottom: 12px; font-weight: 600; text-align: left;">
                 📋 รายการของฉัน</h4>
             <div id="bookingList" class="booking-dashboard"></div>
         </div>
@@ -1416,25 +1425,25 @@
                                 <td style="padding:12px 16px;"><span
                                         style="background:#FEE2E2;color:#EF4444;padding:3px 10px;border-radius:20px;font-weight:600;">-2
                                         แต้ม</span></td>
-                                <td style="padding:12px 16px;color:#374151;">10 นาที</td>
+                                <td style="padding:12px 16px;color:#374151;">25 นาที</td>
                             </tr>
                             <tr style="border-bottom:1px solid #F1F5F9;">
                                 <td style="padding:12px 16px;"><span
                                         style="background:#FEE2E2;color:#DC2626;padding:3px 10px;border-radius:20px;font-weight:600;">-3
                                         แต้ม</span></td>
-                                <td style="padding:12px 16px;color:#374151;">15 นาที</td>
+                                <td style="padding:12px 16px;color:#374151;">2 ชั่วโมง 5 นาที</td>
                             </tr>
                             <tr style="border-bottom:1px solid #F1F5F9;">
                                 <td style="padding:12px 16px;"><span
                                         style="background:#FFE4E6;color:#BE123C;padding:3px 10px;border-radius:20px;font-weight:600;">-4
                                         แต้ม</span></td>
-                                <td style="padding:12px 16px;color:#374151;">20 นาที</td>
+                                <td style="padding:12px 16px;color:#374151;">10 ชั่วโมง 25 นาที</td>
                             </tr>
                             <tr>
                                 <td style="padding:12px 16px;"><span
                                         style="background:#F3E8FF;color:#7C3AED;padding:3px 10px;border-radius:20px;font-weight:600;">-N
                                         แต้ม</span></td>
-                                <td style="padding:12px 16px;color:#374151;">N × 5 นาที</td>
+                                <td style="padding:12px 16px;color:#374151;">5 ยกกำลัง N นาที</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1467,9 +1476,9 @@
                     style="display:inline-block;background:rgba(79,70,229,0.08);border:1px solid rgba(99,102,241,0.2);color:#4F46E5;padding:5px 16px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;">
                     วิธีใช้งาน</div>
                 <h2 style="font-size:clamp(20px,4vw,28px);font-weight:700;color:#1E293B;margin-bottom:8px;">
-                    เริ่มต้นได้ใน 4 ขั้นตอน</h2>
+                    เริ่มต้นง่ายๆ ใน 3 ขั้นตอน</h2>
                 <p style="color:#64748B;font-size:14px;max-width:420px;margin:0 auto;">ไม่ต้องติดตั้งแอป
-                    ใช้ได้ทันทีผ่านบัญชีมหาวิทยาลัย</p>
+                    จัดการการจองได้อย่างรวดเร็ว</p>
             </div>
 
             <div style="display:flex;flex-direction:column;gap:0;max-width:700px;margin:0 auto 56px;">
@@ -1480,21 +1489,6 @@
                     <div
                         style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0;box-shadow:0 0 0 6px rgba(79,70,229,0.1);">
                         1</div>
-                    <div>
-                        <div style="font-size:17px;font-weight:600;color:#1E293B;margin-bottom:6px;">
-                            เข้าสู่ระบบด้วยบัญชี UBU</div>
-                        <div style="font-size:14px;color:#64748B;line-height:1.7;">ใช้อีเมล <strong
-                                style="color:#4F46E5;">@ubu.ac.th</strong> ผ่าน Google Sign-in ได้เลยทันที
-                            ไม่ต้องสมัครใหม่ หรือจดจำรหัสผ่านแยกต่างหาก</div>
-                    </div>
-                </div>
-                <div style="display:flex;gap:24px;align-items:flex-start;padding:28px 0;position:relative;">
-                    <div
-                        style="position:absolute;left:22px;top:76px;bottom:0;width:2px;background:linear-gradient(to bottom,rgba(79,70,229,0.3),transparent);">
-                    </div>
-                    <div
-                        style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0;box-shadow:0 0 0 6px rgba(79,70,229,0.1);">
-                        2</div>
                     <div>
                         <div style="font-size:17px;font-weight:600;color:#1E293B;margin-bottom:6px;">
                             เลือกวันที่ต้องการใช้ห้อง</div>
@@ -1508,7 +1502,7 @@
                     </div>
                     <div
                         style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0;box-shadow:0 0 0 6px rgba(79,70,229,0.1);">
-                        3</div>
+                        2</div>
                     <div>
                         <div style="font-size:17px;font-weight:600;color:#1E293B;margin-bottom:6px;">ยืนยันการจอง</div>
                         <div style="font-size:14px;color:#64748B;line-height:1.7;">เลือกช่วงเวลา ระบุชื่อวง (ถ้ามี)
@@ -1520,7 +1514,7 @@
                 <div style="display:flex;gap:24px;align-items:flex-start;padding:28px 0;">
                     <div
                         style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0;box-shadow:0 0 0 6px rgba(79,70,229,0.1);">
-                        4</div>
+                        3</div>
                     <div>
                         <div style="font-size:17px;font-weight:600;color:#1E293B;margin-bottom:6px;">เช็คอินเมื่อมาถึง
                         </div>
@@ -1632,7 +1626,7 @@
 
         // ========== AUTH GUARD ==========
         // Fast redirect: if no session flag, go to login immediately
-        if (!sessionStorage.getItem('ubu_authed')) {
+        if (!localStorage.getItem('ubu_authed')) {
             window.location.replace('login.html');
         }
 
@@ -1702,7 +1696,7 @@
                 }
                 showMsg("✅ ยินดีต้อนรับ " + (user.displayName || user.email.split('@')[0]), "success");
                 await upsertUserProfile(user);
-                sessionStorage.setItem('ubu_authed', 'true');
+                localStorage.setItem('ubu_authed', 'true');
                 setTimeout(() => { closeLoginModal(); }, 800);
             } catch (err) {
                 const msgs = { 'auth/popup-closed-by-user': '⚠️ ปิดหน้าต่างก่อนล็อกอินเสร็จ', 'auth/popup-blocked': '⚠️ Popup ถูกบล็อก', 'auth/network-request-failed': '❌ ไม่มีอินเทอร์เน็ต' };
@@ -1728,7 +1722,7 @@
 
             if (user && user.email && user.email.endsWith('@ubu.ac.th')) {
                 currentUser = user;
-                sessionStorage.setItem('ubu_authed', 'true');
+                localStorage.setItem('ubu_authed', 'true');
                 spaTabs.style.display = 'flex'; // Show tabs
 
                 // Listen to User Profile changes for Demerits logic
@@ -1774,6 +1768,11 @@
                 document.getElementById('userName').value = user.displayName || user.email.split('@')[0];
                 await autoFillBandName(user.uid);
 
+                if (ADMIN_EMAILS.includes(user.email)) {
+                    const admTab = document.getElementById('adminNavTab');
+                    if (admTab) admTab.style.display = 'block';
+                }
+
                 // ✅ Re-init timetable after auth confirmed (fixes blank slots on login)
                 const dateEl = document.getElementById('bookDate');
                 const selectedDate = dateEl ? dateEl.value : null;
@@ -1798,7 +1797,7 @@
                 document.getElementById('userName').placeholder = 'กรุณาเข้าสู่ระบบก่อน...';
 
                 // Not authenticated — redirect to login
-                sessionStorage.removeItem('ubu_authed');
+                localStorage.removeItem('ubu_authed');
                 window.location.replace('login.html');
             }
         });
@@ -1827,7 +1826,7 @@
 
         window.handleLogout = async () => {
             const res = await Swal.fire({ title: 'ออกจากระบบ?', text: 'คุณต้องการออกจากระบบใช่หรือไม่?', icon: 'question', showCancelButton: true, confirmButtonColor: '#EF4444', cancelButtonColor: '#9CA3AF', confirmButtonText: 'ออกจากระบบ', cancelButtonText: 'ยกเลิก' });
-            if (res.isConfirmed) { sessionStorage.removeItem('ubu_authed'); await signOut(auth); window.location.replace('login.html'); }
+            if (res.isConfirmed) { localStorage.removeItem('ubu_authed'); await signOut(auth); window.location.replace('login.html'); }
         };
 
         // ========== TIMETABLE ==========
@@ -2029,14 +2028,22 @@
             // Timeout Check
             let isBanned = false;
             let banTimeRemaining = 0;
+            let formattedBanTime = "";
             if (globalUserProfile && (globalUserProfile.demerits || 0) > 0) {
-                const limitMinutes = globalUserProfile.demerits * 5;
+                const limitMinutes = Math.pow(5, globalUserProfile.demerits);
                 if (globalUserProfile.last_offense_time) {
                     const offenseTime = globalUserProfile.last_offense_time.toDate();
                     const diffMins = (new Date() - offenseTime) / 60000;
                     if (diffMins < limitMinutes) {
                         isBanned = true;
                         banTimeRemaining = Math.ceil(limitMinutes - diffMins);
+                        if (banTimeRemaining >= 60) {
+                            const h = Math.floor(banTimeRemaining / 60);
+                            const m = banTimeRemaining % 60;
+                            formattedBanTime = m > 0 ? `${h} ชั่วโมง ${m} นาที` : `${h} ชั่วโมง`;
+                        } else {
+                            formattedBanTime = `${banTimeRemaining} นาที`;
+                        }
                     }
                 }
             }
@@ -2045,7 +2052,7 @@
             btnSave.disabled = !allValid; btnSave.style.opacity = allValid ? '1' : '0.5'; btnSave.style.cursor = allValid ? 'pointer' : 'not-allowed';
 
             if (isBanned) {
-                btnHint.textContent = `🚫 ระงับการจองชั่วคราว (${globalUserProfile.demerits} แต้มผิด) รออีก ${banTimeRemaining} นาที`;
+                btnHint.textContent = `🚫 ระงับการจองชั่วคราว (${globalUserProfile.demerits} แต้มผิด) รออีก ${formattedBanTime}`;
                 btnHint.style.display = 'block';
                 btnHint.style.color = '#EF4444';
             }
@@ -2133,7 +2140,21 @@
                 });
 
                 if (hasActive) {
-                    await Swal.fire('ไม่สามารถจองได้', 'คุณมีคิวจองที่กำลังใช้งาน/ยังมาไม่ถึงอยู่แล้ว<br><small>(จองได้ทีละ 1 คิว เมื่อคิวเดิมหมดเวลาแล้วถึงจะจองใหม่ได้)</small>', 'warning');
+                    await Swal.fire({
+                        title: 'ไม่สามารถจองได้',
+                        html: 'คุณมีคิวจองที่กำลังใช้งาน/ยังมาไม่ถึงอยู่แล้ว<br><small>(จองได้ทีละ 1 คิว เมื่อคิวเดิมหมดเวลาแล้วถึงจะจองใหม่ได้)</small>',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'รับทราบ',
+                        cancelButtonText: '📋 ดูรายการจอง',
+                        confirmButtonColor: '#9CA3AF',
+                        cancelButtonColor: '#4F46E5'
+                    }).then((result) => {
+                        if (result.dismiss === Swal.DismissReason.cancel) {
+                            switchView('dashboardView');
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }
+                    });
                     btnSave.textContent = '✅ ยืนยันการจอง'; isSaving = false; return;
                 }
 
@@ -2365,11 +2386,10 @@
                         const delBtn = document.createElement('button'); delBtn.className = 'del-btn'; delBtn.textContent = 'ยกเลิก';
                         if (isPast || bStatus === 'checked_in' || isNoShow) { delBtn.disabled = true; } else {
                             delBtn.onclick = async () => {
-                                const res = await Swal.fire({ title: 'ลบการจองนี้?', text: 'คุณต้องการยกเลิกการจองนี้ใช่หรือไม่? การจองจะถูกลบออกจากระบบถาวร', icon: 'warning', showCancelButton: true, confirmButtonColor: '#EF4444', cancelButtonColor: '#9CA3AF', confirmButtonText: 'ยืนยันยกเลิก', cancelButtonText: 'ไม่ยกเลิก' });
+                                const res = await Swal.fire({ title: 'ลบการจองนี้?', text: 'คุณต้องการยกเลิกการจองนี้ใช่หรือไม่? การจองจะถูกลบออกจากระบบถาวร', icon: 'warning', showCancelButton: true, confirmButtonColor: '#EF4444', cancelButtonColor: '#9CA3AF', confirmButtonText: 'ยืนยันยกเลิก', cancelButtonText: 'ไม่ยืนยันยกเลิก' });
                                 if (res.isConfirmed) {
                                     try {
                                         await deleteDoc(doc(db, "bookings", b.id));
-                                        Swal.fire({ title: 'ลบการจองแล้ว!', icon: 'success', timer: 1500, showConfirmButton: false });
                                     } catch (e) { Swal.fire('ผิดพลาด', e.message, 'error'); }
                                 }
                             };
@@ -2482,7 +2502,17 @@
                     Swal.fire({
                         title: 'อยู่นอกระยะเช็คอิน',
                         html: `❌ คุณอยู่ห่างจากเป้าหมาย <b>${distText}</b><br><small style="color:#EF4444;">(ต้องอยู่ในระยะ 200 เมตรจากอาคารกิจกรรมนักศึกษา)</small>`,
-                        icon: 'error'
+                        icon: 'error',
+                        showCancelButton: true,
+                        confirmButtonText: 'รับทราบ',
+                        cancelButtonText: '🗺️ ดูแผนที่พิกัด',
+                        confirmButtonColor: '#9CA3AF',
+                        cancelButtonColor: '#4F46E5'
+                    }).then((result) => {
+                        if (result.dismiss === Swal.DismissReason.cancel) {
+                            switchView('mapView');
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }
                     });
                 }
             }, (err) => { Swal.fire('ดึงพิกัดไม่สำเร็จ', (err.code === 1 ? 'คุณปฏิเสธการเข้าถึง GPS' : err.message), 'error'); }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
